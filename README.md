@@ -4,7 +4,7 @@
 
 <h1>
   <img  src="https://cloud.githubusercontent.com/assets/10192561/11917935/2e64a3da-a724-11e5-9df5-44961fd169ee.png"/>
-  Steam Desktop Authenticator &lt;Mod&gt; 47</a>
+  Steam Desktop Authenticator - Mod 47</a>
 </h1>
 # `v0.3.1.4`
 - A **beta** desktop implementation of Steam's Mobile Authenticator app.
