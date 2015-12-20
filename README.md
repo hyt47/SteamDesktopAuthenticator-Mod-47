@@ -12,7 +12,7 @@
 - It was modified from the [official version](https://github.com/Jessecar96/SteamDesktopAuthenticator)
 - This **mod is complete** has all the files needed to run the program
 
-# Disclaimer:
+## Disclaimer:
 **YOU ARE USING THIS PROGRAM AT YOUR OWN RISK!**
 
 **THE SOFTWARE IS PROVIDED "AS IT IS", WITHOUT WARRANTY OF ANY KIND.**
@@ -42,7 +42,7 @@
 
 ## [★Download v0.3.1.4](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
 - **works for Windows Vista, 7, 8, 10**
-- Last File Update 2015.12.20 14:52 PM (GMT +2 hours)
+- Last File Update 2015.12.20 17:52 PM (GMT +2 hours)
 
 ## Features:
 - Generate login codes and confirm trades on multiple Steam accounts with ease.
