@@ -41,6 +41,19 @@
 - **works for Windows Vista, 7, 8, 10**
 - Last File Update 2015.12.20 14:52 PM (GMT +2 hours)
 
+## Features:
+- Generate login codes and confirm trades on multiple Steam accounts with ease.
+- Enable Steam's mobile auth on new accounts.
+- Encryption of sensitive account details.
+- The Program runs only once
+- Import maFile
+- Import account from Android device
+- Resizable GUI
+- You can change the order of your accounts
+- You can search for an account
+- Tutorials added
+
+--------------------
 
 ## Tutorials:
 - To run this app you will need to:
@@ -54,18 +67,6 @@
 - [Remove the Authenticator](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Remove-the-Authenticator-Tutorial)
 - [Rearrange Accounts](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Rearrange-Accounts)
 - [Errors](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Errors)
-
---------------------
-
-## Features:
-- Generate login codes and confirm trades on multiple Steam accounts with ease.
-- Enable Steam's mobile auth on new accounts.
-- Encryption of sensitive account details.
-- The Program runs only once
-- Import maFile
-- Resizable GUI
-- Someone reported that this program supports only 8 accounts - [Add More Accounts Tutorial](https://github.com/hyt47/SteamDesktopAuthenticator-Modded/blob/master/Tutorial_Add_More_Accounts)
-- Steam allows only 1 device/SteamDesktopAuthenticator to act as an Authenticator!
 
 --------------------
 
