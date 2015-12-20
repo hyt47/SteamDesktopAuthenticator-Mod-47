@@ -48,9 +48,7 @@
 - [Import from Android device](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Import-from-Android-Tutorial)
 - [Update the program](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Update-the-program-Tutorial)
 - [Remove the Authenticator](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Remove-the-Authenticator-Tutorial)
-  
 - [Rearrange Accounts](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Rearrange-Accounts)
-
 - [Errors](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Errors)
 
 --------------------
