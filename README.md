@@ -39,7 +39,6 @@
   
 --------------------
 
-
 ## [★Download v0.3.1.4](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
 - **works for Windows Vista, 7, 8, 10**
 - Last File Update 2015.12.20 17:52 PM (GMT +2 hours)
