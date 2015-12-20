@@ -3,7 +3,6 @@
   <img  src="https://cloud.githubusercontent.com/assets/10192561/11917935/2e64a3da-a724-11e5-9df5-44961fd169ee.png"/>
   SteamDesktopAuthenticator-Mod-47</a>
 </h1>
-
 # `v0.3.1.4`
 - A **beta** desktop implementation of Steam's Mobile Authenticator app.
 - ★This modded version was created to have different GUI or/and  functions than the Original
