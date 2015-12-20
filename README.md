@@ -46,14 +46,22 @@
 --------------------
 
 ## [★Download v0.3.1.3 - for XP] (https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
-- **works on Windows XP**
+- **works on Windows XP & Windows Vista, 7, 8, 10**
+- (some features are removed from this version, for it to work on XP)
 
 --------------------
 --------------------
 
 ## Tutorials:
 - To run this app you will need to:
-    - Install [DirectX](https://support.microsoft.com/en-us/kb/179113)
+
+    **For Windows XP**
+    - Install [Windows Imaging Component (wic_x86_enu.exe)](https://www.microsoft.com/en-us/download/details.aspx?id=32)
+    - Install [Microsoft .NET Framework 4](https://www.microsoft.com/en-us/download/details.aspx?id=17851)
+    - Install [Visual C++ Redistributable 2012 - vcredist_x86.exe](https://www.microsoft.com/en-us/download/details.aspx?id=30679)
+    - You need to have [XP Service Pack 3 - WindowsXP-KB936929-SP3-x86-ENU.exe](https://www.microsoft.com/en-us/download/details.aspx?id=24)
+    
+    **For Windows Vista, 7, 8, 10**
     - Install [Microsoft .NET Framework 4.5.2](https://www.microsoft.com/en-us/download/details.aspx?id=42643)
     - Install [Visual C++ Redistributable 2013 - vcredist_x86.exe](https://www.microsoft.com/en-us/download/details.aspx?id=40784)
 
