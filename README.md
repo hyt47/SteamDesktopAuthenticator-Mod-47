@@ -1,4 +1,7 @@
 # Work in progress - project not uploded yet
+
+##★☾☆°❄❄.☆.❄❄.☾°☆❄.❄●°.❄☆.❄☆.❄°❄.❄❄°☾°☆❄❄°.●.❄☾❄ ☆❄❄°.❄☆..❄☾°☆❄.●★❄.☆.❄.❄☆°❄☾❄°.❄☆.●❄°❄°☆❄°.❄.★❄
+
 <h1>
   <img  src="https://cloud.githubusercontent.com/assets/10192561/11917935/2e64a3da-a724-11e5-9df5-44961fd169ee.png"/>
   SteamDesktopAuthenticator-Mod-47</a>
@@ -79,4 +82,4 @@
 ##Thx to [Jessecar96](https://github.com/Jessecar96) (Official Developer) & [geel9](https://github.com/geel9)
 - Now we have a program we can mod and use :)
 
-##★ Mod creaded by Hyt47 Enjoy ^_^
+## ★ Mod creaded by Hyt47 - Enjoy ^_^
