@@ -37,14 +37,14 @@
 ## [★Download v0.3.1.4](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
 - Last File Update 2015.12.20 14:52 PM (GMT +2 hours)
   - **works for Windows Vista, 7, 8, 10**
-  - To run this app you will need
+
+
+## Tutorials:
+- To run this app you will need
     - Install [DirectX](https://support.microsoft.com/en-us/kb/179113)
     - Install [Microsoft .NET Framework 4.5.2](https://www.microsoft.com/en-us/download/details.aspx?id=42643)
     - Install [Visual C++ Redistributable 2013 - vcredist_x86.exe](https://www.microsoft.com/en-us/download/details.aspx?id=40784)
 
-
-
-## Tutorials:
 - [Setup New Account](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Setup-New-Account-Tutorial)
 - [Import from Android device](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Import-from-Android-Tutorial)
 - [Update the program](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Update-the-program-Tutorial)
