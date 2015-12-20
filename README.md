@@ -63,7 +63,7 @@
 - **works on Windows XP**
 - Last File Update 2015.12.20 17:52 PM (GMT +2 hours)
 
-## Features:
+## Features: (some features are removed for XP)
 - Generate login codes and confirm trades on multiple Steam accounts with ease.
 - Enable Steam's mobile auth on new accounts.
 - Encryption of sensitive account details.
