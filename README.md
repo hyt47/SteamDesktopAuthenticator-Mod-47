@@ -40,7 +40,7 @@
 --------------------
 
 ## [★Download v0.3.1.5](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
-- **works for Windows Vista, 7, 8, 10**
+- **works on Windows Vista, 7, 8, 10**
  
 --------------------
 --------------------
