@@ -4,8 +4,8 @@
   <img  src="https://cloud.githubusercontent.com/assets/10192561/11917935/2e64a3da-a724-11e5-9df5-44961fd169ee.png"/>
   Steam Desktop Authenticator - Mod 47</a>
 </h1>
-# `v0.3.1.5` - for newer Windows versions
-# `v0.3.1.3` - for Windows XP
+## `v0.3.1.5` - for newer Windows versions
+## `v0.3.1.3` - for Windows XP
 - A **beta** desktop implementation of Steam's Mobile Authenticator app.
 - ★This modded version was created to have different GUI or/and  functions than the Original
 - It was modified from the [official version](https://github.com/Jessecar96/SteamDesktopAuthenticator)
