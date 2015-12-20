@@ -38,6 +38,7 @@
   - **Doing this will completely lock you out of your Steam account!**
   
 --------------------
+--------------------
 
 ## [★Download v0.3.1.4](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
 - **works for Windows Vista, 7, 8, 10**
@@ -55,6 +56,25 @@
 - You can search for an account
 - Tutorials added
 
+--------------------
+--------------------
+
+## [★Download v0.3.1.5 - for XP] (https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
+- **works on Windows XP**
+- Last File Update 2015.12.20 17:52 PM (GMT +2 hours)
+
+## Features:
+- Generate login codes and confirm trades on multiple Steam accounts with ease.
+- Enable Steam's mobile auth on new accounts.
+- Encryption of sensitive account details.
+- The Program runs only once
+- Import maFile
+- Resizable GUI
+- You can change the order of your accounts
+- You can search for an account
+- Tutorials added
+
+--------------------
 --------------------
 
 ## Tutorials:
