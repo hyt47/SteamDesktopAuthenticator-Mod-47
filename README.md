@@ -1,6 +1,10 @@
-# Work in progress
+# Work in progress - project not uploded yet
+<h1>
+  <img  src="https://cloud.githubusercontent.com/assets/10192561/11917935/2e64a3da-a724-11e5-9df5-44961fd169ee.png"/>
+  SteamDesktopAuthenticator-Mod-47</a>
+</h1>
 
-# SteamDesktopAuthenticator-Mod-47 `v0.3.1.4`
+# `v0.3.1.4`
 - A **beta** desktop implementation of Steam's Mobile Authenticator app.
 - ★This modded version was created to have different GUI or/and  functions than the Original
 - It was modified from the [official version](https://github.com/Jessecar96/SteamDesktopAuthenticator)
@@ -35,12 +39,12 @@
 
 
 ## [★Download v0.3.1.4](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
+- **works for Windows Vista, 7, 8, 10**
 - Last File Update 2015.12.20 14:52 PM (GMT +2 hours)
-  - **works for Windows Vista, 7, 8, 10**
 
 
 ## Tutorials:
-- To run this app you will need
+- To run this app you will need to:
     - Install [DirectX](https://support.microsoft.com/en-us/kb/179113)
     - Install [Microsoft .NET Framework 4.5.2](https://www.microsoft.com/en-us/download/details.aspx?id=42643)
     - Install [Visual C++ Redistributable 2013 - vcredist_x86.exe](https://www.microsoft.com/en-us/download/details.aspx?id=40784)
