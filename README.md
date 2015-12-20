@@ -6,7 +6,7 @@
   <img  src="https://cloud.githubusercontent.com/assets/10192561/11917935/2e64a3da-a724-11e5-9df5-44961fd169ee.png"/>
   Steam Desktop Authenticator - Mod 47</a>
 </h1>
-# `v0.3.1.4`
+# `v0.3.1.5`
 - A **beta** desktop implementation of Steam's Mobile Authenticator app.
 - ★This modded version was created to have different GUI or/and  functions than the Original
 - It was modified from the [official version](https://github.com/Jessecar96/SteamDesktopAuthenticator)
@@ -40,39 +40,14 @@
 --------------------
 --------------------
 
-## [★Download v0.3.1.4](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
+## [★Download v0.3.1.5]https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
 - **works for Windows Vista, 7, 8, 10**
-- Last File Update 2015.12.20 17:52 PM (GMT +2 hours)
-
-## Features:
-- Generate login codes and confirm trades on multiple Steam accounts with ease.
-- Enable Steam's mobile auth on new accounts.
-- Encryption of sensitive account details.
-- The Program runs only once
-- Import maFile
-- Import account from Android device
-- Resizable GUI
-- You can change the order of your accounts
-- You can search for an account
-- Tutorials added
-
+ 
 --------------------
 --------------------
 
-## [★Download v0.3.1.5 - for XP] (https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
+## [★Download v0.3.1.3 - for XP] (https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
 - **works on Windows XP**
-- Last File Update 2015.12.20 17:52 PM (GMT +2 hours)
-
-## Features: (some features are removed for XP)
-- Generate login codes and confirm trades on multiple Steam accounts with ease.
-- Enable Steam's mobile auth on new accounts.
-- Encryption of sensitive account details.
-- The Program runs only once
-- Import maFile
-- Resizable GUI
-- You can change the order of your accounts
-- You can search for an account
-- Tutorials added
 
 --------------------
 --------------------
