@@ -26,7 +26,7 @@
 ## ALWAYS MAKE BACKUPS OF:
 - `maFiles` Folder
 - revocation code
-- encription key (if u choose to add one to the app)
+- encryption key (if u choose to add one to the app)
 - an entire SteamDesktopAuthenticator app including your `maFiles` Folder
 - Backup Steam Guard Codes (Steam > Settings > Manage Steam Guard Account Security > Get Backup Steam Guard Codes)
 
