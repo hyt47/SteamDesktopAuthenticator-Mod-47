@@ -4,8 +4,8 @@
   <img  src="https://cloud.githubusercontent.com/assets/10192561/11917935/2e64a3da-a724-11e5-9df5-44961fd169ee.png"/>
   Steam Desktop Authenticator - Mod 47</a>
 </h1>
-## `v0.3.1.5` - for newer Windows versions
-## `v0.3.1.3` - for Windows XP
+## `v0.3.1 Mod v5` - for newer Windows versions
+## `v0.3.1 Mod v3` - for Windows XP
 - A **beta** desktop implementation of Steam's Mobile Authenticator app.
 - ★This modded version was created to have different GUI or/and  functions than the Original
 - It was modified from the [official version](https://github.com/Jessecar96/SteamDesktopAuthenticator)
@@ -39,13 +39,13 @@
 --------------------
 --------------------
 
-## [★Download v0.3.1.5](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
+## [★Download v0.3.1 Mod v5](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
 - **works on Windows Vista, 7, 8, 10**
  
 --------------------
 --------------------
 
-## [★Download v0.3.1.3 - for XP] (https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
+## [★Download v0.3.1 Mod v3 - for XP] (https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
 - **works on Windows XP & Windows Vista, 7, 8, 10**
 - (some features are removed from this version, for it to work on XP)
 
@@ -71,12 +71,6 @@
 - [Remove the Authenticator](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Remove-the-Authenticator-Tutorial)
 - [Rearrange Accounts](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Rearrange-Accounts)
 - [Errors](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Errors)
-
---------------------
-
-## Info:
-- To compile I used Visual Studio 2015 and I was Running Windows 7 x64
-- Tested in Windows 7 x64
 
 --------------------
 
