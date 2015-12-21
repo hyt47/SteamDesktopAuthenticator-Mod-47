@@ -72,6 +72,7 @@
 - [Remove the Authenticator](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Remove-the-Authenticator-Tutorial)
 - [Rearrange Accounts](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Rearrange-Accounts)
 - [Errors](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Errors)
+- [Lost Steam Data](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Lost-Steam-Data-Tutorial) (maFiles, .maFile, manifest.json, revocation code, Steam Guard codes)
 
 --------------------
 
