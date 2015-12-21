@@ -48,7 +48,7 @@
 
 ## [★Download v0.3.1 Mod v3 - for XP] (https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
 - **works on Windows XP & Windows Vista, 7, 8, 10**
-- (some features are removed from this version, for it to work on XP)
+- (some features are removed from this version, to work on XP)
 
 --------------------
 --------------------
