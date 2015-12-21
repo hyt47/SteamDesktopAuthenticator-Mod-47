@@ -10,6 +10,7 @@
 - ★This modded version was created to have different GUI or/and  functions than the Original
 - It was modified from the [official version](https://github.com/Jessecar96/SteamDesktopAuthenticator)
 - This **mod is complete** has all the files needed to run the program
+- We **are not** affliliated with Steam in any way!
 
 ## Disclaimer:
 **YOU ARE USING THIS PROGRAM AT YOUR OWN RISK!**
