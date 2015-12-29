@@ -4,8 +4,8 @@
   <img  src="https://cloud.githubusercontent.com/assets/10192561/11917935/2e64a3da-a724-11e5-9df5-44961fd169ee.png"/>
   Steam Desktop Authenticator - Mod 47</a>
 </h1>
-## `v0.3.1 Mod v5` - for newer Windows versions
-## `v0.3.1 Mod v3` - for Windows XP
+## `v1.0.0` - for newer Windows versions
+## `v1.0.0` - for Windows XP
 - A **beta** desktop implementation of Steam's Mobile Authenticator app.
 - ★This modded version was created to have different GUI or/and  functions than the Original
 - It was modified from the [official version](https://github.com/Jessecar96/SteamDesktopAuthenticator)
@@ -40,13 +40,13 @@
 --------------------
 --------------------
 
-## [★Download v0.3.1 Mod v5](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
+## [Download SDA mod 47 v1.0.0](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases/tag/1.0.0.2)
 - **works on Windows Vista, 7, 8, 10**
  
 --------------------
 --------------------
 
-## [★Download v0.3.1 Mod v3 - for XP] (https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
+## [Download SDA mod 47 v1.0.0 - for XP] (https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases/tag/1.0.0.1)
 - **works on Windows XP & Windows Vista, 7, 8, 10**
 - (some features are removed from this version, to work on XP)
 
