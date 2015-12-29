@@ -60,6 +60,7 @@
     - Install [Windows Imaging Component (wic_x86_enu.exe)](https://www.microsoft.com/en-us/download/details.aspx?id=32)
     - Install [Microsoft .NET Framework 4](https://www.microsoft.com/en-us/download/details.aspx?id=17851)
     - Install [Visual C++ Redistributable 2012 - vcredist_x86.exe](https://www.microsoft.com/en-us/download/details.aspx?id=30679)
+    - Install [Microsoft .NET Framework 4 KB2468871 x86](https://www.microsoft.com/en-us/download/details.aspx?id=3556)
     - You need to have [XP Service Pack 3 - WindowsXP-KB936929-SP3-x86-ENU.exe](https://www.microsoft.com/en-us/download/details.aspx?id=24)
     
     **For Windows Vista, 7, 8, 10**
