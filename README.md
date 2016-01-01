@@ -44,8 +44,9 @@
 
 **[Download Steam Desktop Authenticator 47 v1.0.0](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases/tag/1.0.0.2)** (mod 47)
 - **works on Windows Vista, 7, 8, 10**
-
-
+ 
+------
+ 
 **[Download Steam Desktop Authenticator 47 v1.0.0 - for XP] (https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases/tag/1.0.0.1)** (mod 47)
 - **works on Windows XP & Windows Vista, 7, 8, 10**
 - (some features are removed from this version, to work on XP)
