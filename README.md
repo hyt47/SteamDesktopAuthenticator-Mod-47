@@ -2,7 +2,7 @@
 
 <h1>
   <img  src="https://cloud.githubusercontent.com/assets/10192561/11917935/2e64a3da-a724-11e5-9df5-44961fd169ee.png"/>
-  Steam Desktop Authenticator - Mod 47</a>
+  Steam Desktop Authenticator 47 - (Mod 47)</a>
 </h1>
 ## `v1.0.0` - for newer Windows versions
 ## `v1.0.0` - for Windows XP
