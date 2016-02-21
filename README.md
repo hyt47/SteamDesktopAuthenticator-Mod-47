@@ -5,8 +5,8 @@
   Steam Desktop Authenticator 47 - (Mod 47)</a>
 </h1>
 ## `v1.0.3a`
-## `Full and Mini` - for newer Windows versions
-## `Mini` - for Windows XP
+## `- Full and Mini` - for newer Windows versions
+## `- Mini` - for Windows XP
 - A **beta** desktop implementation of Steam's Mobile Authenticator app.
 - ★This modded version was created to have different GUI or/and  functions than the Original
 - It was modified from the [official version](https://github.com/Jessecar96/SteamDesktopAuthenticator)
