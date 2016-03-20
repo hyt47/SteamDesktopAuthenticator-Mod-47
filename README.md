@@ -5,6 +5,7 @@
   Steam Desktop Authenticator 47 (Mod 47)</a>
 </h1>
 ## `v1.0.4`
+![1](https://cloud.githubusercontent.com/assets/10192561/13906262/ce9aa946-eeda-11e5-9b28-e78004d778f7.png)
 ## Versions:
 ## `- Full and Mini` - for newer Windows Vista or later
 ## `- Mini for Xp`
