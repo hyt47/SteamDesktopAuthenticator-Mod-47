@@ -78,10 +78,12 @@
 - [Update the program](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Update-the-program-Tutorial)
 - [Remove the Authenticator](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Remove-the-Authenticator-Tutorial)
 - [Rearrange Accounts](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Rearrange-Accounts)
-- [Errors](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Errors)
-- [Lost Steam Data](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Lost-Steam-Data-Tutorial) (maFiles, .maFile, manifest.json, revocation code, Steam Guard codes)
 - [Encryption V2](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Encryption-V2)
 - [Start app With Command Line Arguments](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Start-app-With-Command-Line-Arguments)
+
+## Troubleshooting:
+- [Errors](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Errors)
+- [Lost Steam Data](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Lost-Steam-Data-Tutorial) (maFiles, .maFile, manifest.json, revocation code, Steam Guard codes)
 
 --------------------
 
