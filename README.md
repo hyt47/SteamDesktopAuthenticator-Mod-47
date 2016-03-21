@@ -35,7 +35,7 @@
 
 --------------------
 
-**★ WARNING:**
+**:warning: WARNING:**
   - **If you lose your Steam Data your account may be lost !!!**
   - **Do not delete or lose the maFiles directory! This will remove all your Steam account info!**
   - **Doing this will completely lock you out of your Steam account!**
@@ -43,7 +43,7 @@
 --------------------
 --------------------
 
-**★ WARNING: `ENCRYPTION V2` added:**
+**:warning::bangbang: WARNING: `ENCRYPTION V2`added:**
   - **Accounts Encrypted with this app are not backward compatible with older versions than v1.0.4.0 of "Steam Desktop Authenticator 47"**
   - **Accounts Encrypted are not compatible with the original "Steam Desktop Authenticator"**
   - **Accounts Decrypted are compatible with all the apps**
