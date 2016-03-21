@@ -43,7 +43,7 @@
 --------------------
 --------------------
 
-**:warning::bangbang: WARNING: `ENCRYPTION V2`added:**
+**:warning::bangbang: WARNING: ENCRYPTION V2 added:**
   - **Accounts Encrypted with this app are not backward compatible with older versions than v1.0.4.0 of "Steam Desktop Authenticator 47"**
   - **Accounts Encrypted are not compatible with the original "Steam Desktop Authenticator"**
   - **Accounts Decrypted are compatible with all the apps**
@@ -73,13 +73,15 @@
     - Install [Microsoft .NET Framework 4 KB2468871 x86](https://www.microsoft.com/en-us/download/details.aspx?id=3556)
     - You need to have [XP Service Pack 3 - WindowsXP-KB936929-SP3-x86-ENU.exe](https://www.microsoft.com/en-us/download/details.aspx?id=24)
 
-- [Setup New Account](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Setup-New-Account-Tutorial)
+- **[Setup New Account](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Setup-New-Account-Tutorial)**
 - [Import from Android device](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Import-from-Android-Tutorial)
 - [Update the program](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Update-the-program-Tutorial)
 - [Remove the Authenticator](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Remove-the-Authenticator-Tutorial)
 - [Rearrange Accounts](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Rearrange-Accounts)
 - [Errors](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Errors)
 - [Lost Steam Data](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Lost-Steam-Data-Tutorial) (maFiles, .maFile, manifest.json, revocation code, Steam Guard codes)
+- [Encryption V2](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Encryption-V2)
+- [Start app With Command Line Arguments](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Start-app-With-Command-Line-Arguments)
 
 --------------------
 
