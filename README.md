@@ -7,7 +7,7 @@
 ## `v1.0.4`
 ![1](https://cloud.githubusercontent.com/assets/10192561/13906262/ce9aa946-eeda-11e5-9b28-e78004d778f7.png)
 ## Versions:
-## `- Full and Mini` - for newer Windows Vista or later
+## `- Full and Mini` - for Windows Vista or later
 ## `- Mini for Xp`
 - A **beta** desktop implementation of Steam's Mobile Authenticator app.
 - ★This modded version was created to have different GUI or/and  functions than the Original
