@@ -91,4 +91,4 @@
 ##Thx to [Jessecar96](https://github.com/Jessecar96) (Official Developer) & [geel9](https://github.com/geel9)
 - Now we have a program we can mod and use :)
 
-## ★ Mod creaded by Hyt47 - Enjoy ^_^
+## ★ Mod created by Hyt47 - Enjoy ^_^
