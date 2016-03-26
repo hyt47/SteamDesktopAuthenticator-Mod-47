@@ -86,7 +86,7 @@
 - [Errors](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Errors)
 - [Lost Steam Data](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Lost-Steam-Data-Tutorial) (maFiles, .maFile, manifest.json, revocation code, Steam Guard codes)
 - [Nothing to Confirm](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Nothing-to-Confirm)
-- 
+
 --------------------
 
 ##Thx to [Jessecar96](https://github.com/Jessecar96) (Official Developer) & [geel9](https://github.com/geel9)
