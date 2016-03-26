@@ -82,6 +82,7 @@
 - [Rearrange Accounts](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Rearrange-Accounts)
 - [Encryption V2](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Encryption-V2)
 - [Start app With Command Line Arguments](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Start-app-With-Command-Line-Arguments)
+- [Import Account from SteamBot](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Import-Account-from-SteamBot)
 
 ## Troubleshooting:
 - [Errors](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Errors)
