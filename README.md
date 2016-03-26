@@ -6,6 +6,7 @@
 </h1>
 ## `v1.0.5.0`
 ![1](https://cloud.githubusercontent.com/assets/10192561/13990862/96fb9c66-f11e-11e5-8c5c-85d6e3981b65.png)
+![popup confirmation](https://cloud.githubusercontent.com/assets/10192561/12028009/c77cde38-add8-11e5-8acf-d5fdf80867f3.png)
 ## Versions:
 ## `- Full` - for Windows Vista or later
 ## `- Mini` - built for for Windows Vista or later
