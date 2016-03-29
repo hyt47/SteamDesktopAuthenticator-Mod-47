@@ -86,7 +86,7 @@
 - [Start app With Command Line Arguments](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Start-app-With-Command-Line-Arguments)
 - [Import Account from SteamBot](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Import-Account-from-SteamBot)
 - [Manually import your Steam Account from Android](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Manually-import-your-Steam-Account-from-Android)
-- 
+
 ## Troubleshooting:
 - [Errors](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Errors)
 - [Lost Steam Data](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Lost-Steam-Data-Tutorial) (maFiles, .maFile, manifest.json, revocation code, Steam Guard codes)
