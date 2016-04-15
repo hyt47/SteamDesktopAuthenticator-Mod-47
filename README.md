@@ -57,7 +57,7 @@
 
 ## Download:
 
-**[Download the latest release] (https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases/tag/1.0.3.0)** (mod 47)
+**[Download the latest release] (https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)** (mod 47)
 - **works on Windows XP, Vista, 7, 8, 10**
 
 --------------------
