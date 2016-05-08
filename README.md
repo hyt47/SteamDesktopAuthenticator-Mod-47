@@ -92,6 +92,9 @@
 - [Lost Steam Data](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Lost-Steam-Data-Tutorial) (maFiles, .maFile, manifest.json, revocation code, Steam Guard codes)
 - [Nothing to Confirm](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Nothing-to-Confirm)
 
+## Bugs / Problems:
+- This app can't import the Authenticator from Non Routed Android Devices, It can't extract the files from ADB Backup.
+
 --------------------
 
 ##Thx to [Jessecar96](https://github.com/Jessecar96) (Official Developer) & [geel9](https://github.com/geel9)
