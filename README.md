@@ -4,7 +4,7 @@
   <img  src="https://cloud.githubusercontent.com/assets/10192561/11917935/2e64a3da-a724-11e5-9df5-44961fd169ee.png"/>
   Steam Desktop Authenticator 47 (Mod 47)</a>
 </h1>
-## `v1.0.5.5`
+## `v1.0.6.1`
 ![1](https://cloud.githubusercontent.com/assets/10192561/14083524/d60182aa-f51e-11e5-810a-6f0a2fec84c4.png)
 ![popup confirmation](https://cloud.githubusercontent.com/assets/10192561/12028009/c77cde38-add8-11e5-8acf-d5fdf80867f3.png)
 ## Versions:
