@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using SteamAuth;
 using System;
 using System.Collections.Generic;
@@ -42,7 +42,7 @@ namespace Steam_Desktop_Authenticator
         public bool ConfirmationsPeriodicChecking { get; set; } = false;
 
         [JsonProperty("confirmation_checking_interval")]
-        public int ConfirmationCheckingInterval { get; set; } = 5;
+        public int ConfirmationCheckingInterval { get; set; } = 15;
 
         [JsonProperty("confirmation_checkallaccounts")]
         public bool ConfirmationCheckAllAccounts { get; set; } = false;
@@ -630,7 +630,7 @@ namespace Steam_Desktop_Authenticator
             Manifest newManifest = new Manifest();
             newManifest.AppCanBeStartedMultipleTimes = false;
             newManifest.Encrypted = false;
-            newManifest.ConfirmationCheckingInterval = 5;
+            newManifest.ConfirmationCheckingInterval = 15;
             newManifest.ConfirmationsPeriodicChecking = false;
             newManifest.AutoConfirmMarketTransactions = false;
             newManifest.AutoConfirmTrades = false;
