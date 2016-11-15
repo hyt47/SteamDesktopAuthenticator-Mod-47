@@ -1,0 +1,47 @@
+- MainForm.Designer.cs
+  - replace 
+this.trayTradeConfirmations.Click += new System.EventHandler(this.btnTradeConfirmations_Click);
+with > 
+this.trayTradeConfirmations.Click += new System.EventHandler(this.btnTradeConfirmationsList_Click);
+
+
+- Remove button from GUI: View Confirmations (in Browser)
+
+- position button View Confirmations List (btnTradeConfirmationsList) in MainForm.Designer.cs
+  set btn Visible = true
+  set Location 6, 15
+
+- MainForm.cs remove code : private void btnTradeConfirmations_Click(object sender, EventArgs e) {
+
+
+- Remove Show Button Confirmation list - SEARCH AND REMOVE ALL: ShowConfirmationListButton
+  - from Manifest.cs
+  - from SettingsForm.cs
+  - from MainForm.cs
+  - MainForm.cs use the red spots in Visual Studio to remove other references
+
+- REMOVE from Settings GUI > Show Confirmations List Button
+
+
+- Delete
+  BrowserRequestHandler.cs
+  ConfirmationFromWeb.cs
+  DeleteAllCookiesVisitor.cs
+  
+- Remove MuGet Packages from Steam Desktop Authenticator (remove them in this order)
+Referencer > right click > Manage NuGet Packages
+  - CefSharp.WinForms
+  - CefSharp.Common
+  - cef.redist.x64
+  - cef.redist.x86
+  
+
+- Build 
+  - use the error log to remove any reference to CefSharp
+
+If u are modifying the OFFICIAL VERSION:
+- Remove Auto Check for updates
+  - from Manifest 
+  - from MainForm: serach & delete: Settings_AutoCheckForUpdates
+  - from SettingsForm
+
