@@ -1,0 +1,10 @@
+                string response = await SteamWeb.RequestAsync(url, "POST", postData);
+                if (response == null) return false;
+
+moved inside try
+
+
+             try
+              {		              {
+                string response = await SteamWeb.RequestAsync(url, "POST", postData);
+                if (response == null) return false;
