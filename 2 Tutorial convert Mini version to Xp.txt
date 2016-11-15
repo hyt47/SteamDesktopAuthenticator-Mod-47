@@ -1,0 +1,98 @@
+changed to net framework 4
+---------------------------
+Solution Explorer > Steam Desktop Authenticator > Properties > Application > Target Framework
+Solution Explorer > SteamAuth > Properties > Application > Target Framework
+
+
+Remove: Newtonsoft.Json
+-----------------------------------
+Solution Explorer > Steam Desktop Authenticator > packages.config
+remove 
+<package id="Newtonsoft.Json" version="7.0.1" targetFramework="net452" requireReinstallation="True" />
+Save
+
+Solution Explorer > SteamAuth > packages.config
+remove 
+<package id="Newtonsoft.Json" version="7.0.1" targetFramework="net452" requireReinstallation="True" />
+Save
+
+
+
+Add: Newtonsoft.Json
+-----------------------------------
+Solution Explorer > Steam Desktop Authenticator > References > Right Click > Manage NuGet Packages > add Newtonsoft.Json 7.0.1
+popup asks to Reload ? YES to all
+
+Solution Explorer > SteamAuth > References > Right Click > Manage NuGet Packages > add Newtonsoft.Json 7.0.1
+popup asks to Reload ? YES to all
+
+
+
+
+
+Build > u will get some errors > Popup: Run the last successful build? NO
+------
+
+
+
+Compile Error
+----------------
+Delete from AssemblyInfo.cs
+[assembly: AssemblyMetadata("SquirrelAwareVersion", "1")]
+
+
+
+Compile Error
+----------------
+'System.Net.WebUtility' does not contain a definition for: UrlEncode
+
+Repair
+--------
+.NET Framework 4.0 was already added
+
+Add a reference to System.Web using the "Add Reference" dialog.
+SteamAuth > References > Right click Add Reference > search for "System.Web"
+
+
+Search in Entire solution "WebUtility.UrlEncode"
+- u will find results in: SteamGuardAccount.cs; SteamWeb.cs
+
+- when u find a match add at the top of the page: using System.Web;
+
+- after u added to all that code search again and replace "WebUtility.UrlEncode" with "HttpUtility.UrlEncode"
+
+
+
+
+
+Compile Error
+---------------- 
+await is not suported by netframework 4
+
+ERROR:
+Severity	Code	Description	Project	File	Line	Suppression State
+Error	CS1061	'Task' does not contain a definition for 'GetAwaiter' and no extension method 'GetAwaiter' accepting a first argument of type 'Task' could be found (are you missing a using directive or an assembly reference?)	SteamAuth	C:\Users\John\Desktop\SDA\3 SDA 47 Mini for XP\lib\SteamAuth\SteamAuth\TimeAligner.cs	30	Active
+
+
+Fix:
+Steam Desktop Authenticator > References > Manage NuGet Packages > install: Microsoft.Bcl.Async ( i instaled the latest one 1.0.168 )
+SteamAuth > References > Manage NuGet Packages > install: Microsoft.Bcl.Async
+
+
+
+Error
+---------------- 
+'Task' does not contain a definition for 'Run'
+
+Fix:
+replace
+return Task.Run(() => {
+
+with:
+return Task.Factory.StartNew(() => {
+
+
+
+Done
+---------
+Compile u will get a few warnings > the program will run ok
