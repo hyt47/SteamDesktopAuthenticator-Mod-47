@@ -5,7 +5,7 @@
   Steam Desktop Authenticator 47 (Mod 47)</a>
 </h1>
 ## `v1.0.7.6`
-![1](https://cloud.githubusercontent.com/assets/10192561/16894483/330e44fa-4b60-11e6-8ead-c4ba08bd7e22.png)
+![6](https://cloud.githubusercontent.com/assets/10192561/20327783/3fc0dcf2-ab97-11e6-851c-9204d3fbc7c4.png)
 ![popup confirmation](https://cloud.githubusercontent.com/assets/10192561/12028009/c77cde38-add8-11e5-8acf-d5fdf80867f3.png)
 ## Versions:
 ## `- Full` - for Windows Vista or later
