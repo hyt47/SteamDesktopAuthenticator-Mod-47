@@ -1,4 +1,4 @@
-﻿namespace Steam_Desktop_Authenticator
+namespace Steam_Desktop_Authenticator
 {
     partial class SettingsForm
     {
@@ -144,7 +144,7 @@
             this.numPeriodicInterval.Size = new System.Drawing.Size(80, 22);
             this.numPeriodicInterval.TabIndex = 2;
             this.numPeriodicInterval.Value = new decimal(new int[] {
-            5,
+            15,
             0,
             0,
             0});
@@ -519,7 +519,7 @@
             this.groupBoxRun.Controls.Add(this.chkAppCanRunMultipleTimes);
             this.groupBoxRun.Location = new System.Drawing.Point(323, 406);
             this.groupBoxRun.Name = "groupBoxRun";
-            this.groupBoxRun.Size = new System.Drawing.Size(313, 82);
+            this.groupBoxRun.Size = new System.Drawing.Size(313, 149);
             this.groupBoxRun.TabIndex = 8;
             this.groupBoxRun.TabStop = false;
             this.groupBoxRun.Text = "Run";
