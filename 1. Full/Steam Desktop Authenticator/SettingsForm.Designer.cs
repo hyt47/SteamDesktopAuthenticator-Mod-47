@@ -1,4 +1,4 @@
-﻿namespace Steam_Desktop_Authenticator
+namespace Steam_Desktop_Authenticator
 {
     partial class SettingsForm
     {
@@ -66,6 +66,7 @@
             this.checkBoxConfirmationListBtn = new System.Windows.Forms.CheckBox();
             this.chkAppCanRunMultipleTimes = new System.Windows.Forms.CheckBox();
             this.groupBoxRun = new System.Windows.Forms.GroupBox();
+            this.label19 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -85,7 +86,6 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numPeriodicInterval)).BeginInit();
             this.GroupPopupNewConf.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -147,7 +147,7 @@
             this.numPeriodicInterval.Size = new System.Drawing.Size(80, 22);
             this.numPeriodicInterval.TabIndex = 2;
             this.numPeriodicInterval.Value = new decimal(new int[] {
-            5,
+            15,
             0,
             0,
             0});
@@ -547,6 +547,14 @@
             this.groupBoxRun.TabStop = false;
             this.groupBoxRun.Text = "Run";
             // 
+            // label19
+            // 
+            this.label19.Location = new System.Drawing.Point(9, 43);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(298, 26);
+            this.label19.TabIndex = 13;
+            this.label19.Text = "( Use it only if you are running multiple SDA 47 apps at the same time. )";
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label16);
@@ -766,14 +774,6 @@
             this.label17.Size = new System.Drawing.Size(414, 13);
             this.label17.TabIndex = 1;
             this.label17.Text = "This app is compatible with the app \"Server for Multiple SDA 47 apps\" Server ID:";
-            // 
-            // label19
-            // 
-            this.label19.Location = new System.Drawing.Point(9, 43);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(298, 26);
-            this.label19.TabIndex = 13;
-            this.label19.Text = "( Use it only if you are running multiple SDA 47 apps at the same time. )";
             // 
             // SettingsForm
             // 
