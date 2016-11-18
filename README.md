@@ -75,7 +75,7 @@
     - Install [Microsoft .NET Framework 4](https://www.microsoft.com/en-us/download/details.aspx?id=17851)
     - Install [Visual C++ Redistributable 2012 - vcredist_x86.exe](https://www.microsoft.com/en-us/download/details.aspx?id=30679)
     - Install [Microsoft .NET Framework 4 KB2468871 x86](https://www.microsoft.com/en-us/download/details.aspx?id=3556)
-    - You need to have [XP Service Pack 3 - WindowsXP-KB936929-SP3-x86-ENU.exe](https://www.microsoft.com/en-us/download/details.aspx?id=24)
+    - You need to have [XP Service Pack 3 - WindowsXP-KB936929-SP3-x86-ENU.exe](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases/download/1.0.7.6/XP.Service.Pack.3.-.WindowsXP-KB936929-SP3-x86-ENU.exe.exe)
 
 - **[Setup New Account](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Setup-New-Account-Tutorial):star2:**
 - [Import from Android device](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/Import-from-Android-Tutorial)
