@@ -9,8 +9,8 @@
 ![popup confirmation](https://cloud.githubusercontent.com/assets/10192561/12028009/c77cde38-add8-11e5-8acf-d5fdf80867f3.png)
 ## Versions:
 ## `- Full` - for Windows Vista or later
-## `- *Mini` - built for for Windows Vista or later
-## `- *Mini for Xp` - built for for Windows XP or later
+## `- *Mini` - built for for Windows Vista or later, :balloon: Works With mono on Linux
+## :pushpin: `- *Mini for Xp` - DISCONTINUED because of problems :exclamation: [View](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/issues/20#issuecomment-261707166)
 `* The Mini version desn't have the Browser`
 
 - A **beta** desktop implementation of Steam's Mobile Authenticator app.
