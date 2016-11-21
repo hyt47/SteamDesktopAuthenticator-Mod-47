@@ -9,7 +9,7 @@
 ![popup confirmation](https://cloud.githubusercontent.com/assets/10192561/12028009/c77cde38-add8-11e5-8acf-d5fdf80867f3.png)
 ## Versions:
 ## `- Full` - for Windows Vista or later
-## `- *Mini` - built for for Windows Vista or later, :balloon: Works with Mono on Linux
+## `- *Mini` - built for for Windows Vista or later, :balloon: Works on Linux with Mono
 ## :pushpin: `- *Mini for Xp` - DISCONTINUED because of problems :exclamation: [View](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/issues/20#issuecomment-261707166)
 `* The Mini version desn't have the Browser`
 
@@ -59,7 +59,7 @@
 
 **[Download the latest release] (https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)** (mod 47)
 - **works on Windows XP, Vista, 7, 8, 10**
-
+- **SDA 47 Mini works on Linux with Mono**
 --------------------
 --------------------
 
@@ -70,7 +70,10 @@
     - Install [Microsoft .NET Framework 4.5.2](https://www.microsoft.com/en-us/download/details.aspx?id=42643)
     - Install [Visual C++ Redistributable 2013 - vcredist_x86.exe](https://www.microsoft.com/en-us/download/details.aspx?id=40784)
 
-    **For Windows XP**
+    **For Linux**
+    - [How to Run On Linux](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/wiki/How-to-Run-on-Linux)
+
+    **For Windows XP - DISCONTINUED**
     - Install [Windows Imaging Component (wic_x86_enu.exe)](https://www.microsoft.com/en-us/download/details.aspx?id=32)
     - Install [Microsoft .NET Framework 4](https://www.microsoft.com/en-us/download/details.aspx?id=17851)
     - Install [Visual C++ Redistributable 2012 - vcredist_x86.exe](https://www.microsoft.com/en-us/download/details.aspx?id=30679)
