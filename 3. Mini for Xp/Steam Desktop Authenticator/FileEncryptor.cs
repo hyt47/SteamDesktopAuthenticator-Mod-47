@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.IO;
 
+
 namespace Steam_Desktop_Authenticator
 {
     /// <summary>

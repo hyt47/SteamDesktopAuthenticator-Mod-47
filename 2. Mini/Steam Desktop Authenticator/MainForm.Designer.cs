@@ -669,4 +669,3 @@
         public System.Windows.Forms.Timer timer_DelayAutoConfirmAtStartup;
     }
 }
-

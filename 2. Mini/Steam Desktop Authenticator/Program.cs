@@ -13,7 +13,6 @@ namespace Steam_Desktop_Authenticator
 {
     static class Program
     {
-
         // Run app only once - Part 1
         //////////////////////////////////
         #region Run app only once - Part 1

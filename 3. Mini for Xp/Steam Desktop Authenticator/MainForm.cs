@@ -14,6 +14,7 @@ using System.IO;
 using System.Drawing;
 using System.Linq;
 
+
 namespace Steam_Desktop_Authenticator
 {
     public partial class MainForm : Form

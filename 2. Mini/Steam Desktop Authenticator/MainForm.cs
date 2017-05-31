@@ -18,7 +18,6 @@ namespace Steam_Desktop_Authenticator
 {
     public partial class MainForm : Form
     {
-
         //Settings-declare
         public string Settings_SendAppStatusToAddress = "";
         public int Settings_SendAppStatusInterval = 5;

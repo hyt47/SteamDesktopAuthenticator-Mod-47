@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using System.Threading;
 
+
 namespace Steam_Desktop_Authenticator
 {
     static class Program

@@ -1,6 +1,5 @@
 ﻿namespace Steam_Desktop_Authenticator
 {
-
     partial class ConfirmationForm
     {
         /// <summary>

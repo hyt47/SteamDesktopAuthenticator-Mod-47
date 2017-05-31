@@ -199,6 +199,5 @@ namespace Steam_Desktop_Authenticator
                 ShowWarning(chkAutoConfirmTrades);
         }
 
-
     }
 }

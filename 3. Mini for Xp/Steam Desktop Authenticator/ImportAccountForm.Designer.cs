@@ -1,5 +1,6 @@
 namespace Steam_Desktop_Authenticator
 {
+	
     partial class ImportAccountForm
     {
         #region Windows Form Designer generated code

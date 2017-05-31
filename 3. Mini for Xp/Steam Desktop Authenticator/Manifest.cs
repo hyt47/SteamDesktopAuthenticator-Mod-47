@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using JR.Utils.GUI.Forms;
 
+
 namespace Steam_Desktop_Authenticator
 {
     public class Manifest

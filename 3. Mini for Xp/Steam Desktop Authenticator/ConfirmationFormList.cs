@@ -11,6 +11,7 @@ using SteamAuth;
 using System.Diagnostics;
 using System.Threading;
 
+
 namespace Steam_Desktop_Authenticator
 {
     public partial class ConfirmationForm : Form

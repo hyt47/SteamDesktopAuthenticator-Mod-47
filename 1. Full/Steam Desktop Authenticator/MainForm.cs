@@ -1279,8 +1279,5 @@ namespace Steam_Desktop_Authenticator
         #endregion // Worker Send App Status
 
 
-
-
-
     }
 }

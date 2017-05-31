@@ -9,6 +9,7 @@ using System.IO;
 using Newtonsoft.Json;
 
 
+
 namespace Steam_Desktop_Authenticator
 {
     class BrowserRequestHandler : IRequestHandler

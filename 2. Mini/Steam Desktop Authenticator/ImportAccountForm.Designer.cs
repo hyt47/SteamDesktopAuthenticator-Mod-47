@@ -134,3 +134,4 @@ namespace Steam_Desktop_Authenticator
         private System.Windows.Forms.Label label2;
     }
 }
+

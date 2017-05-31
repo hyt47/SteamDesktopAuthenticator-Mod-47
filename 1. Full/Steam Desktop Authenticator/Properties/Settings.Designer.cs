@@ -24,3 +24,4 @@ namespace Steam_Desktop_Authenticator_47.Properties {
         }
     }
 }
+

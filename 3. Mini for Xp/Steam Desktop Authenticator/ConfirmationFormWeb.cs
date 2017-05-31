@@ -13,6 +13,7 @@ using CefSharp;
 using CefSharp.WinForms;
 using SteamAuth;
 
+
 namespace Steam_Desktop_Authenticator
 {
     public partial class ConfirmationFormWeb : Form

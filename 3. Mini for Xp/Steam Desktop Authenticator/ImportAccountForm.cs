@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Text.RegularExpressions;
 
+
 namespace Steam_Desktop_Authenticator
 {
     public partial class ImportAccountForm : Form

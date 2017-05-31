@@ -347,4 +347,3 @@
         private System.Windows.Forms.Label labelCounter;
     }
 }
-
