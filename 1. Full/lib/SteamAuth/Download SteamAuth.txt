@@ -1,0 +1,8 @@
+Download Steam Auth from
+https://github.com/geel9/SteamAuth
+
+Extract it here
+
+Paths Example:
+lib/SteamAuth/SteamAuth/SteamAuth.sln
+lib/SteamAuth/TestBed/TestBed.csproj
