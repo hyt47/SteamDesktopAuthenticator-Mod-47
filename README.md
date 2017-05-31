@@ -5,9 +5,9 @@
 </h1>
 ## `v1.0.7.6`
 
-![6](https://cloud.githubusercontent.com/assets/10192561/20327783/3fc0dcf2-ab97-11e6-851c-9204d3fbc7c4.png)
+![6](https://cloud.githubusercontent.com/assets/10192561/26648938/bd1eb746-464c-11e7-874a-6729068c15e3.png)
 
-![popup confirmation](https://cloud.githubusercontent.com/assets/10192561/12028009/c77cde38-add8-11e5-8acf-d5fdf80867f3.png)
+![popup confirmation](https://cloud.githubusercontent.com/assets/10192561/26648953/c58bd6fc-464c-11e7-8b02-ee327e970c52.png)
 
 ## Versions:
 ## `- Full` - for Windows Vista or later
