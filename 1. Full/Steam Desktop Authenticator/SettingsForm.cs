@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -9,6 +10,13 @@ namespace Steam_Desktop_Authenticator
         bool fullyLoaded = false;
         bool Read_AutoConfirmTrades_IsStartedSecurely = false;
         bool Read_AutoConfirmMarket_IsStartedSecurely = false;
+
+
+        // Run at Startup
+        bool startupEnabled;
+        RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+        private string StartupLine { get { return "\"" + Application.ExecutablePath + "\" -startup"; } }
+
 
         public SettingsForm()
         {
@@ -73,16 +81,22 @@ namespace Steam_Desktop_Authenticator
                     else {
                         chkAppCanRunMultipleTimes.Checked = manifest.AppCanBeStartedMultipleTimes;
                     }
+
                 #endregion // Set
 
 
 
 
             // enable settings form
-                SetControlsEnabledState_IfAutoCheckingForConfirmations(chkConfirmationsPeriodicChecking.Checked);
+            SetControlsEnabledState_IfAutoCheckingForConfirmations(chkConfirmationsPeriodicChecking.Checked);
 
             // manifest settings loaded
                 fullyLoaded = true;
+
+            // Run at Startup
+            startupEnabled = rkApp.GetValue("SDA")?.ToString() == StartupLine;
+            checkBoxRunAtStartup.Checked = startupEnabled;
+            checkBoxRunAtStartup.Checked = manifest.RunAtStartup;
         }
 
 
@@ -105,6 +119,9 @@ namespace Steam_Desktop_Authenticator
 
         private void SettingsOk_Click(object sender, EventArgs e)
         {
+            // Run at Startup
+                manifest.RunAtStartup = checkBoxRunAtStartup.Checked;
+
             // Confirmation Popup
                 manifest.ConfirmationsPeriodicChecking = chkConfirmationsPeriodicChecking.Checked;
                 manifest.ConfirmationCheckingInterval = (int)numPeriodicInterval.Value;
@@ -136,6 +153,7 @@ namespace Steam_Desktop_Authenticator
                 if (radioButton3_SystemTray.Checked) { SystemTrayValue = "default"; }
                 manifest.MinimiseToSystemTray = SystemTrayValue;
 
+
                 manifest.HideTaskbarIcon = chkHideTaskbarIcon.Checked;
                 manifest.StartMinimizedToSystemTray = chkStartMinimizedToSystemTray.Checked;
 
@@ -147,17 +165,19 @@ namespace Steam_Desktop_Authenticator
                 manifest.SendAppStatusInterval = (int)numSendAppStatusInterval.Value;
             #endregion // Send Status
 
-
             //App Can Run Multiple Times
             if (chkSendAppStatus.Checked == true) { manifest.AppCanBeStartedMultipleTimes = true; }
                 else { manifest.AppCanBeStartedMultipleTimes = chkAppCanRunMultipleTimes.Checked;  }
 
             //save
                 manifest.Save();
-
+            
+            // Run at Startup
+            if (checkBoxRunAtStartup.Checked && !startupEnabled) { rkApp.SetValue("SDA", StartupLine); }
+            else if (!checkBoxRunAtStartup.Checked && startupEnabled) { rkApp.DeleteValue("SDA", false); }
+            
             //close form
-                this.Close();
-                
+            this.Close();
         }
 
         private void SettingsCancel_Click(object sender, EventArgs e)

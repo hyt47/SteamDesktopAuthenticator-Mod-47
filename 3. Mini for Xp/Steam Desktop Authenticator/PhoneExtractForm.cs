@@ -51,13 +51,14 @@ namespace Steam_Desktop_Authenticator
 
         private void Log(string l)
         {
-            if (reachTextLog.InvokeRequired)
+            if (lblLog.InvokeRequired)
             {
-                reachTextLog.Invoke((MethodInvoker)delegate { Log(l); });
+                lblLog.Invoke((MethodInvoker)delegate { Log(l); });
             }
             else
             {
-                reachTextLog.Text += l + "\r\n";
+                lblLog.Items.Add(l);
+                lblLog.TopIndex = lblLog.Items.Count - 1;
             }
         }
 
@@ -70,16 +71,38 @@ namespace Steam_Desktop_Authenticator
                 bridge.ConnectWiFi(input.txtBox.Text);
             }
         }
-        
+
         private void Extract()
         {
             steamAccount = bridge.ExtractSteamGuardAccount(SelectedSteamID, SelectedSteamID != "*");
 
-            if (steamAccount != null)
+            if (!string.IsNullOrEmpty(steamAccount.DeviceID))
             {
                 Result = steamAccount;
                 Log("Account extracted succesfully!");
                 LoginAccount();
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(steamAccount.DeviceID))
+                {
+
+                    InputForm deviceIdForm = new InputForm($"Error while getting file from adb.\n Enter the device Id form file \n data/data/com.valvesoftware.android.steam.community/shared_prefs/steam.uuid.xml \n OR \n /sdcard/steamauth/apps/com.valvesoftware.android.steam.community/sp/steam.uuid.xml");
+                    deviceIdForm.Owner = this;
+                    deviceIdForm.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+                    deviceIdForm.ShowDialog();
+                    if (deviceIdForm.Canceled)
+                    {
+                        deviceIdForm.Close();
+                    }
+                    steamAccount.DeviceID = deviceIdForm.txtBox.Text;
+                    if (!string.IsNullOrEmpty(steamAccount.DeviceID))
+                    {
+                        Result = steamAccount;
+                        Log("Account extracted succesfully!");
+                        LoginAccount();
+                    }
+                }
             }
         }
 
@@ -126,7 +149,7 @@ namespace Steam_Desktop_Authenticator
             bridge.Close();
             Init();
             tCheckDevice.Start();
-            reachTextLog.Text = "";
+            lblLog.Items.Clear();
         }
 
         private void Init()

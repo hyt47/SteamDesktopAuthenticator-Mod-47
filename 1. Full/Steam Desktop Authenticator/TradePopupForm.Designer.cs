@@ -59,7 +59,9 @@
             // 
             // btnDeny
             // 
-            this.btnDeny.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btnDeny.BackColor = System.Drawing.Color.OldLace;
+            this.btnDeny.FlatAppearance.BorderColor = System.Drawing.Color.BurlyWood;
+            this.btnDeny.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDeny.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDeny.Location = new System.Drawing.Point(27, 110);
             this.btnDeny.Name = "btnDeny";
@@ -72,7 +74,9 @@
             // btnAccept
             // 
             this.btnAccept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAccept.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btnAccept.BackColor = System.Drawing.Color.Honeydew;
+            this.btnAccept.FlatAppearance.BorderColor = System.Drawing.Color.DarkSeaGreen;
+            this.btnAccept.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAccept.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAccept.Location = new System.Drawing.Point(182, 110);
             this.btnAccept.Name = "btnAccept";

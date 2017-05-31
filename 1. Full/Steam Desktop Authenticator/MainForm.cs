@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -54,6 +54,10 @@ namespace Steam_Desktop_Authenticator
         {
             InitializeComponent();
         }
+        public void SetEncryptionKey(string key)
+        {
+            passKey = key;
+        }
 
         private void MainForm_Load(object sender, EventArgs e) {
             trayIcon.Icon = this.Icon;
@@ -66,7 +70,7 @@ namespace Steam_Desktop_Authenticator
         private void MainForm_Shown(object sender, EventArgs e)
         {
             // set Btn custom File and Folder name
-            this.menuImportMaFile.Text = "From " + Manifest.SteamFileExtension + " file, " + Manifest.FolderNameSteamFiles + " folder, or an older App folder";
+            this.menuImportmaFile.Text = "From " + Manifest.SteamFileExtension + " file, " + Manifest.FolderNameSteamFiles + " folder, or an older App folder";
 
             this.labelVersion.Text = String.Format("v{0}", Application.ProductVersion);
 
@@ -80,9 +84,9 @@ namespace Steam_Desktop_Authenticator
             if (manifest.Encrypted)
             {
                 passKey = manifest.PromptForPassKey();
-                if (passKey == null)
-                {
-                    Application.Exit();
+                if (passKey == null){
+                    passKey = manifest.PromptForPassKey();
+                    if (passKey == null) { Application.Exit(); }
                 }
             }
 
@@ -218,11 +222,18 @@ namespace Steam_Desktop_Authenticator
 
         private void menuCheckForUpdates_Click(object sender, EventArgs e) { checkForUpdates(); }
 
-        private void btnCopy_Click(object sender, EventArgs e) { if (txtLoginToken.Text != "") { Clipboard.SetText(txtLoginToken.Text); } }
+        private void btnCopy_Click(object sender, EventArgs e) { CopyLoginToken(); }
 
+        private void MainForm_KeyDown(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control) { CopyLoginToken(); } }
 
-        // Tool strip menu handlers
-        private void menuRemoveAccountFromManifest_Click(object sender, EventArgs e)
+        private void CopyLoginToken(){
+            string text = txtLoginToken.Text;
+            if (String.IsNullOrEmpty(text)) { return; }
+            Clipboard.SetText(text);
+        }
+
+    // Tool strip menu handlers
+    private void menuRemoveAccountFromManifest_Click(object sender, EventArgs e)
         {
             string Message = "This will remove the selected account from the manifest file.\n\n";
             Message += "This will NOT delete your " + Manifest.SteamFileExtension + ",\nyour file will be moved to:  'accounts removed from manifest'.\n\n";
@@ -264,7 +275,7 @@ namespace Steam_Desktop_Authenticator
             this.PromptRefreshLogin(currentAccount);
         }
 
-        private void menuImportMaFile_Click(object sender, EventArgs e) {
+        private void menuImportmaFile_Click(object sender, EventArgs e) {
             ImportAccountForm Import_Account_Form = new ImportAccountForm();
             Import_Account_Form.ShowDialog();
             loadAccountsList();
@@ -491,29 +502,16 @@ namespace Steam_Desktop_Authenticator
             if (currentAccount != null) { pbTimeout.Value = 30 - secondsUntilChange; }
         }
 
-        public int TimerInfo_PopupNewConf_Tick_Count = 0;
-        private void TimerInfo_PopupNewConf_Tick(object sender, EventArgs e)
-        {
-            // display remaining time until next confirmation check
-            if (TimerInfo_PopupNewConf_Tick_Count == 0 ) { TimerInfo_PopupNewConf_Tick_Count = Settings_PopupNewConf.Interval; }
-            TimerInfo_PopupNewConf_Tick_Count = TimerInfo_PopupNewConf_Tick_Count - 1000;
-            int TimerInfo_PopupNewConf_Tick_CountSec = TimerInfo_PopupNewConf_Tick_Count / 1000;
-
-            if(TimerInfo_PopupNewConf_Tick_CountSec > 0) {
-                lblStatus.Text = "Checking again in " + TimerInfo_PopupNewConf_Tick_CountSec;
-                Program.ConsoleForm_Update.SetConsoleText("Checking again in " + TimerInfo_PopupNewConf_Tick_CountSec, "ConsoleStatus_Info");
-            }
-        }
-
+        // Confirm Trades
+        //////////////////////////
         private async void Settings_PopupNewConf_Tick(object sender, EventArgs e)
         {
             Settings_PopupNewConf.Stop();
-            TimerInfo_PopupNewConf.Stop();
             if (currentAccount == null) { return; }
 
             List<Confirmation> confs = new List<Confirmation>();
             Dictionary<SteamGuardAccount, List<Confirmation>> autoAcceptConfirmations = new Dictionary<SteamGuardAccount, List<Confirmation>>();
-            
+
             try
             {
                 lblStatus.Text = "Checking confirmations...";
@@ -535,152 +533,139 @@ namespace Steam_Desktop_Authenticator
                     CheckAccounts = accounts_to_check.ToArray();
                 }
 
-                // Check 
-                //////////////////////////
-                foreach (var acc in CheckAccounts) {
+
+                foreach (var acc in CheckAccounts)
+                {
                     if (acc == null) { return; }
+                    await UpdateCurrentSession_ForBg(acc); // refresh session ??
 
-                    await UpdateCurrentSession_ForBg(acc);
+                    var CountDetected_Autoconfirm_Market = 0;
+                    var CountDetected_Autoconfirm_Trades = 0;
+                    var CountDetected_Popup_Trades_Market = 0;
 
-                    // info Show Token
-                    //var SDAToken = acc.GenerateSteamGuardCodeForTime(steamTime);
-                    //Program.ConsoleForm_Update.SetConsoleText("Token " + acc.AccountName + " : " + SDAToken, "ConsoleStatus_Info");
+                    int AutoAcceptingBatch_Status = 0;
 
                     // info
-                    Program.ConsoleForm_Update.SetConsoleText("Checking confirmations running...", "ConsoleStatus_Info");
+                    Program.ConsoleForm_Update.SetConsoleText("Checking confirmations running...", "ConsoleStatus_Info"); 
 
-                    try
-                    {
-                        if (AutoConfirm_Market == 1 || AutoConfirm_Trades == 1 || Settings_DisplayPopupConfirmation) {
+                    try{
+                        if (AutoConfirm_Market == 1 || AutoConfirm_Trades == 1 || Settings_DisplayPopupConfirmation) { 
 
                             // info
-                            lblStatus.Text = "Checking: " + acc.AccountName;
                             Program.ConsoleForm_Update.SetConsoleText("Checking confirmations account: " + acc.AccountName, "ConsoleStatus_TaskImportant");
 
-                            Confirmation[] tmp = await acc.FetchConfirmationsAsync();
+                            Confirmation[] tmp = await currentAccount.FetchConfirmationsAsync();
+                            foreach (var conf in tmp){
 
-                            foreach (var conf in tmp) {
+                                Program.ConsoleForm_Update.SetConsoleText("Confirmation Detected " + acc.AccountName + " > " + conf.Description.ToString() + " > ID: " + conf.ID.ToString(), "ConsoleStatus_Info");
 
-                                if (conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction || conf.ConfType == Confirmation.ConfirmationType.Trade)
+                                //MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+                                if (conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && AutoConfirm_Market == 1)
                                 {
-                                    Program.ConsoleForm_Update.SetConsoleText("Confirmation Detected " + acc.AccountName + " > " + conf.Description.ToString() + " > ID: " + conf.ID.ToString(), "ConsoleStatus_Info");
+                                    AutoAcceptingBatch_Status = 1;
+                                    //Program.ConsoleForm_Update.SetConsoleText("+ Add to Auto-confirming Market BATCH: " + acc.AccountName + " Market > " + conf.Description.ToString() + " > ID: " + conf.ID.ToString(), "ConsoleStatus_Task");
+                                    CountDetected_Autoconfirm_Market++;
+                                    if (!autoAcceptConfirmations.ContainsKey(acc)) { autoAcceptConfirmations[acc] = new List<Confirmation>(); } autoAcceptConfirmations[acc].Add(conf);
+                                }
 
+                                //TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+                                else if (conf.ConfType == Confirmation.ConfirmationType.Trade && AutoConfirm_Trades == 1)
+                                {
+                                    AutoAcceptingBatch_Status = 1;
+                                    //Program.ConsoleForm_Update.SetConsoleText("+ Add to Auto-confirming Trade BATCH: " + acc.AccountName + " Trade > " + conf.Description.ToString() + " > ID: " + conf.ID.ToString(), "ConsoleStatus_Task");
+                                    CountDetected_Autoconfirm_Trades++;
+                                    if (!autoAcceptConfirmations.ContainsKey(acc)) { autoAcceptConfirmations[acc] = new List<Confirmation>(); } autoAcceptConfirmations[acc].Add(conf);
+                                }
 
-                                    if (conf.ConfType == Confirmation.ConfirmationType.Trade && AutoConfirm_Trades == 1)
+                                //PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
+                                else if (Settings_DisplayPopupConfirmation && popupFrm.Visible == false)
+                                {
+                                    if ((conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && AutoConfirm_Market == 0) || (conf.ConfType == Confirmation.ConfirmationType.Trade && AutoConfirm_Trades == 0))
                                     {
-                                        lblStatus.Text = "Auto-confirming Trade... " + acc.AccountName;
-                                        Program.ConsoleForm_Update.SetConsoleText("+ Add to Auto-confirming Trade BATCH: " + acc.AccountName + " Trade > " + conf.Description.ToString() + " > ID: " + conf.ID.ToString(), "ConsoleStatus_Task");
-
-                                        if (!autoAcceptConfirmations.ContainsKey(acc)) {
-                                            autoAcceptConfirmations[acc] = new List<Confirmation>();
-                                            autoAcceptConfirmations[acc].Add(conf);
-                                        } else { autoAcceptConfirmations[acc].Add(conf); }
-                                    }
-                                    else if (conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && AutoConfirm_Market == 1)
-                                    {
-                                        lblStatus.Text = "Auto-confirming Market... " + acc.AccountName;
-                                        Program.ConsoleForm_Update.SetConsoleText("+ Add to Auto-confirming Market BATCH: " + acc.AccountName + " Market > " + conf.Description.ToString() + " > ID: " + conf.ID.ToString(), "ConsoleStatus_Task");
-
-                                        if (!autoAcceptConfirmations.ContainsKey(acc)) {
-                                            autoAcceptConfirmations[acc] = new List<Confirmation>();
-                                            autoAcceptConfirmations[acc].Add(conf);
-                                        } else { autoAcceptConfirmations[acc].Add(conf); }
-                                    }
-                                    else if (Settings_DisplayPopupConfirmation && popupFrm.Visible == false)
-                                    {
-                                        if ((conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && AutoConfirm_Market == 0) || (conf.ConfType == Confirmation.ConfirmationType.Trade && AutoConfirm_Trades == 0))
-                                        {
-                                            confs.Add(conf);
-                                            Program.ConsoleForm_Update.SetConsoleText("+ " + acc.AccountName + " > add to POPUP Confirmation: " + conf.Description.ToString(), "ConsoleStatus_Info");
-                                            //Program.ConsoleForm_Update.SetConsoleText("POPUP INFO ID: " + conf.ID.ToString(), "ConsoleStatus_Info");
-                                            //Program.ConsoleForm_Update.SetConsoleText("POPUP INFO Key: " + conf.Key.ToString(), "ConsoleStatus_Info");
-                                        }
+                                        confs.Add(conf);
+                                        CountDetected_Popup_Trades_Market++;
+                                        //Program.ConsoleForm_Update.SetConsoleText("+ " + acc.AccountName + " > add to POPUP Confirmation: " + conf.Description.ToString(), "ConsoleStatus_Info");
+                                        //Program.ConsoleForm_Update.SetConsoleText("POPUP INFO ID: " + conf.ID.ToString(), "ConsoleStatus_Info");
+                                        //Program.ConsoleForm_Update.SetConsoleText("POPUP INFO Key: " + conf.Key.ToString(), "ConsoleStatus_Info");
                                     }
                                 }
-                            } // foreach (var conf in tmp) { END
 
+                            } // foreach (var conf in tmp){ // END
+                            
+                            
+                            // Info // Acc End
+                            //------------------------------------------------------------------------------------------------------
+                            #region Info
+                            if (CountDetected_Autoconfirm_Market > 0 && CountDetected_Autoconfirm_Trades > 0){
+                                lblStatus.Text = "Auto-confirming Trade & Market... " + acc.AccountName;
+                                Program.ConsoleForm_Update.SetConsoleText("To Confirm: " + acc.AccountName + ", Trades: " + CountDetected_Autoconfirm_Trades + ", Market: " + CountDetected_Autoconfirm_Market, "ConsoleStatus_Info");
+                            }
+                            else if (CountDetected_Autoconfirm_Market > 0){
+                                lblStatus.Text = "Auto-confirming Market... " + acc.AccountName;
+                                Program.ConsoleForm_Update.SetConsoleText("To Confirm: " + acc.AccountName + ", Market: " + CountDetected_Autoconfirm_Market, "ConsoleStatus_Info");
+                            }
+                            else if (CountDetected_Autoconfirm_Trades > 0){
+                                lblStatus.Text = "Auto-confirming Trade... " + acc.AccountName;
+                                Program.ConsoleForm_Update.SetConsoleText("To Confirm: " + acc.AccountName + ", Trades: " + CountDetected_Autoconfirm_Trades, "ConsoleStatus_Info");
+                            }
+                            if(CountDetected_Popup_Trades_Market > 0) { Program.ConsoleForm_Update.SetConsoleText("To Show Popups: " + acc.AccountName + ", No: " + CountDetected_Popup_Trades_Market, "ConsoleStatus_Info"); }
+                            #endregion //Info
+
+                            
+                            // Auto Confirm // Acc End
+                            //+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+                            if (autoAcceptConfirmations.Count > 0){
+                                foreach (var this_acc in autoAcceptConfirmations.Keys) {
+                                    Program.ConsoleForm_Update.SetConsoleText("Auto-confirming BATCH account: " + this_acc.AccountName, "ConsoleStatus_Confirmed");
+                                    var confirmations = autoAcceptConfirmations[this_acc].ToArray();
+                                    this_acc.AcceptMultipleConfirmations(confirmations);
+                                }
+                                autoAcceptConfirmations.Clear(); // Reset Dictionary after the data has been used
+                            }
+                            
+
+                            // Show Confirmation Popup
+                            //=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P
+                            // if another popup is not visible
+                            // if the app is not auto confirming for this account // sending double confirmations at the same time 3can cause the confirmation to fail
+                            if (confs.Count > 0){
+                                if (popupFrm.Visible == false && AutoAcceptingBatch_Status == 0 && acc != null){
+                                    Program.ConsoleForm_Update.SetConsoleText("Show Popup Confirmation", "ConsoleStatus_TaskImportant");
+
+                                    popupFrm.ConfirmationsPopup = confs.ToArray();
+                                    popupFrm.Popup();
+                                    popupFrm.ConfirmationsPopup_ForAcc = acc; // added after the form is shown so it will update the text in the GUI
+                                }
+                                confs.Clear(); // Reset Dictionary >> so that this variable can be used by other account
+                            }
+
+                            Program.ConsoleForm_Update.SetConsoleText(" ", "ConsoleStatus_Info"); // empty line
                         }
                     }
-                    catch (SteamGuardAccount.WGTokenInvalidException)
-                    {
+                    catch (SteamGuardAccount.WGTokenInvalidException){
                         lblStatus.Text = "Failed > Refreshing session";
                         Program.ConsoleForm_Update.SetConsoleText("Check Confirmations > Failed > Refreshing session", "ConsoleStatus_ReturnFaildFixIt");
 
-                        await acc.RefreshSessionAsync(); //Don't save it to the HDD, of course. We'd need their encryption passkey again.
+                        await currentAccount.RefreshSessionAsync(); //Don't save it to the HDD, of course. We'd need their encryption passkey again.
                         lblStatus.Text = "Refreshing session > Done";
                         Program.ConsoleForm_Update.SetConsoleText("Refreshing session > Done", "ConsoleStatus_Return");
                     }
-                    catch (SteamGuardAccount.WGTokenExpiredException)
-                    {
+                    catch (SteamGuardAccount.WGTokenExpiredException){
                         //Prompt to relogin
-                        PromptRefreshLogin(acc);
+                        PromptRefreshLogin(currentAccount);
                         break; //Don't bombard a user with login refresh requests if they have multiple accounts. Give them a few seconds to disable the autocheck option if they want.
                     }
-                    catch (WebException) { }
+                    catch (WebException){}
+                } // Foreach account End
+                lblStatus.Text = "Checking confirmations > End";
 
-
-
-                    // Auto Confirm BATCH
-                    ////////////////////////////
-                    int AutoAcceptingBatch_Status = 0;
-                    if (autoAcceptConfirmations.Count > 0)
-                    {
-                        foreach (var this_acc in autoAcceptConfirmations.Keys)
-                        {
-                            AutoAcceptingBatch_Status = 1;
-                            lblStatus.Text = "Auto-confirming: " + this_acc.AccountName;
-                            Program.ConsoleForm_Update.SetConsoleText("Auto-confirming BATCH account: " + this_acc.AccountName, "ConsoleStatus_Confirmed");
-                            var confirmations = autoAcceptConfirmations[this_acc].ToArray();
-
-                            // Test Array
-                            ///////////////
-                            /*
-                            foreach (var AddedConf in confirmations){
-                                if (AddedConf.ConfType == Confirmation.ConfirmationType.Trade && AutoConfirm_Trades == 1) {
-                                    Program.ConsoleForm_Update.SetConsoleText("> Auto-confirming Trade: " + acc.AccountName + " Trade > " + AddedConf.Description.ToString() + " > ID: " + AddedConf.ID.ToString(), "ConsoleStatus_Task");
-                                } else if (AddedConf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && AutoConfirm_Market == 1) {
-                                    Program.ConsoleForm_Update.SetConsoleText("> Auto-confirming Market: " + acc.AccountName + " Market > " + AddedConf.Description.ToString() + " > ID: " + AddedConf.ID.ToString(), "ConsoleStatus_Task");
-                                }
-                            }
-                            */
-                            this_acc.AcceptMultipleConfirmations(confirmations);
-                        }
-                        autoAcceptConfirmations.Clear(); // Reset Dictionary after the data has been used
-                    }
-
-                    // show confirmation popup
-                    ///////////////////////////
-                    // if another popup is not visible
-                    // if the app is not auto confirming for this account // sending double confirmations at the same time 3can cause the confirmation to fail
-                    if (confs.Count > 0)
-                    {
-                        if (popupFrm.Visible == false && AutoAcceptingBatch_Status == 0 && acc != null)
-                        {
-                            Program.ConsoleForm_Update.SetConsoleText("Show Popup Confirmation", "ConsoleStatus_TaskImportant");
-
-                            popupFrm.ConfirmationsPopup = confs.ToArray();
-                            popupFrm.Popup();
-                            popupFrm.ConfirmationsPopup_ForAcc = acc; // added after the form is shown so it will update the text in the GUI
-                        }
-                        confs.Clear(); // Reset Dictionary >> so that this variable can be used by other account
-                    }
-
-
-                } // foreach (var acc in accs) END
+                
             }
-            catch (SteamGuardAccount.WGTokenInvalidException)
-            {
+            catch (SteamGuardAccount.WGTokenInvalidException) {
                 lblStatus.Text = "Checking confirmations > Failed";
                 Program.ConsoleForm_Update.SetConsoleText("Checking confirmations > Failed", "ConsoleStatus_ReturnWarning");
             }
-
-            // info
-            lblStatus.Text = "Checking confirmations end";
-
-            // Activate Timer
-            TimerInfo_PopupNewConf.Start();
             Settings_PopupNewConf.Start();
-
         }
 
         #endregion //Timer SteamGuard > Check for Confirmations
@@ -865,6 +850,7 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
+
         // Session Update on account select
         private async Task UpdateCurrentSession() { await UpdateSession(currentAccount); }
         private async Task UpdateSession(SteamGuardAccount account)
@@ -878,7 +864,8 @@ namespace Steam_Desktop_Authenticator
             btnTradeConfirmationsList.Enabled = false;
             labelDisableListClick.Visible = true;
 
-            try{
+            try
+            {
                 await currentAccount.RefreshSessionAsync();
                 if (updatedSessions.Contains(account.AccountName) == false) { updatedSessions.Add(account.AccountName); }
                 lblStatus.Text = "Refreshing session > Done";
@@ -1289,11 +1276,11 @@ namespace Steam_Desktop_Authenticator
                 backgroundWorkerSendAppStatus.RunWorkerAsync();
             }
         }
-
-
-
-
         #endregion // Worker Send App Status
+
+
+
+
 
     }
 }

@@ -44,7 +44,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSteamLogin = new System.Windows.Forms.ToolStripMenuItem();
             this.importAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuImportMaFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuImportmaFile = new System.Windows.Forms.ToolStripMenuItem();
             this.menuImportAndroid = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
@@ -259,18 +259,18 @@
             // importAccountToolStripMenuItem
             // 
             this.importAccountToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuImportMaFile,
+            this.menuImportmaFile,
             this.menuImportAndroid});
             this.importAccountToolStripMenuItem.Name = "importAccountToolStripMenuItem";
             this.importAccountToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.importAccountToolStripMenuItem.Text = "Import Account";
             // 
-            // menuImportMaFile
+            // menuImportmaFile
             // 
-            this.menuImportMaFile.Name = "menuImportMaFile";
-            this.menuImportMaFile.Size = new System.Drawing.Size(364, 22);
-            this.menuImportMaFile.Text = "From .maFile file, maFiles folder, or an older App folder";
-            this.menuImportMaFile.Click += new System.EventHandler(this.menuImportMaFile_Click);
+            this.menuImportmaFile.Name = "menuImportmaFile";
+            this.menuImportmaFile.Size = new System.Drawing.Size(364, 22);
+            this.menuImportmaFile.Text = "From .maFile file, maFiles folder, or an older App folder";
+            this.menuImportmaFile.Click += new System.EventHandler(this.menuImportmaFile_Click);
             // 
             // menuImportAndroid
             // 
@@ -609,6 +609,7 @@
             this.Controls.Add(this.menuStrip);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip;
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(325, 390);
@@ -618,6 +619,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.groupToken.ResumeLayout(false);
             this.groupToken.PerformLayout();
@@ -657,7 +659,7 @@
         private System.Windows.Forms.Timer Settings_PopupNewConf;
         private System.Windows.Forms.ToolStripComboBox trayAccountList;
         private System.Windows.Forms.ToolStripMenuItem importAccountToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem menuImportMaFile;
+        private System.Windows.Forms.ToolStripMenuItem menuImportmaFile;
         private System.Windows.Forms.ToolStripMenuItem menuImportAndroid;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.TextBox txtAccSearch;

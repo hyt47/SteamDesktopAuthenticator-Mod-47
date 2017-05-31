@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -89,14 +90,6 @@ namespace Steam_Desktop_Authenticator
             }
 
             bool root = IsRooted();
-            if (root) {
-                OnOutputLog("Device Rooted - Detected");
-            } else {
-                OnOutputLog("Device Not Rooted - Detected");
-                OnOutputLog("This app can't extract the Steam Authenticator from a routed Device!");
-                OnOutputLog("App Development stuck at: ADB Backup file (.ab) files Extraction...");
-                return null; // Stop Script ///////////////////////
-            }
 
             //root = false; // DEBUG ///////////////////////
 
@@ -109,14 +102,24 @@ namespace Steam_Desktop_Authenticator
                 json = PullJson(id);
             }
             else {
-                OnOutputLog("Using no-root method");
-                json = PullJsonNoRoot(id);
+                OnOutputLog("Steam has blocked the non-root method of copying data from their app.");
+                OnOutputLog("Your phone must now be rooted to use this.");
+                json = null;
+                //json = PullJsonNoRoot(id);
             }
             if (json == null) { return null; }
 
-            acc = JsonConvert.DeserializeObject<SteamGuardAccount>(json);
+            acc = JsonConvert.DeserializeObject<SteamGuardAccount>(json, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
             acc.DeviceID = GetDeviceID(root);
-            if (acc.DeviceID == "ERROR") { return null; }
+
+            if (acc.DeviceID == null)
+            {
+                try
+                {
+                    OnPhoneBridgeError("failed to read the UUID (device id)");
+                }
+                catch (Exception) { }
+            }
 
             return acc;
         }
@@ -132,58 +135,35 @@ namespace Steam_Desktop_Authenticator
         private string GetDeviceID(bool root)
         {
             OnOutputLog("Extracting Device ID:...");
-            string id = "ERROR";
+            string id = null;
             ManualResetEventSlim mre = new ManualResetEventSlim();
             DataReceivedEventHandler f1 = (sender, e) =>
             {
                 if (e.Data.Contains(">@") || e.Data == "") return;
 
-                if (e.Data.TrimStart().StartsWith("<string"))
-                {
-                    string d = e.Data.Trim();
-                    int i = d.IndexOf("android");
-                    id = d.Substring(23, (d.Length - i) - 9);
-                }
-                if (e.Data == "Done") { mre.Set(); }
+                Regex rx = new Regex(@"<string[^>]*\s+name=" + "\"uuidKey\"" + @"[^>]*>[\s\t\r\n]*(android:.+)[\s\t\r\n]*<\/string>", RegexOptions.IgnoreCase);
+                Match m = rx.Match(e.Data);
+                if (m.Success) { id = m.Groups[1].Value; }
+
+                //this need more test,but also is not necessary
+                //if (e.Data.TrimEnd(' ', '\t', '\n', '\r').EndsWith("Done"))
+                mre.Set();
             };
 
             console.OutputDataReceived += f1;
 
             if (root)
             {
-                ExecuteCommand("adb shell \"su -c  'cat /data/data/$STEAMAPP/shared_prefs/steam.uuid.xml'\" & echo Done");
-                OnOutputLog("Extracting Device ID, Device has root: \r\n adb shell \"cat /data/data/$STEAMAPP/shared_prefs/steam.uuid.xml\" & echo Done");
+                ExecuteCommand($"adb shell su -c 'sed -n 3p /data/data/$STEAMAPP/shared_prefs/steam.uuid.xml' & echo Done");
             }
             else {
-                if (Directory.Exists("apps"))
-                {
-                    foreach (string item in File.ReadAllLines("apps/com.valvesoftware.android.steam.community/sp/steam.uuid.xml"))
-                    {
-                        string d = item.Trim();
-                        if (d.StartsWith("<string"))
-                        {
-                            int i = d.IndexOf("android");
-                            id = d.Substring(23, (d.Length - i) - 9);
-                            mre.Set();
-                            break;
-                        }
-                    }
-                }
-                else {
-                    OnOutputLog("Failed, folder 'apps' including data was not created!");
-                }
+                ExecuteCommand("adb shell \"cat /sdcard/steamauth/apps/$STEAMAPP/sp/steam.uuid.xml\" & echo Done");
             }
             mre.Wait();
 
             console.OutputDataReceived -= f1;
 
             CleanBackup();
-
-            if (id == "ERROR")
-            {
-                OnOutputLog("Invalid Device ID: " + id);
-            }
-            else { OnOutputLog("Extracted Device ID: " + id); OnOutputLog(" "); }
 
             return id;
         }
@@ -273,37 +253,31 @@ namespace Steam_Desktop_Authenticator
                 DoBackup();
             }
 
-            // Copy Backup data from SD Card
             mre.Reset();
             OnOutputLog("Extracting (4/5)");
             ExecuteCommand("adb pull /sdcard/steamauth/apps/$STEAMAPP/f steamguard/ & echo Done");
             mre.Wait();
 
-            // Delete Backup data from SD Card
+            
             mre.Reset();
             OnOutputLog("Extracting (5/5)");
-            //ExecuteCommand("adb shell \"rm -dR /sdcard/steamauth\" & echo Done");
+            ExecuteCommand("adb shell \"rm -dR /sdcard/steamauth\" & echo Done");
             mre.Wait();
 
-            if (Directory.Exists("steamguard")) {
-                string[] files = Directory.EnumerateFiles("steamguard").ToArray<string>();
-                for (int i = 0; i < files.Length; i++)
-                {
-                    files[i] = files[i].Split('-')[1];
-                }
+            string[] files = Directory.EnumerateFiles("steamguard").ToArray<string>();
+            for (int i = 0; i < files.Length; i++)
+            {
+                files[i] = files[i].Split('-')[1];
+            }
 
-                if (files.Length > 1 && sid == "*")
-                {
-                    OnMoreThanOneAccount(new List<string>(files));
-                    return null;
-                }
-                else {
-                    json = File.ReadAllText("steamguard/Steamguard-" + sid);
-                }
-            } else {
-                OnOutputLog("Failed to extract data!");
-                console.OutputDataReceived -= f1;
+            if (files.Length > 1 && sid == "*")
+            {
+                OnMoreThanOneAccount(new List<string>(files));
                 return null;
+            }
+            else
+            {
+                json = File.ReadAllText("steamguard/Steamguard-" + sid);
             }
 
             console.OutputDataReceived -= f1;
@@ -314,7 +288,8 @@ namespace Steam_Desktop_Authenticator
         private void CleanBackup()
         {
             File.Delete("backup.ab");
-            if (Directory.Exists("steamguard")) { Directory.Delete("steamguard", true); }
+            if (Directory.Exists("steamguard"))
+                Directory.Delete("steamguard", true);
         }
 
 

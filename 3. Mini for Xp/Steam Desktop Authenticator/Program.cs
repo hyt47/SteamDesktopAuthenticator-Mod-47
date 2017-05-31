@@ -300,8 +300,14 @@ namespace Steam_Desktop_Authenticator
                     }
                 }
 
-                
+                // check Encryption key
+                ////////////////////////////////////
+                if (arg.IndexOf("-EncryptionKey") != -1){
+                    string Encryption_key = arg.Replace("-EncryptionKey", "");
 
+                    MainForm mf = new MainForm();
+                    mf.SetEncryptionKey(Encryption_key);
+                }
             }
             #endregion // Command Line Args
 

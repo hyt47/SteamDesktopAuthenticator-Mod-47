@@ -1,4 +1,4 @@
-namespace Steam_Desktop_Authenticator
+﻿namespace Steam_Desktop_Authenticator
 {
     partial class SettingsForm
     {
@@ -84,6 +84,7 @@ namespace Steam_Desktop_Authenticator
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
+            this.checkBoxRunAtStartup = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numPeriodicInterval)).BeginInit();
             this.GroupPopupNewConf.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -118,7 +119,7 @@ namespace Steam_Desktop_Authenticator
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.Font = new System.Drawing.Font("Segoe UI", 9.25F);
-            this.btnOk.Location = new System.Drawing.Point(437, 601);
+            this.btnOk.Location = new System.Drawing.Point(433, 592);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(107, 30);
             this.btnOk.TabIndex = 1;
@@ -144,7 +145,7 @@ namespace Steam_Desktop_Authenticator
             this.numPeriodicInterval.Size = new System.Drawing.Size(80, 22);
             this.numPeriodicInterval.TabIndex = 2;
             this.numPeriodicInterval.Value = new decimal(new int[] {
-            15,
+            5,
             0,
             0,
             0});
@@ -441,7 +442,7 @@ namespace Steam_Desktop_Authenticator
             this.chkStartMinimizedToSystemTray.AutoSize = true;
             this.chkStartMinimizedToSystemTray.Location = new System.Drawing.Point(12, 123);
             this.chkStartMinimizedToSystemTray.Name = "chkStartMinimizedToSystemTray";
-            this.chkStartMinimizedToSystemTray.Size = new System.Drawing.Size(180, 17);
+            this.chkStartMinimizedToSystemTray.Size = new System.Drawing.Size(179, 17);
             this.chkStartMinimizedToSystemTray.TabIndex = 13;
             this.chkStartMinimizedToSystemTray.Text = "Start miminized to System Tray";
             this.chkStartMinimizedToSystemTray.UseVisualStyleBackColor = true;
@@ -451,7 +452,7 @@ namespace Steam_Desktop_Authenticator
             this.chkHideTaskbarIcon.AutoSize = true;
             this.chkHideTaskbarIcon.Location = new System.Drawing.Point(12, 100);
             this.chkHideTaskbarIcon.Name = "chkHideTaskbarIcon";
-            this.chkHideTaskbarIcon.Size = new System.Drawing.Size(295, 17);
+            this.chkHideTaskbarIcon.Size = new System.Drawing.Size(293, 17);
             this.chkHideTaskbarIcon.TabIndex = 12;
             this.chkHideTaskbarIcon.Text = "Hide Taskbar icon, show the icon only in System Tray";
             this.chkHideTaskbarIcon.UseVisualStyleBackColor = true;
@@ -495,7 +496,7 @@ namespace Steam_Desktop_Authenticator
             this.btnCancel.AutoSize = true;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.Location = new System.Drawing.Point(550, 601);
+            this.btnCancel.Location = new System.Drawing.Point(543, 592);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(106, 30);
             this.btnCancel.TabIndex = 6;
@@ -680,7 +681,7 @@ namespace Steam_Desktop_Authenticator
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(7, 8);
+            this.tabControl1.Location = new System.Drawing.Point(2, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(650, 587);
@@ -751,11 +752,23 @@ namespace Steam_Desktop_Authenticator
             this.label17.TabIndex = 1;
             this.label17.Text = "This app is compatible with the app \"Server for Multiple SDA 47 apps\" Server ID:";
             // 
+            // checkBoxRunAtStartup
+            // 
+            this.checkBoxRunAtStartup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxRunAtStartup.AutoSize = true;
+            this.checkBoxRunAtStartup.Location = new System.Drawing.Point(13, 599);
+            this.checkBoxRunAtStartup.Name = "checkBoxRunAtStartup";
+            this.checkBoxRunAtStartup.Size = new System.Drawing.Size(154, 17);
+            this.checkBoxRunAtStartup.TabIndex = 0;
+            this.checkBoxRunAtStartup.Text = "Run on windows startup";
+            this.checkBoxRunAtStartup.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(662, 638);
+            this.ClientSize = new System.Drawing.Size(653, 626);
+            this.Controls.Add(this.checkBoxRunAtStartup);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
@@ -853,5 +866,6 @@ namespace Steam_Desktop_Authenticator
         private System.Windows.Forms.GroupBox groupBoxStartupAutoConfirmDelay;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.CheckBox checkBoxRunAtStartup;
     }
 }

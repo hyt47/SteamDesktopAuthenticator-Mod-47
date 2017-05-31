@@ -23,6 +23,9 @@ namespace Steam_Desktop_Authenticator
         [JsonProperty("app_can_be_started_multiple_times")]
         public bool AppCanBeStartedMultipleTimes { get; set; } = false;
 
+        [JsonProperty("RunAtStartup")]
+        public bool RunAtStartup { get; set; } = false;
+
         [JsonProperty("encrypted")]
         public bool Encrypted { get; set; }
 
@@ -45,7 +48,7 @@ namespace Steam_Desktop_Authenticator
         public bool ConfirmationsPeriodicChecking { get; set; } = false;
 
         [JsonProperty("confirmation_checking_interval")]
-        public int ConfirmationCheckingInterval { get; set; } = 5;
+        public int ConfirmationCheckingInterval { get; set; } = 30;
 
         [JsonProperty("confirmation_checkallaccounts")]
         public bool ConfirmationCheckAllAccounts { get; set; } = false;
@@ -60,7 +63,7 @@ namespace Steam_Desktop_Authenticator
         public bool DelayAutoConfirmAtStartup { get; set; } = true;
 
         [JsonProperty("delay_auto_confirm_at_startup_interval")]
-        public int DelayAutoConfirmAtStartupInterval { get; set; } = 5;
+        public int DelayAutoConfirmAtStartupInterval { get; set; } = 10;
         
         [JsonProperty("auto_confirm_market_transactions")]
         public bool AutoConfirmMarketTransactions { get; set; } = false;
@@ -633,7 +636,7 @@ namespace Steam_Desktop_Authenticator
             Manifest newManifest = new Manifest();
             newManifest.AppCanBeStartedMultipleTimes = false;
             newManifest.Encrypted = false;
-            newManifest.ConfirmationCheckingInterval = 5;
+            newManifest.ConfirmationCheckingInterval = 30;
             newManifest.ConfirmationsPeriodicChecking = false;
             newManifest.AutoConfirmMarketTransactions = false;
             newManifest.AutoConfirmTrades = false;

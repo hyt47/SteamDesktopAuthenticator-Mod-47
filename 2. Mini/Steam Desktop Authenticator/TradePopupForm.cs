@@ -84,8 +84,7 @@ namespace Steam_Desktop_Authenticator
             if (deny2){
                 // restore Deny btn if it was Activated
                 deny2 = false;
-                btnDeny.BackColor = Color.FromArgb(255, 255, 192);
-
+                btnDeny.FlatAppearance.BorderColor = Color.BurlyWood;
                 BtnPopupConfBack.Enabled = true;
                 BtnPopupConfNext.Enabled = true;
             }
@@ -94,14 +93,14 @@ namespace Steam_Desktop_Authenticator
             {
                 // Allow user to confirm first
                 lblStatus.Text = "Press Accept again to confirm";
-                btnAccept.BackColor = Color.FromArgb(128, 255, 128);
+                btnAccept.FlatAppearance.BorderColor = Color.ForestGreen;
                 accept2 = true;
-
-                BtnPopupConfBack.Enabled = false;
-                BtnPopupConfNext.Enabled = false;
             }
             else
             {
+                BtnPopupConfBack.Enabled = false;
+                BtnPopupConfNext.Enabled = false;
+
                 Program.ConsoleForm_Update.SetConsoleText("POPUP Confirmation: Accepting... " + confirms[CurrentConfirmationNo].Description, "ConsoleStatus_Confirmed");
                 lblStatus.Text = "Accepting...";
                 btnAccept.Enabled = false;
@@ -126,7 +125,7 @@ namespace Steam_Desktop_Authenticator
             if (accept2){
                 // restore Accept btn if it was Activated
                 accept2 = false;
-                btnAccept.BackColor = Color.FromArgb(192, 255, 192);
+                btnAccept.FlatAppearance.BorderColor = Color.DarkSeaGreen;
 
                 BtnPopupConfBack.Enabled = true;
                 BtnPopupConfNext.Enabled = true;
@@ -135,14 +134,14 @@ namespace Steam_Desktop_Authenticator
             if (!deny2)
             {
                 lblStatus.Text = "Press Deny again to confirm";
-                btnDeny.BackColor = Color.FromArgb(255, 255, 128);
+                btnDeny.FlatAppearance.BorderColor = Color.Orange;
                 deny2 = true;
-
-                BtnPopupConfBack.Enabled = false;
-                BtnPopupConfNext.Enabled = false;
             }
             else
             {
+                BtnPopupConfBack.Enabled = false;
+                BtnPopupConfNext.Enabled = false;
+
                 Program.ConsoleForm_Update.SetConsoleText("POPUP Confirmation: Denying... " + confirms[CurrentConfirmationNo].Description, "ConsoleStatus_Confirmed");
                 lblStatus.Text = "Denying...";
                 btnAccept.Enabled = false;
@@ -196,8 +195,8 @@ namespace Steam_Desktop_Authenticator
 
             deny2 = false;
             accept2 = false;
-            btnAccept.BackColor = Color.FromArgb(192, 255, 192);
-            btnDeny.BackColor = Color.FromArgb(255, 255, 192);
+            btnDeny.FlatAppearance.BorderColor = Color.BurlyWood;
+            btnAccept.FlatAppearance.BorderColor = Color.DarkSeaGreen;
 
             btnAccept.Text = "Accept";
             btnDeny.Text = "Deny";
@@ -259,12 +258,36 @@ namespace Steam_Desktop_Authenticator
 
         private void PopupConfNext_Click(object sender, EventArgs e)
         {
+            // restore Deny btn if it was Activated
+            deny2 = false;
+            btnDeny.FlatAppearance.BorderColor = Color.BurlyWood;
+            BtnPopupConfBack.Enabled = true;
+            BtnPopupConfNext.Enabled = true;
+
+            // restore Accept btn if it was Activated
+            accept2 = false;
+            btnAccept.FlatAppearance.BorderColor = Color.DarkSeaGreen;
+            BtnPopupConfBack.Enabled = true;
+            BtnPopupConfNext.Enabled = true;
+
             // show next confirmation
             Reset();
         }
 
         private void PopupConfBack_Click(object sender, EventArgs e)
         {
+            // restore Deny btn if it was Activated
+            deny2 = false;
+            btnDeny.FlatAppearance.BorderColor = Color.BurlyWood;
+            BtnPopupConfBack.Enabled = true;
+            BtnPopupConfNext.Enabled = true;
+
+            // restore Accept btn if it was Activated
+            accept2 = false;
+            btnAccept.FlatAppearance.BorderColor = Color.DarkSeaGreen;
+            BtnPopupConfBack.Enabled = true;
+            BtnPopupConfNext.Enabled = true;
+
             // show next confirmation
             Reset("back");
         }
