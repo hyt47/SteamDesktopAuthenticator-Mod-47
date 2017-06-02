@@ -59,9 +59,8 @@
 --------------------
 
 ## Download:
-
-**[Download the latest release] (https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)** (mod 47)
-- **works on Windows XP, Vista, 7, 8, 10**
+[Download the latest release](https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47/releases)
+- **works on Windows Vista, 7, 8, 10**
 - **SDA 47 Mini works on Linux with Mono**
 --------------------
 --------------------
