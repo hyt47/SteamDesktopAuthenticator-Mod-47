@@ -19,11 +19,11 @@ namespace Steam_Desktop_Authenticator
         public static int ManuallyEnableWebsitePlannerAtMyOwnRisk = 0; // 1 = on // 0 = off
         public static string ManuallySetWebsitePlannerAddress = "http://localhost:8000/index.php";
         // set encryption
-        public static int ManuallySetWebsitePlannerShift1 = 3; // 0-9
-        public static int ManuallySetWebsitePlannerShift2 = 5; // 0-9
+        public static int ManuallySetWebsitePlannerShift1 = 1; // 0-9
+        public static int ManuallySetWebsitePlannerShift2 = 2; // 0-9
         public static int ManuallySetWebsitePlannerShift3 = 3; // 0-9
-        public static int ManuallySetWebsitePlannerShift4 = 7; // 0-9
-        public static int ManuallySetWebsitePlannerShift5 = 1; // 0-9
+        public static int ManuallySetWebsitePlannerShift4 = 4; // 0-9
+        public static int ManuallySetWebsitePlannerShift5 = 5; // 0-9
         //+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---
 
 

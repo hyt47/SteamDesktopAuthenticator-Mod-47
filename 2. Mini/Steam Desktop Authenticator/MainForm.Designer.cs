@@ -46,6 +46,7 @@
             this.menuImportmaFile = new System.Windows.Forms.ToolStripMenuItem();
             this.menuImportAndroid = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuManageEncryption = new System.Windows.Forms.ToolStripMenuItem();
             this.menuConsole = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,7 +55,6 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.menuQuit = new System.Windows.Forms.ToolStripMenuItem();
-            this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.accountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuLoginAgain = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRefreshSession = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,6 +83,7 @@
             this.btn_labelAutoConfirmTrades = new System.Windows.Forms.Label();
             this.btn_labelAutoConfirmMarket = new System.Windows.Forms.Label();
             this.timer_DelayAutoConfirmAtStartup = new System.Windows.Forms.Timer(this.components);
+            this.label_TimerAutoConfirm = new System.Windows.Forms.Label();
             this.groupToken.SuspendLayout();
             this.groupAccount.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -252,14 +253,14 @@
             // menuImportmaFile
             // 
             this.menuImportmaFile.Name = "menuImportmaFile";
-            this.menuImportmaFile.Size = new System.Drawing.Size(340, 22);
+            this.menuImportmaFile.Size = new System.Drawing.Size(364, 22);
             this.menuImportmaFile.Text = "From .maFile file, maFiles folder, or an older App folder";
             this.menuImportmaFile.Click += new System.EventHandler(this.menuImportmaFile_Click);
             // 
             // menuImportAndroid
             // 
             this.menuImportAndroid.Name = "menuImportAndroid";
-            this.menuImportAndroid.Size = new System.Drawing.Size(340, 22);
+            this.menuImportAndroid.Size = new System.Drawing.Size(364, 22);
             this.menuImportAndroid.Text = "From Android Device";
             this.menuImportAndroid.Click += new System.EventHandler(this.menuImportAndroid_Click);
             // 
@@ -267,6 +268,13 @@
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(268, 6);
+            // 
+            // btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem
+            // 
+            this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem.Name = "btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem";
+            this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem.Size = new System.Drawing.Size(271, 22);
+            this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem.Text = "Force session refresh for All Accounts";
+            this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem.Click += new System.EventHandler(this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem_Click);
             // 
             // menuSettings
             // 
@@ -319,13 +327,6 @@
             this.menuQuit.Size = new System.Drawing.Size(271, 22);
             this.menuQuit.Text = "Quit";
             this.menuQuit.Click += new System.EventHandler(this.menuQuit_Click);
-            // 
-            // btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem
-            // 
-            this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem.Name = "btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem";
-            this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem.Size = new System.Drawing.Size(271, 22);
-            this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem.Text = "Force session refresh for All Accounts";
-            this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem.Click += new System.EventHandler(this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem_Click);
             // 
             // accountToolStripMenuItem
             // 
@@ -580,11 +581,24 @@
             this.timer_DelayAutoConfirmAtStartup.Interval = 1000;
             this.timer_DelayAutoConfirmAtStartup.Tick += new System.EventHandler(this.timer_DelayAutoConfirmAtStartup_Tick);
             // 
+            // label_TimerAutoConfirm
+            // 
+            this.label_TimerAutoConfirm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label_TimerAutoConfirm.BackColor = System.Drawing.Color.Black;
+            this.label_TimerAutoConfirm.ForeColor = System.Drawing.Color.White;
+            this.label_TimerAutoConfirm.Location = new System.Drawing.Point(209, 351);
+            this.label_TimerAutoConfirm.Name = "label_TimerAutoConfirm";
+            this.label_TimerAutoConfirm.Size = new System.Drawing.Size(46, 13);
+            this.label_TimerAutoConfirm.TabIndex = 25;
+            this.label_TimerAutoConfirm.Text = "0";
+            this.label_TimerAutoConfirm.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(309, 394);
+            this.Controls.Add(this.label_TimerAutoConfirm);
             this.Controls.Add(this.btn_labelAutoConfirmMarket);
             this.Controls.Add(this.btn_labelAutoConfirmTrades);
             this.Controls.Add(this.labelAutoConfirmMarket);
@@ -677,6 +691,7 @@
         private System.Windows.Forms.Label btn_labelAutoConfirmMarket;
         public System.Windows.Forms.Timer timer_DelayAutoConfirmAtStartup;
         private System.Windows.Forms.ToolStripMenuItem btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem;
+        private System.Windows.Forms.Label label_TimerAutoConfirm;
     }
 }
 

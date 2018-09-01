@@ -24,13 +24,14 @@ namespace Steam_Desktop_Authenticator
         public int Settings_SendAppStatusInterval = 5;
         public int Settings_AppNo = 1;
         public string Settings_MinimiseToSystemTray;
-
+        public bool Settings_ShowConfirmationListButton;
         public bool Settings_DisplayPopupConfirmation;
         public bool Settings_ConfirmationsPeriodicChecking;
         public int Settings_ConfirmationCheckAllAcc_RefreshSessionDellay;
         public bool Settings_ConfirmationCheckAllAccounts;
         public bool Settings_DelayAutoConfirmAtStartup;
         public static int Settings_DelayAutoConfirmAtStartupInterval;
+        public int Settings_PopupNewConf_Interval;
 
         int Secure_ManuallyEnableWebsitePlannerAtMyOwnRisk = 0; // Secure Settings
         string Secure_ManuallySetWebsitePlannerAddress = ""; // Secure Settings
@@ -44,7 +45,7 @@ namespace Steam_Desktop_Authenticator
         public int Settings_WebsitePlannerShift4 = 4;
         public int Settings_WebsitePlannerShift5 = 5;
 
-        public int DefaultSettings_PopupNewConf_Interval = 30000;
+        public int DefaultSettings_PopupNewConf_Interval = 30;
         public int DefaultSettings_PopupNewConf_Planner_Interval = 1000;
         public int Settings_PopupNewConf_Planner_Interval_Tick = 1000;
         public int Code_DellayAtStartup_Sec = 6;
@@ -65,8 +66,8 @@ namespace Steam_Desktop_Authenticator
         private SteamGuardAccount[] allAccounts;
         private List<string> updatedSessions = new List<string>();
         private Manifest manifest;
-		private static SemaphoreSlim confirmationsSemaphore = new SemaphoreSlim(1, 1);
-		
+        private static SemaphoreSlim confirmationsSemaphore = new SemaphoreSlim(1, 1);
+
         private long steamTime = 0;
         private long currentSteamChunk = 0;
         private string passKey = null;
@@ -82,8 +83,9 @@ namespace Steam_Desktop_Authenticator
         {
             passKey = key;
         }
-		
-        private void MainForm_Load(object sender, EventArgs e) {
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
             trayIcon.Icon = this.Icon;
 
             try
@@ -91,11 +93,12 @@ namespace Steam_Desktop_Authenticator
                 this.manifest = Manifest.GetManifest();
                 loadSettings();
             }
-            catch {
+            catch
+            {
                 MessageBox.Show("Unable to read your settings. Try restating the App.", Manifest.MainAppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
             }
-            
+
         }
 
         // Form event handlers
@@ -105,7 +108,7 @@ namespace Steam_Desktop_Authenticator
             this.menuImportmaFile.Text = "From " + Manifest.SteamFileExtension + " file, " + Manifest.FolderNameSteamFiles + " folder, or an older App folder";
 
             this.labelVersion.Text = String.Format("v{0}", Application.ProductVersion);
-			
+
             // Make sure we don't show that welcome dialog again
             this.manifest.FirstRun = false;
             this.manifest.Save();
@@ -133,9 +136,11 @@ namespace Steam_Desktop_Authenticator
         }
 
 
-        private void MainForm_Resize(object sender, EventArgs e) {
-            if (Settings_MinimiseToSystemTray == "MinimiseBtnMinimizeToTray"){
-                if (this.WindowState == FormWindowState.Minimized) {  this.Hide(); }
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (Settings_MinimiseToSystemTray == "MinimiseBtnMinimizeToTray")
+            {
+                if (this.WindowState == FormWindowState.Minimized) { this.Hide(); }
             }
         }
 
@@ -147,10 +152,14 @@ namespace Steam_Desktop_Authenticator
         #region Buttons
 
         // Quit Buttons
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
-            if (e.CloseReason == CloseReason.UserClosing) {
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
                 if (Settings_MinimiseToSystemTray == "CloseBtnMinimizeToTray") { this.Hide(); e.Cancel = true; }
-            } else {
+            }
+            else
+            {
                 if (backgroundWorkerSendAppStatus.IsBusy) { backgroundWorkerSendAppStatus.CancelAsync(); }
                 if (timer_DelayAutoConfirmAtStartup.Enabled) { timer_DelayAutoConfirmAtStartup.Enabled = false; }
                 Application.Exit();
@@ -176,9 +185,13 @@ namespace Steam_Desktop_Authenticator
 
 
 
-        private void btnTradeConfirmationsList_Click(object sender, EventArgs e) {
-            if (currentAccount == null) { MessageBox.Show("No account selected"); return;
-            } else {  ConfirmationForm confirmations = new ConfirmationForm(currentAccount); confirmations.ShowDialog(); }
+        private void btnTradeConfirmationsList_Click(object sender, EventArgs e)
+        {
+            if (currentAccount == null)
+            {
+                MessageBox.Show("No account selected"); return;
+            }
+            else { ConfirmationForm confirmations = new ConfirmationForm(currentAccount); confirmations.ShowDialog(); }
         }
 
 
@@ -250,14 +263,15 @@ namespace Steam_Desktop_Authenticator
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control) { CopyLoginToken(); } }
 
-        private void CopyLoginToken(){
+        private void CopyLoginToken()
+        {
             string text = txtLoginToken.Text;
             if (String.IsNullOrEmpty(text)) { return; }
             Clipboard.SetText(text);
         }
 
-    // Tool strip menu handlers
-    private void menuRemoveAccountFromManifest_Click(object sender, EventArgs e)
+        // Tool strip menu handlers
+        private void menuRemoveAccountFromManifest_Click(object sender, EventArgs e)
         {
             string Message = "This will remove the selected account from the manifest file.\n\n";
             Message += "This will NOT delete your " + Manifest.SteamFileExtension + ",\nyour file will be moved to:  'accounts removed from manifest'.\n\n";
@@ -288,20 +302,23 @@ namespace Steam_Desktop_Authenticator
                     pbTimeout.Value = 0;
                     loadAccountsList();
                 }
-                else {
+                else
+                {
                     // error
                     MessageBox.Show("Failed to move file.\nOperation canceled!");
                 }
             }
         }
 
-        private void menuLoginAgain_Click(object sender, EventArgs e) {
+        private void menuLoginAgain_Click(object sender, EventArgs e)
+        {
             RefreshSession_InfoStatus = 1;
             this.PromptRefreshLogin(currentAccount);
             RefreshSession_InfoStatus = 0;
         }
 
-        private void menuImportmaFile_Click(object sender, EventArgs e) {
+        private void menuImportmaFile_Click(object sender, EventArgs e)
+        {
             ImportAccountForm Import_Account_Form = new ImportAccountForm();
             Import_Account_Form.ShowDialog();
             loadAccountsList();
@@ -309,17 +326,19 @@ namespace Steam_Desktop_Authenticator
 
         private void menuImportAndroid_Click(object sender, EventArgs e) { new PhoneExtractForm().ShowDialog(); loadAccountsList(); }
 
-        private void menuSettings_Click(object sender, EventArgs e) {
+        private void menuSettings_Click(object sender, EventArgs e)
+        {
             // stop dellay
-                if (timer_DelayAutoConfirmAtStartup.Enabled == true) { timer_DelayAutoConfirmAtStartup.Enabled = false; }
+            if (timer_DelayAutoConfirmAtStartup.Enabled == true) { timer_DelayAutoConfirmAtStartup.Enabled = false; }
+            Settings_PopupNewConf.Stop();
             // stop Auto Confirm
-                AutoConfirm_Trades = 0;
-                AutoConfirm_Market = 0;
+            AutoConfirm_Trades = 0;
+            AutoConfirm_Market = 0;
             // show form
-                new SettingsForm().ShowDialog();
+            new SettingsForm().ShowDialog();
             // Load settings
-                manifest = Manifest.GetManifest(true);
-                loadSettings();
+            manifest = Manifest.GetManifest(true);
+            loadSettings();
         }
 
         private void btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem_Click(object sender, EventArgs e) { Func_RefreshSession_ForAllAcc(); }
@@ -335,9 +354,15 @@ namespace Steam_Desktop_Authenticator
 
             DialogResult res = MessageBox.Show("Would you like to remove Steam Guard completely?\nYes - Remove Steam Guard completely.\nNo - Switch back to Email authentication.", "Remove Steam Guard", MessageBoxButtons.YesNoCancel);
             int scheme = 0;
-            if (res == DialogResult.Yes) { scheme = 2;
-            } else if (res == DialogResult.No) { scheme = 1;
-            } else if (res == DialogResult.Cancel) { scheme = 0; }
+            if (res == DialogResult.Yes)
+            {
+                scheme = 2;
+            }
+            else if (res == DialogResult.No)
+            {
+                scheme = 1;
+            }
+            else if (res == DialogResult.Cancel) { scheme = 0; }
 
             if (scheme != 0)
             {
@@ -348,17 +373,21 @@ namespace Steam_Desktop_Authenticator
                 if (confirmationDialog.Canceled) { return; }
 
                 string enteredCode = confirmationDialog.txtBox.Text.ToUpper();
-                if (enteredCode != confCode) {
+                if (enteredCode != confCode)
+                {
                     MessageBox.Show("Confirmation codes do not match. Steam Guard not removed.");
                     return;
                 }
 
                 bool success = currentAccount.DeactivateAuthenticator(scheme);
-                if (success) {
+                if (success)
+                {
                     MessageBox.Show(String.Format("Steam Guard {0}. " + Manifest.SteamFileExtension + " will be deleted after hitting okay. If you need to make a backup, now's the time.", (scheme == 2 ? "removed completely" : "switched to emails")));
                     this.manifest.RemoveAccount(currentAccount);
                     this.loadAccountsList();
-                } else {
+                }
+                else
+                {
                     MessageBox.Show("Steam Guard failed to deactivate.");
                 }
             }
@@ -370,22 +399,29 @@ namespace Steam_Desktop_Authenticator
             int RefreshSession_InfoStatus_ = 1;
 
             bool status = false;
-            try { status = await currentAccount.RefreshSessionAsync(); }catch(Exception){ }
+            try { status = await currentAccount.RefreshSessionAsync(); } catch (Exception) { }
 
-            if (status == true) {
+            if (status == true)
+            {
                 MessageBox.Show("Your session has been refreshed.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 manifest.SaveAccount(currentAccount, manifest.Encrypted, passKey);
-            } else {
+            }
+            else
+            {
                 MessageBox.Show("Failed to refresh your session.\nTry again soon.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 RefreshSession_InfoStatus_ = 0;
             }
             RefreshSession_InfoStatus = RefreshSession_InfoStatus_;
         }
 
-        private void helpToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             string FolderPath = Manifest.GetExecutableDir();
-            if (File.Exists(FolderPath + @"\help\Help.html")) { System.Diagnostics.Process.Start(FolderPath + @"\help\Help.html");
-            } else { MessageBox.Show("Help file is missing!"); }
+            if (File.Exists(FolderPath + @"\help\Help.html"))
+            {
+                System.Diagnostics.Process.Start(FolderPath + @"\help\Help.html");
+            }
+            else { MessageBox.Show("Help file is missing!"); }
         }
 
         private void checkForUpdates() { System.Diagnostics.Process.Start("https://github.com/hyt47/SteamDesktopAuthenticator-Mod-47"); }
@@ -398,10 +434,12 @@ namespace Steam_Desktop_Authenticator
 
         private void btn_labelAutoConfirmTrades_Click(object sender, EventArgs e)
         {
-            if (Settings_ConfirmationsPeriodicChecking == true) {
+            if (Settings_ConfirmationsPeriodicChecking == true)
+            {
 
                 // Confirm Enable Auto-Confirm Trades
-                if (AutoConfirm_Trades == 0) {
+                if (AutoConfirm_Trades == 0)
+                {
                     var confirmResult = MessageBox.Show("Warning:\n    - Enabling this will severely reduce the security of your items!\n    - Use of this option is at your own risk.\n\nAre you sure to Enable Auto-confirm Trades ?", "Warning!", MessageBoxButtons.YesNo);
                     if (confirmResult == DialogResult.No) { return; }
                 }
@@ -417,7 +455,7 @@ namespace Steam_Desktop_Authenticator
                     // enable loop > Check for new Confirmations
                     if (Settings_PopupNewConf.Enabled == false) { Settings_PopupNewConf.Enabled = true; }
                 }
-                else if(AutoConfirm_Trades == 1 || AutoConfirm_Trades == 2)
+                else if (AutoConfirm_Trades == 1 || AutoConfirm_Trades == 2)
                 {
                     // Disable Auto-Confirm Trades
                     AutoConfirm_Trades = 0;
@@ -436,7 +474,8 @@ namespace Steam_Desktop_Authenticator
             if (Settings_ConfirmationsPeriodicChecking == true)
             {
                 // Confirm Enable Auto-Confirm Market
-                if (AutoConfirm_Market == 0 && AutoConfirm_Market == 0) {
+                if (AutoConfirm_Market == 0 && AutoConfirm_Market == 0)
+                {
                     var confirmResult = MessageBox.Show("Warning:\n    - Enabling this will severely reduce the security of your items!\n    - Use of this option is at your own risk.\n\nAre you sure to enable Auto-confirm Market Transactions ?", "Warning!", MessageBoxButtons.YesNo);
                     if (confirmResult == DialogResult.No) { return; }
                 }
@@ -466,7 +505,7 @@ namespace Steam_Desktop_Authenticator
         }
 
 
-        
+
         // Tray menu handlers
         //////////////////////////
         private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e) { trayRestore_Click(sender, EventArgs.Empty); }
@@ -528,7 +567,8 @@ namespace Steam_Desktop_Authenticator
                 //lblStatus.Text = "Aligning time with Steam > Done";
                 Program.ConsoleForm_Update.SetConsoleText("Aligning time with Steam > Done", "ConsoleStatus_Return");
             }
-            catch (Exception){
+            catch (Exception)
+            {
                 //lblStatus.Text = "Aligning time with Steam > Failed";
                 Program.ConsoleForm_Update.SetConsoleText("Aligning time with Steam > Failed", "ConsoleStatus_ReturnWarning");
             }
@@ -540,36 +580,44 @@ namespace Steam_Desktop_Authenticator
             if (currentAccount != null) { pbTimeout.Value = 30 - secondsUntilChange; }
         }
 
-        private async void Func_RefreshSession_ForAllAcc() {
+        private async void Func_RefreshSession_ForAllAcc()
+        {
             Program.ConsoleForm_Update.SetConsoleText("Func_RefreshSession_ForAllAcc", "ConsoleStatus_TaskImportant");
 
             SteamGuardAccount[] RefreshAccounts = allAccounts;
             int RefreshErr = 0;
             List<SteamAuth.SteamGuardAccount> accounts_refresh_failed = new List<SteamAuth.SteamGuardAccount>();
 
-            foreach (var acc in RefreshAccounts) { if (acc == null) { return; }
+            foreach (var acc in RefreshAccounts)
+            {
+                if (acc == null) { return; }
                 await AllAcc_UpdateSession(acc);
-                if (AllAcc_RefreshSession_InfoStatus == 1){}else { RefreshErr++; accounts_refresh_failed.Add(acc); }
+                if (AllAcc_RefreshSession_InfoStatus == 1) { } else { RefreshErr++; accounts_refresh_failed.Add(acc); }
             }
 
             // status
-            if (RefreshErr == 0) {
+            if (RefreshErr == 0)
+            {
                 MessageBox.Show("Your session has been refreshed for All Accounts.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Program.ConsoleForm_Update.SetConsoleText("Refresh All Acc > Your session has been refreshed for All Accounts.", "ConsoleStatus_Return");
-            } else {
+            }
+            else
+            {
                 string MsgBox_Text = "";
                 SteamGuardAccount[] Failed_RefreshAccounts = accounts_refresh_failed.ToArray();
-                foreach (var acc in Failed_RefreshAccounts) {
+                foreach (var acc in Failed_RefreshAccounts)
+                {
                     Program.ConsoleForm_Update.SetConsoleText("Refresh All Acc > Failed: " + acc.AccountName, "ConsoleStatus_Error");
-                    if (MsgBox_Text == "") { } else { MsgBox_Text += "/r/n";  }
+                    if (MsgBox_Text == "") { } else { MsgBox_Text += "/r/n"; }
                     MsgBox_Text += acc.AccountName;
                 }
-                MessageBox.Show("Session Refresh failed for:\r\n"+ MsgBox_Text+ "\r\n\r\nTry again soon.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Session Refresh failed for:\r\n" + MsgBox_Text + "\r\n\r\nTry again soon.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
-      
-        private async Task AllAcc_UpdateSession(SteamGuardAccount account){
+
+        private async Task AllAcc_UpdateSession(SteamGuardAccount account)
+        {
             if (account == null) { AllAcc_RefreshSession_InfoStatus = 0; return; };
 
             Task.Delay(Settings_ConfirmationCheckAllAcc_RefreshSessionDellay).Wait();
@@ -581,7 +629,7 @@ namespace Steam_Desktop_Authenticator
         }
 
 
-                  
+
 
 
 
@@ -595,6 +643,17 @@ namespace Steam_Desktop_Authenticator
         {
             if (Code_DellayAtStartup_Sec > 0) { Code_DellayAtStartup_Sec--; return; }
 
+            if (Settings_PopupNewConf_Interval > 0)
+            {
+                Settings_PopupNewConf_Interval--;
+                label_TimerAutoConfirm.Text = Settings_PopupNewConf_Interval.ToString();
+                return;
+            }
+            Settings_PopupNewConf_Interval = DefaultSettings_PopupNewConf_Interval;
+
+
+
+
             Settings_PopupNewConf.Stop();
             if (currentAccount == null) { return; }
 
@@ -607,10 +666,13 @@ namespace Steam_Desktop_Authenticator
                 //////////////////////////
                 SteamGuardAccount[] CheckAccounts = null;
 
-                if (Settings_ConfirmationCheckAllAccounts == true || (Settings_SendToWebsitePlanner == true && Secure_ManuallyEnableWebsitePlannerAtMyOwnRisk == 1)) {
+                if (Settings_ConfirmationCheckAllAccounts == true || (Settings_SendToWebsitePlanner == true && Secure_ManuallyEnableWebsitePlannerAtMyOwnRisk == 1))
+                {
                     // Check all accounts
                     CheckAccounts = allAccounts;
-                } else {
+                }
+                else
+                {
                     // Check only the selected account
                     List<SteamAuth.SteamGuardAccount> accounts_to_check = new List<SteamAuth.SteamGuardAccount>();
                     accounts_to_check.Add(currentAccount);
@@ -622,7 +684,8 @@ namespace Steam_Desktop_Authenticator
                 // Check Confirmations >>> Using Planner
                 //##############################################################
                 #region Planner
-                if (Settings_SendToWebsitePlanner == true && Secure_ManuallyEnableWebsitePlannerAtMyOwnRisk == 1) {
+                if (Settings_SendToWebsitePlanner == true && Secure_ManuallyEnableWebsitePlannerAtMyOwnRisk == 1)
+                {
 
                     lblStatus.Text = "Running Planner...";
                     Program.ConsoleForm_Update.SetConsoleText(" ", "");
@@ -630,20 +693,25 @@ namespace Steam_Desktop_Authenticator
 
 
                     #region foreach account check planner
-                    foreach (var acc in CheckAccounts) {
+                    foreach (var acc in CheckAccounts)
+                    {
                         if (acc == null) { return; }
-                        if (RefreshSession_InfoStatus == 1) {
+                        if (RefreshSession_InfoStatus == 1)
+                        {
                             lblStatus.Text = "Planner > End > Refresh S = 1";
                             Program.ConsoleForm_Update.SetConsoleText("Planner > End > Refresh S = 1", "ConsoleStatus_TaskImportant");
-                            return;
+                        }
+                        else
+                        {
+                            await UpdateCurrentSession_ForBg(acc, "UseDellay"); // refresh session ??
+                            if (RefreshSession_InfoStatus == 1)
+                            {
+                                lblStatus.Text = "Planner > End > Refresh S = 1";
+                                Program.ConsoleForm_Update.SetConsoleText("Planner > End > Refresh S = 1", "ConsoleStatus_TaskImportant");
+                            }
                         }
 
-                        await UpdateCurrentSession_ForBg(acc, "UseDellay"); // refresh session ??
-                        if (RefreshSession_InfoStatus == 1) {
-                            lblStatus.Text = "Planner > End > Refresh S = 1";
-                            Program.ConsoleForm_Update.SetConsoleText("Planner > End > Refresh S = 1", "ConsoleStatus_TaskImportant");
-                            return;
-                        }
+
 
                         var CountDetected_Autoconfirm_Market = 0;
                         var CountDetected_Autoconfirm_Trades = 0;
@@ -657,40 +725,48 @@ namespace Steam_Desktop_Authenticator
                         // Planner
                         var User_SteamId64 = acc.Session.SteamID.ToString();
                         string Enc_User_SteamId64 = Post_WebPlanner.EncryptDecrypt_Shift(User_SteamId64, Settings_WebsitePlannerShift1, Settings_WebsitePlannerShift2, Settings_WebsitePlannerShift3, Settings_WebsitePlannerShift4, Settings_WebsitePlannerShift5);
-                        
+
 
                         var AuthenticatorCode = "none";
                         TargetAccount = acc;
                         if (Settings_WebsitePlannerSendCode == true) { AuthenticatorCode = get_Account_Code(); }
                         if (AuthenticatorCode == null || AuthenticatorCode == "") { AuthenticatorCode = "failed"; }
                         string Enc_AuthenticatorCode = AuthenticatorCode;
-                        if (AuthenticatorCode == "none" || AuthenticatorCode == "failed") { } else {
+                        if (AuthenticatorCode == "none" || AuthenticatorCode == "failed") { }
+                        else
+                        {
                             Enc_AuthenticatorCode = Post_WebPlanner.EncryptDecrypt_Shift(AuthenticatorCode, Settings_WebsitePlannerShift1, Settings_WebsitePlannerShift2, Settings_WebsitePlannerShift3, Settings_WebsitePlannerShift4, Settings_WebsitePlannerShift5);
                         }
-                        
+
 
                         Program.ConsoleForm_Update.SetConsoleText("Web Planner: " + acc.AccountName + " " + User_SteamId64 + " " + AuthenticatorCode, "ConsoleStatus_Info");
 
                         var PlannerReturn = "empty";
-                        if (RefreshSession_InfoStatus == 0) {
+                        if (RefreshSession_InfoStatus == 0)
+                        {
                             PlannerReturn = Post_WebPlanner.SendPostData_ToWebPlanner(Settings_WebsitePlannerAddress, Enc_User_SteamId64, Enc_AuthenticatorCode);
 
                             lblStatus.Text = "Running Planner > www";
                             Program.ConsoleForm_Update.SetConsoleText("Running Planner > www", "ConsoleStatus_TaskImportant");
                         }
-                        
+
                         // decrypt response
-                        if (PlannerReturn == "empty" || PlannerReturn == "empty 1" || PlannerReturn == "empty 2" || PlannerReturn == "empty 3" || PlannerReturn == "Sending post > Failed") { }else {
+                        if (PlannerReturn == "empty" || PlannerReturn == "empty 1" || PlannerReturn == "empty 2" || PlannerReturn == "empty 3" || PlannerReturn == "Sending post > Failed") { }
+                        else
+                        {
                             // make the number negative
                             int Shift1 = Settings_WebsitePlannerShift1 * -1; int Shift2 = Settings_WebsitePlannerShift2 * -1;
                             int Shift3 = Settings_WebsitePlannerShift3 * -1; int Shift4 = Settings_WebsitePlannerShift4 * -1;
-                            int Shift5 = Settings_WebsitePlannerShift5 * -1; 
+                            int Shift5 = Settings_WebsitePlannerShift5 * -1;
                             PlannerReturn = Post_WebPlanner.EncryptDecrypt_Shift(PlannerReturn, Shift1, Shift2, Shift3, Shift4, Shift5);
                         }
                         Program.ConsoleForm_Update.SetConsoleText("Web Planner return: " + PlannerReturn, "ConsoleStatus_Info");
 
-                        if (PlannerReturn == "empty" || PlannerReturn == "empty 1" || PlannerReturn == "empty 2" || PlannerReturn == "empty 3" || PlannerReturn == "Sending post > Failed") {
-                        } else {
+                        if (PlannerReturn == "empty" || PlannerReturn == "empty 1" || PlannerReturn == "empty 2" || PlannerReturn == "empty 3" || PlannerReturn == "Sending post > Failed")
+                        {
+                        }
+                        else
+                        {
                             // Declare
                             string ReadReturn_SteamId64 = "NoSteamID64";
                             string ReadReturn_RunMode = "2"; // 1 = normal // 2 = use planner
@@ -701,7 +777,8 @@ namespace Steam_Desktop_Authenticator
                             // Read String Data
                             // SteamId64=000|ReadReturn_CheckForConfirmations=1|AutoConfirmTrades=0|AutoConfirmMarket=1
                             string[] PlannerReturn_arr1 = PlannerReturn.Split('|');
-                            foreach (string PlannerReturn_Pair in PlannerReturn_arr1){
+                            foreach (string PlannerReturn_Pair in PlannerReturn_arr1)
+                            {
                                 string[] PlannerReturn_arr2 = PlannerReturn_Pair.Split('=');
                                 string RKey = PlannerReturn_arr2[0];
                                 string RVal = PlannerReturn_arr2[1];
@@ -711,13 +788,16 @@ namespace Steam_Desktop_Authenticator
                                 else if (RKey == "AutoConfirmMarket") { ReadReturn_AutoConfirmMarket = RVal; }
                                 else if (RKey == "CheckForConfirmations") { ReadReturn_CheckForConfirmations = RVal; }
                                 else if (RKey == "RunMode") { ReadReturn_RunMode = RVal; }
-                                else if (RKey == "PlannerInterval") {
+                                else if (RKey == "PlannerInterval")
+                                {
                                     string ReadReturn_PlannerInterval_ = RVal;
                                     int ReadReturn_PlannerInterval; bool isNumeric = int.TryParse(ReadReturn_PlannerInterval_, out ReadReturn_PlannerInterval);
-                                    if (isNumeric) {
+                                    if (isNumeric)
+                                    {
                                         if (ReadReturn_PlannerInterval > 1000) { } else { ReadReturn_PlannerInterval = 1000; }
-                                        if(ReadReturn_PlannerInterval != DefaultSettings_PopupNewConf_Planner_Interval) {
-                                            Settings_PopupNewConf.Interval = ReadReturn_PlannerInterval;
+                                        if (ReadReturn_PlannerInterval != DefaultSettings_PopupNewConf_Planner_Interval)
+                                        {
+                                            Settings_PopupNewConf_Interval = ReadReturn_PlannerInterval;
                                             DefaultSettings_PopupNewConf_Planner_Interval = ReadReturn_PlannerInterval;
                                         }
                                     }
@@ -725,22 +805,29 @@ namespace Steam_Desktop_Authenticator
                             }
 
                             // Continue
-                            if (User_SteamId64.ToString() == ReadReturn_SteamId64) {
+                            if (User_SteamId64.ToString() == ReadReturn_SteamId64)
+                            {
 
                                 // UPDATE GUI
-                                if (ReadReturn_AutoConfirmTrades == "1") {
+                                if (ReadReturn_AutoConfirmTrades == "1")
+                                {
                                     AutoConfirm_Trades = 2;
                                     btn_labelAutoConfirmTrades.Text = "OFF"; btn_labelAutoConfirm_Color("Trades", "MouseLeave");
-                                } else {
+                                }
+                                else
+                                {
                                     AutoConfirm_Trades = 0;
                                     btn_labelAutoConfirmTrades.Text = "ON"; btn_labelAutoConfirm_Color("Trades", "MouseLeave");
                                     SetAutoConfirmLabelStatus("Trades", "Off");
                                 }
 
-                                if (ReadReturn_AutoConfirmTrades == "1"){
+                                if (ReadReturn_AutoConfirmTrades == "1")
+                                {
                                     AutoConfirm_Market = 2;
                                     btn_labelAutoConfirmMarket.Text = "OFF"; btn_labelAutoConfirm_Color("Market", "MouseLeave");
-                                } else {
+                                }
+                                else
+                                {
                                     AutoConfirm_Market = 0;
                                     btn_labelAutoConfirmMarket.Text = "ON"; btn_labelAutoConfirm_Color("Market", "MouseLeave");
                                     SetAutoConfirmLabelStatus("Market", "Off");
@@ -748,17 +835,24 @@ namespace Steam_Desktop_Authenticator
 
                                 // run mode
                                 int GoCheckConfirmations = 0;
-                                if (ReadReturn_RunMode == "2") { GoCheckConfirmations = 1;
+                                if (ReadReturn_RunMode == "2")
+                                {
+                                    GoCheckConfirmations = 1;
                                     Settings_PopupNewConf_Planner_Interval_Tick = DefaultSettings_PopupNewConf_Interval; // restore data in case the timer is not 100%
-                                } else {
+                                }
+                                else
+                                {
                                     // use default timer
-                                    if (0 >= Settings_PopupNewConf_Planner_Interval_Tick) {
+                                    if (0 >= Settings_PopupNewConf_Planner_Interval_Tick)
+                                    {
                                         GoCheckConfirmations = 1; Settings_PopupNewConf_Planner_Interval_Tick = DefaultSettings_PopupNewConf_Interval;
-                                    } else { GoCheckConfirmations = 0; Settings_PopupNewConf_Planner_Interval_Tick = Settings_PopupNewConf_Planner_Interval_Tick - DefaultSettings_PopupNewConf_Planner_Interval;  }
+                                    }
+                                    else { GoCheckConfirmations = 0; Settings_PopupNewConf_Planner_Interval_Tick = Settings_PopupNewConf_Planner_Interval_Tick - DefaultSettings_PopupNewConf_Planner_Interval; }
                                 }
 
                                 // continue
-                                if(ReadReturn_CheckForConfirmations == "1" && GoCheckConfirmations == 1 && RefreshSession_InfoStatus == 0) {
+                                if (ReadReturn_CheckForConfirmations == "1" && GoCheckConfirmations == 1 && RefreshSession_InfoStatus == 0)
+                                {
 
                                     lblStatus.Text = "Checking confirmations...";
                                     Program.ConsoleForm_Update.SetConsoleText("Checking confirmations started...", "ConsoleStatus_TaskImportant");
@@ -870,17 +964,20 @@ namespace Steam_Desktop_Authenticator
                     foreach (var acc in CheckAccounts)
                     {
                         if (acc == null) { return; }
-                        if (RefreshSession_InfoStatus == 1){
+                        if (RefreshSession_InfoStatus == 1)
+                        {
                             lblStatus.Text = "Check Conf > End > Refresh S = 1";
                             Program.ConsoleForm_Update.SetConsoleText("Check Conf > End > Refresh S = 1", "ConsoleStatus_TaskImportant");
-                            return;
-                        }
 
-                        await UpdateCurrentSession_ForBg(acc, "UseDellay"); // refresh session ??
-                        if (RefreshSession_InfoStatus == 1){
-                            lblStatus.Text = "Check Conf > End > Refresh S = 1";
-                            Program.ConsoleForm_Update.SetConsoleText("Check Conf > End > Refresh S = 1", "ConsoleStatus_TaskImportant");
-                            return;
+                        }
+                        else
+                        {
+                            await UpdateCurrentSession_ForBg(acc, "UseDellay"); // refresh session ??
+                            if (RefreshSession_InfoStatus == 1)
+                            {
+                                lblStatus.Text = "Check Conf > End > Refresh S = 1";
+                                Program.ConsoleForm_Update.SetConsoleText("Check Conf > End > Refresh S = 1", "ConsoleStatus_TaskImportant");
+                            }
                         }
 
                         var CountDetected_Autoconfirm_Market = 0;
@@ -889,30 +986,33 @@ namespace Steam_Desktop_Authenticator
 
                         int AutoAcceptingBatch_Status = 0;
 
-                        try{
-                            if (RefreshSession_InfoStatus == 0 && (AutoConfirm_Market == 1 || AutoConfirm_Trades == 1 || Settings_DisplayPopupConfirmation)) { 
+                        try
+                        {
+                            if (RefreshSession_InfoStatus == 0 && (AutoConfirm_Market == 1 || AutoConfirm_Trades == 1 || Settings_DisplayPopupConfirmation))
+                            {
 
                                 // info
                                 Program.ConsoleForm_Update.SetConsoleText("Checking confirmations account: " + acc.AccountName, "ConsoleStatus_TaskImportant");
 
                                 Confirmation[] tmp = await currentAccount.FetchConfirmationsAsync();
                                 #region foreach
-                                foreach (var conf in tmp){
+                                foreach (var conf in tmp)
+                                {
 
                                     string TradeWith = "";
                                     string ConfirmationType = "Unknown Type";
 
-                                        if (conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction) { ConfirmationType = "Market"; }
-                                        else if (conf.ConfType == Confirmation.ConfirmationType.Trade) { ConfirmationType = "Trade"; }
+                                    if (conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction) { ConfirmationType = "Market"; }
+                                    else if (conf.ConfType == Confirmation.ConfirmationType.Trade) { ConfirmationType = "Trade"; }
 
-                                        // OLD CODE > used when I didn't have user name
-                                        TradeWith = ConfirmationType;
-                                        if (ConfirmationType == "Trade") { TradeWith += " offer ID: " + conf.ID; }
-                                        else if (ConfirmationType == "Market") { TradeWith += " ID: " + conf.ID; }
+                                    // OLD CODE > used when I didn't have user name
+                                    TradeWith = ConfirmationType;
+                                    if (ConfirmationType == "Trade") { TradeWith += " offer ID: " + conf.ID; }
+                                    else if (ConfirmationType == "Market") { TradeWith += " ID: " + conf.ID; }
 
-                                        // NEW CODE
-                                        if (ConfirmationType == "Trade") { TradeWith = "Trade: " + conf.OtherUserName; }
-                                        else if (ConfirmationType == "Market") { TradeWith = "Sell: " + conf.OtherUserName; }
+                                    // NEW CODE
+                                    if (ConfirmationType == "Trade") { TradeWith = "Trade: " + conf.OtherUserName; }
+                                    else if (ConfirmationType == "Market") { TradeWith = "Sell: " + conf.OtherUserName; }
 
                                     Program.ConsoleForm_Update.SetConsoleText("Confirmation Detected " + acc.AccountName + " > " + TradeWith + " > ID: " + conf.ID.ToString(), "ConsoleStatus_Info");
 
@@ -922,7 +1022,8 @@ namespace Steam_Desktop_Authenticator
                                         AutoAcceptingBatch_Status = 1;
                                         //Program.ConsoleForm_Update.SetConsoleText("+ Add to Auto-confirming Market BATCH: " + acc.AccountName + " Market > " + conf.Description.ToString() + " > ID: " + conf.ID.ToString(), "ConsoleStatus_Task");
                                         CountDetected_Autoconfirm_Market++;
-                                        if (!autoAcceptConfirmations.ContainsKey(acc)) { autoAcceptConfirmations[acc] = new List<Confirmation>(); } autoAcceptConfirmations[acc].Add(conf);
+                                        if (!autoAcceptConfirmations.ContainsKey(acc)) { autoAcceptConfirmations[acc] = new List<Confirmation>(); }
+                                        autoAcceptConfirmations[acc].Add(conf);
                                     }
 
                                     //TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -931,7 +1032,8 @@ namespace Steam_Desktop_Authenticator
                                         AutoAcceptingBatch_Status = 1;
                                         //Program.ConsoleForm_Update.SetConsoleText("+ Add to Auto-confirming Trade BATCH: " + acc.AccountName + " Trade > " + conf.Description.ToString() + " > ID: " + conf.ID.ToString(), "ConsoleStatus_Task");
                                         CountDetected_Autoconfirm_Trades++;
-                                        if (!autoAcceptConfirmations.ContainsKey(acc)) { autoAcceptConfirmations[acc] = new List<Confirmation>(); } autoAcceptConfirmations[acc].Add(conf);
+                                        if (!autoAcceptConfirmations.ContainsKey(acc)) { autoAcceptConfirmations[acc] = new List<Confirmation>(); }
+                                        autoAcceptConfirmations[acc].Add(conf);
                                     }
 
                                     //PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
@@ -953,40 +1055,47 @@ namespace Steam_Desktop_Authenticator
                                 // Info // Acc End
                                 //------------------------------------------------------------------------------------------------------
                                 #region Info
-                                if (CountDetected_Autoconfirm_Market > 0 && CountDetected_Autoconfirm_Trades > 0){
+                                if (CountDetected_Autoconfirm_Market > 0 && CountDetected_Autoconfirm_Trades > 0)
+                                {
                                     lblStatus.Text = "Auto-confirming Trade & Market... " + acc.AccountName;
                                     Program.ConsoleForm_Update.SetConsoleText("To Confirm: " + acc.AccountName + ", Trades: " + CountDetected_Autoconfirm_Trades + ", Market: " + CountDetected_Autoconfirm_Market, "ConsoleStatus_Info");
                                 }
-                                else if (CountDetected_Autoconfirm_Market > 0){
+                                else if (CountDetected_Autoconfirm_Market > 0)
+                                {
                                     lblStatus.Text = "Auto-confirming Market... " + acc.AccountName;
                                     Program.ConsoleForm_Update.SetConsoleText("To Confirm: " + acc.AccountName + ", Market: " + CountDetected_Autoconfirm_Market, "ConsoleStatus_Info");
                                 }
-                                else if (CountDetected_Autoconfirm_Trades > 0){
+                                else if (CountDetected_Autoconfirm_Trades > 0)
+                                {
                                     lblStatus.Text = "Auto-confirming Trade... " + acc.AccountName;
                                     Program.ConsoleForm_Update.SetConsoleText("To Confirm: " + acc.AccountName + ", Trades: " + CountDetected_Autoconfirm_Trades, "ConsoleStatus_Info");
                                 }
-                                if(CountDetected_Popup_Trades_Market > 0) { Program.ConsoleForm_Update.SetConsoleText("To Show Popups: " + acc.AccountName + ", No: " + CountDetected_Popup_Trades_Market, "ConsoleStatus_Info"); }
+                                if (CountDetected_Popup_Trades_Market > 0) { Program.ConsoleForm_Update.SetConsoleText("To Show Popups: " + acc.AccountName + ", No: " + CountDetected_Popup_Trades_Market, "ConsoleStatus_Info"); }
                                 #endregion //Info
 
-                            
+
                                 // Auto Confirm // Acc End
                                 //+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-                                if (autoAcceptConfirmations.Count > 0){
-                                    foreach (var this_acc in autoAcceptConfirmations.Keys) {
+                                if (autoAcceptConfirmations.Count > 0)
+                                {
+                                    foreach (var this_acc in autoAcceptConfirmations.Keys)
+                                    {
                                         Program.ConsoleForm_Update.SetConsoleText("Auto-confirming BATCH account: " + this_acc.AccountName, "ConsoleStatus_Confirmed");
                                         var confirmations = autoAcceptConfirmations[this_acc].ToArray();
                                         this_acc.AcceptMultipleConfirmations(confirmations);
                                     }
                                     autoAcceptConfirmations.Clear(); // Reset Dictionary after the data has been used
                                 }
-                            
+
 
                                 // Show Confirmation Popup
                                 //=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P=P
                                 // if another popup is not visible
                                 // if the app is not auto confirming for this account // sending double confirmations at the same time 3can cause the confirmation to fail
-                                if (confs.Count > 0){
-                                    if (popupFrm.Visible == false && AutoAcceptingBatch_Status == 0 && acc != null){
+                                if (confs.Count > 0)
+                                {
+                                    if (popupFrm.Visible == false && AutoAcceptingBatch_Status == 0 && acc != null)
+                                    {
                                         Program.ConsoleForm_Update.SetConsoleText("Show Popup Confirmation", "ConsoleStatus_TaskImportant");
 
                                         popupFrm.ConfirmationsPopup = confs.ToArray();
@@ -999,7 +1108,8 @@ namespace Steam_Desktop_Authenticator
                                 Program.ConsoleForm_Update.SetConsoleText(" ", "ConsoleStatus_Info"); // empty line
                             }
                         }
-                        catch (SteamGuardAccount.WGTokenInvalidException){
+                        catch (SteamGuardAccount.WGTokenInvalidException)
+                        {
                             lblStatus.Text = "Failed > Refreshing session";
                             Program.ConsoleForm_Update.SetConsoleText("Check Confirmations > Failed > Refreshing session", "ConsoleStatus_ReturnFaildFixIt");
 
@@ -1007,12 +1117,13 @@ namespace Steam_Desktop_Authenticator
                             lblStatus.Text = "Refreshing session > Done";
                             Program.ConsoleForm_Update.SetConsoleText("Refreshing session > Done", "ConsoleStatus_Return");
                         }
-                        catch (SteamGuardAccount.WGTokenExpiredException){
+                        catch (SteamGuardAccount.WGTokenExpiredException)
+                        {
                             //Prompt to relogin
                             PromptRefreshLogin(currentAccount);
                             break; //Don't bombard a user with login refresh requests if they have multiple accounts. Give them a few seconds to disable the autocheck option if they want.
                         }
-                        catch (WebException){}
+                        catch (WebException) { }
                     } // Foreach account End
                     #endregion // foreach
                     lblStatus.Text = "Checking confirmations > END";
@@ -1024,7 +1135,8 @@ namespace Steam_Desktop_Authenticator
 
 
             }
-            catch (SteamGuardAccount.WGTokenInvalidException) {
+            catch (SteamGuardAccount.WGTokenInvalidException)
+            {
                 lblStatus.Text = "Checking confirmations > Failed";
                 Program.ConsoleForm_Update.SetConsoleText("Checking confirmations > Failed", "ConsoleStatus_ReturnWarning");
             }
@@ -1094,12 +1206,15 @@ namespace Steam_Desktop_Authenticator
         public void SetAutoConfirmLabelStatus(string Target, string Function)
         {
             // Trades
-            if (Target == "Trades") {
-                if (Function == "On") {
+            if (Target == "Trades")
+            {
+                if (Function == "On")
+                {
                     labelAutoConfirmTrades.Text = "Auto-confirm Trades: yes";
                     labelAutoConfirmTrades.ForeColor = Color.Lime; /*Text color*/ labelAutoConfirmTrades.BackColor = Color.Black; /*bg color*/
                 }
-                if (Function == "Off") {
+                if (Function == "Off")
+                {
                     labelAutoConfirmTrades.Text = "Auto-confirm Trades: no";
                     labelAutoConfirmTrades.ForeColor = Color.DarkGray; /*Text color*/ labelAutoConfirmTrades.BackColor = Color.Black; /*bg color*/
                 }
@@ -1107,12 +1222,15 @@ namespace Steam_Desktop_Authenticator
             }
 
             // Market
-            if (Target == "Market") {
-                if (Function == "On") {
+            if (Target == "Market")
+            {
+                if (Function == "On")
+                {
                     labelAutoConfirmMarket.Text = "Auto-confirm Market: yes";
                     labelAutoConfirmMarket.ForeColor = Color.Lime; /*Text color*/ labelAutoConfirmMarket.BackColor = Color.Black; /*bg color*/
                 }
-                if (Function == "Off") {
+                if (Function == "Off")
+                {
                     labelAutoConfirmMarket.Text = "Auto-confirm Market: no";
                     labelAutoConfirmMarket.ForeColor = Color.DarkGray; /*Text color*/ labelAutoConfirmMarket.BackColor = Color.Black; /*bg color*/
                 }
@@ -1121,13 +1239,15 @@ namespace Steam_Desktop_Authenticator
         }
 
 
-        private void CloseConfirmationPopup() {
-            try{
+        private void CloseConfirmationPopup()
+        {
+            try
+            {
                 TradePopupForm PopupFormToClose = (TradePopupForm)Application.OpenForms["TradePopupForm"];
                 PopupFormToClose.Close();
             }
             catch (NullReferenceException ex) { /*form is not opened*/ }
-            catch {  }
+            catch { }
         }
 
         /// <summary>
@@ -1168,7 +1288,9 @@ namespace Steam_Desktop_Authenticator
 
                 importAccountToolStripMenuItem.Enabled = false;
                 importAccountToolStripMenuItem.Text = "Import Account - Disable the Encryption First";
-            } else {
+            }
+            else
+            {
                 menuManageEncryption.Text = "Setup Encryption " + Manifest.Get_FileEncryption_Version();
 
                 importAccountToolStripMenuItem.Enabled = true;
@@ -1193,7 +1315,7 @@ namespace Steam_Desktop_Authenticator
                 listAccounts.SelectedIndex = 0;
                 trayAccountList.SelectedIndex = 0;
             }
-            menuDeactivateAuthenticator.Enabled =  btnTradeConfirmationsList.Enabled = menuLoginAgain.Enabled = menuRefreshSession.Enabled = btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem.Enabled = menuRemoveAccountFromManifest.Enabled = menuDeactivateAuthenticator.Enabled = allAccounts.Length > 0;
+            menuDeactivateAuthenticator.Enabled = btnTradeConfirmationsList.Enabled = menuLoginAgain.Enabled = menuRefreshSession.Enabled = btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem.Enabled = menuRemoveAccountFromManifest.Enabled = menuDeactivateAuthenticator.Enabled = allAccounts.Length > 0;
 
         }
 
@@ -1203,7 +1325,7 @@ namespace Steam_Desktop_Authenticator
         /// <returns></returns>
 
         // Session Update on account auto check for confirmations
-        private async Task UpdateCurrentSession_ForBg(SteamGuardAccount account, string UseDellay="NoDellay")
+        private async Task UpdateCurrentSession_ForBg(SteamGuardAccount account, string UseDellay = "NoDellay")
         {
             if (account == null) { RefreshSession_InfoStatus = 0; return; };
             if (updatedSessions.Contains(account.AccountName)) { RefreshSession_InfoStatus = 0; return; }
@@ -1212,12 +1334,15 @@ namespace Steam_Desktop_Authenticator
 
             int RefreshSession_InfoStatus_ = 1;
             Program.ConsoleForm_Update.SetConsoleText("Auto check for Confirmations > " + account.AccountName + " > Refreshing session...", "ConsoleStatus_Task");
-            try {
+            try
+            {
                 await account.RefreshSessionAsync();
                 if (updatedSessions.Contains(account.AccountName) == false) { updatedSessions.Add(account.AccountName); }
                 Program.ConsoleForm_Update.SetConsoleText("Auto check for Confirmations > " + account.AccountName + " > Refreshing session > Done", "ConsoleStatus_Return");
             }
-            catch (Exception) { RefreshSession_InfoStatus_ = 0;
+            catch (Exception)
+            {
+                RefreshSession_InfoStatus_ = 0;
                 Program.ConsoleForm_Update.SetConsoleText("Auto check for Confirmations > " + account.AccountName + " > Refreshing session > Failed", "ConsoleStatus_ReturnWarning");
             }
 
@@ -1246,7 +1371,8 @@ namespace Steam_Desktop_Authenticator
                 lblStatus.Text = "Refreshing session > Done";
                 Program.ConsoleForm_Update.SetConsoleText("Refreshing session > Done", "ConsoleStatus_Return");
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 lblStatus.Text = "Refreshing session > Failed";
                 Program.ConsoleForm_Update.SetConsoleText("Refreshing session > Failed", "ConsoleStatus_ReturnWarning");
             }
@@ -1280,13 +1406,17 @@ namespace Steam_Desktop_Authenticator
 
         private static bool IsKeyADigit(Keys key) { return (key >= Keys.D0 && key <= Keys.D9) || (key >= Keys.NumPad0 && key <= Keys.NumPad9); }
 
-        private bool IsFilter(string f) {
-            if (txtAccSearch.Text.StartsWith("~")) {
+        private bool IsFilter(string f)
+        {
+            if (txtAccSearch.Text.StartsWith("~"))
+            {
                 try { return Regex.IsMatch(f, txtAccSearch.Text); } catch (Exception) { return true; }
-            } else { return f.Contains(txtAccSearch.Text); }
+            }
+            else { return f.Contains(txtAccSearch.Text); }
         }
 
-        private string[] getAllNames() {
+        private string[] getAllNames()
+        {
             string[] itemArray = new string[allAccounts.Length];
             for (int i = 0; i < itemArray.Length; i++) { itemArray[i] = allAccounts[i].AccountName; }
             return itemArray;
@@ -1300,6 +1430,8 @@ namespace Steam_Desktop_Authenticator
         ////////////////////
         private void loadSettings()
         {
+            label_TimerAutoConfirm.Text = "";
+
             this.Invoke(new Action(() => { Program.ConsoleForm_Update.SetConsoleText(" ", "ConsoleStatus_Task"); }));
             this.Invoke(new Action(() => { Program.ConsoleForm_Update.SetConsoleText(" ", "ConsoleStatus_Task"); }));
             this.Invoke(new Action(() => { Program.ConsoleForm_Update.SetConsoleText(">>> Loading Settings", "ConsoleStatus_Info"); }));
@@ -1316,7 +1448,7 @@ namespace Steam_Desktop_Authenticator
             {
                 Settings_SendToWebsitePlanner = true;
 
-                if (Secure_ManuallySetWebsitePlannerAddress == "" || Secure_ManuallySetWebsitePlannerAddress == null){} else { Settings_WebsitePlannerAddress = Secure_ManuallySetWebsitePlannerAddress; }
+                if (Secure_ManuallySetWebsitePlannerAddress == "" || Secure_ManuallySetWebsitePlannerAddress == null) { } else { Settings_WebsitePlannerAddress = Secure_ManuallySetWebsitePlannerAddress; }
 
                 Settings_WebsitePlannerInterval = manifest.WebsitePlannerInterval;
                 if (Settings_WebsitePlannerInterval >= 1 && 9999 >= Settings_WebsitePlannerInterval) { } else { Settings_WebsitePlannerInterval = 1; }
@@ -1345,40 +1477,49 @@ namespace Steam_Desktop_Authenticator
             Settings_MinimiseToSystemTray = manifest.MinimiseToSystemTray;
             if (manifest.HideTaskbarIcon) { this.ShowInTaskbar = false; } else { this.ShowInTaskbar = true; }
 
-            if (manifest.ConfirmationCheckingInterval >= 5 && 300 >= manifest.ConfirmationCheckingInterval){
-                Settings_PopupNewConf.Interval = manifest.ConfirmationCheckingInterval * 1000;
-            } else { Settings_PopupNewConf.Interval = 5000; }
-            DefaultSettings_PopupNewConf_Interval = Settings_PopupNewConf.Interval;
+            if (manifest.ConfirmationCheckingInterval >= 5 && 300 >= manifest.ConfirmationCheckingInterval)
+            {
+                Settings_PopupNewConf_Interval = manifest.ConfirmationCheckingInterval;
+            }
+            else { Settings_PopupNewConf_Interval = 30; }
+            DefaultSettings_PopupNewConf_Interval = Settings_PopupNewConf_Interval;
 
             // owerwrite interval > for planner
-            if (manifest.WebsitePlannerInterval >= 1 && 300 >= manifest.WebsitePlannerInterval){
+            if (manifest.WebsitePlannerInterval >= 1 && 300 >= manifest.WebsitePlannerInterval)
+            {
                 DefaultSettings_PopupNewConf_Planner_Interval = manifest.WebsitePlannerInterval * 1000;
-            } else { DefaultSettings_PopupNewConf_Planner_Interval = 1000; }
+            }
+            else { DefaultSettings_PopupNewConf_Planner_Interval = 1000; }
             Settings_PopupNewConf_Planner_Interval_Tick = DefaultSettings_PopupNewConf_Planner_Interval;
 
-            if (Settings_SendToWebsitePlanner == true){ Settings_PopupNewConf.Interval = DefaultSettings_PopupNewConf_Planner_Interval; }
-           
+            if (Settings_SendToWebsitePlanner == true) { Settings_PopupNewConf_Interval = DefaultSettings_PopupNewConf_Planner_Interval; }
 
 
             Settings_DisplayPopupConfirmation = manifest.DisplayPopupConfirmation;
             Settings_ConfirmationCheckAllAccounts = manifest.ConfirmationCheckAllAccounts;
 
-            if (manifest.ConfirmationCheckAllAcc_RefreshSessionDellay >= 100){
+            if (manifest.ConfirmationCheckAllAcc_RefreshSessionDellay >= 100)
+            {
                 Settings_ConfirmationCheckAllAcc_RefreshSessionDellay = manifest.ConfirmationCheckAllAcc_RefreshSessionDellay;
-            } else { Settings_ConfirmationCheckAllAcc_RefreshSessionDellay = 500; }
+            }
+            else { Settings_ConfirmationCheckAllAcc_RefreshSessionDellay = 500; }
 
 
             // show Auto-confirm status
             Settings_DelayAutoConfirmAtStartup = manifest.DelayAutoConfirmAtStartup;
 
-            if (manifest.DelayAutoConfirmAtStartupInterval > 0 || 60 >= manifest.DelayAutoConfirmAtStartupInterval) {
+            if (manifest.DelayAutoConfirmAtStartupInterval > 0 || 60 >= manifest.DelayAutoConfirmAtStartupInterval)
+            {
                 Settings_DelayAutoConfirmAtStartupInterval = manifest.DelayAutoConfirmAtStartupInterval + 1;
-            } else {
+            }
+            else
+            {
                 Settings_DelayAutoConfirmAtStartupInterval = 6;
             }
 
             if (manifest.ConfirmationsPeriodicChecking == true)
             {
+
 
                 Settings_ConfirmationsPeriodicChecking = true;
 
@@ -1388,20 +1529,26 @@ namespace Steam_Desktop_Authenticator
                 //DelayAutoConfirmAtStartup
                 if (Settings_DelayAutoConfirmAtStartup)
                 {
-                    if (manifest.AutoConfirmTrades) {
+                    if (manifest.AutoConfirmTrades)
+                    {
                         AutoConfirm_Trades = 2;
                         btn_labelAutoConfirmTrades.Text = "OFF"; btn_labelAutoConfirm_Color("Trades", "MouseLeave");
-                    } else {
+                    }
+                    else
+                    {
                         AutoConfirm_Trades = 0;
                         btn_labelAutoConfirmTrades.Text = "ON"; btn_labelAutoConfirm_Color("Trades", "MouseLeave");
                         SetAutoConfirmLabelStatus("Trades", "Off");
                     }
 
 
-                    if (manifest.AutoConfirmMarketTransactions) {
+                    if (manifest.AutoConfirmMarketTransactions)
+                    {
                         AutoConfirm_Market = 2;
                         btn_labelAutoConfirmMarket.Text = "OFF"; btn_labelAutoConfirm_Color("Market", "MouseLeave");
-                    } else {
+                    }
+                    else
+                    {
                         AutoConfirm_Market = 0;
                         btn_labelAutoConfirmMarket.Text = "ON"; btn_labelAutoConfirm_Color("Market", "MouseLeave");
                         SetAutoConfirmLabelStatus("Market", "Off");
@@ -1410,26 +1557,34 @@ namespace Steam_Desktop_Authenticator
                     // Dellay
                     if (Settings_DelayAutoConfirmAtStartup) { timer_DelayAutoConfirmAtStartup.Enabled = true; }
 
-                } else {
+                }
+                else
+                {
                     //No DelayAutoConfirmAtStartup
 
                     // Trades
-                    if (manifest.AutoConfirmTrades == true) {
+                    if (manifest.AutoConfirmTrades == true)
+                    {
                         AutoConfirm_Trades = 1;
                         SetAutoConfirmLabelStatus("Trades", "On");
                         btn_labelAutoConfirmTrades.Text = "OFF"; btn_labelAutoConfirm_Color("Trades", "MouseLeave");
-                    } else {
+                    }
+                    else
+                    {
                         AutoConfirm_Trades = 0;
                         btn_labelAutoConfirmTrades.Text = "ON"; btn_labelAutoConfirm_Color("Trades", "MouseLeave");
                         SetAutoConfirmLabelStatus("Trades", "Off");
                     }
 
                     // Market
-                    if (manifest.AutoConfirmMarketTransactions == true) {
+                    if (manifest.AutoConfirmMarketTransactions == true)
+                    {
                         AutoConfirm_Market = 1;
                         SetAutoConfirmLabelStatus("Market", "On");
                         btn_labelAutoConfirmMarket.Text = "OFF"; btn_labelAutoConfirm_Color("Market", "MouseLeave");
-                    } else {
+                    }
+                    else
+                    {
                         AutoConfirm_Market = 0;
                         btn_labelAutoConfirmMarket.Text = "ON"; btn_labelAutoConfirm_Color("Market", "MouseLeave");
                         SetAutoConfirmLabelStatus("Market", "Off");
@@ -1441,7 +1596,9 @@ namespace Steam_Desktop_Authenticator
                 //////////////////////
                 if (manifest.AutoConfirmTrades || manifest.AutoConfirmMarketTransactions || Settings_DisplayPopupConfirmation) { Settings_PopupNewConf.Enabled = manifest.ConfirmationsPeriodicChecking; }
 
-            } else {
+            }
+            else
+            {
                 // Btn Disabled
                 Settings_ConfirmationsPeriodicChecking = false;
 
@@ -1462,45 +1619,48 @@ namespace Steam_Desktop_Authenticator
             // Quit btn under x
             #region Quit btn under x
             if (Settings_MinimiseToSystemTray == "CloseBtnMinimizeToTray")
-                    {
-                        quitUnderXToolStripMenuItem.Visible = true;
-                        ShowInTaskbar = true;
-                    }
-                    else
-                    {
-                        quitUnderXToolStripMenuItem.Visible = false;
-                    }
-                    if (Settings_MinimiseToSystemTray == "MinimiseBtnMinimizeToTray") { } else { }
-                    if (Settings_MinimiseToSystemTray == "default") { }
+            {
+                quitUnderXToolStripMenuItem.Visible = true;
+                ShowInTaskbar = true;
+            }
+            else
+            {
+                quitUnderXToolStripMenuItem.Visible = false;
+            }
+            if (Settings_MinimiseToSystemTray == "MinimiseBtnMinimizeToTray") { } else { }
+            if (Settings_MinimiseToSystemTray == "default") { }
             #endregion // Quit btn under x
 
 
             // Send App Status
             #region Send App Status
             if (manifest.SendAppStatus == true)
-                    {
-                        // set app name
-                        string AddToName = manifest.SendAppNo.ToString() + " ";
-                        this.Text = AddToName + Manifest.MainAppName;
-                        this.trayIcon.Text = AddToName + Manifest.MainAppName;
+            {
+                // set app name
+                string AddToName = manifest.SendAppNo.ToString() + " ";
+                this.Text = AddToName + Manifest.MainAppName;
+                this.trayIcon.Text = AddToName + Manifest.MainAppName;
 
-                        Settings_SendAppStatusToAddress = manifest.SendAppStatusToAddress;
+                Settings_SendAppStatusToAddress = manifest.SendAppStatusToAddress;
 
-                        if (manifest.SendAppStatusInterval >= 1 && 9999 >= manifest.SendAppStatusInterval) {
-                            Settings_SendAppStatusInterval = manifest.SendAppStatusInterval;
-                        } else { Settings_SendAppStatusInterval = 1; }
-                        
-                        Settings_AppNo = manifest.SendAppNo;
+                if (manifest.SendAppStatusInterval >= 1 && 9999 >= manifest.SendAppStatusInterval)
+                {
+                    Settings_SendAppStatusInterval = manifest.SendAppStatusInterval;
+                }
+                else { Settings_SendAppStatusInterval = 1; }
 
-                        if (backgroundWorkerSendAppStatus.IsBusy) { backgroundWorkerSendAppStatus_restart = true; backgroundWorkerSendAppStatus_Timer = 0; backgroundWorkerSendAppStatus.CancelAsync(); }
-                        else{ backgroundWorkerSendAppStatus_Timer = 0; backgroundWorkerSendAppStatus.RunWorkerAsync(); }
+                Settings_AppNo = manifest.SendAppNo;
 
-                    }
-                    else {
-                        if (backgroundWorkerSendAppStatus.IsBusy) { backgroundWorkerSendAppStatus.CancelAsync(); }
-                        this.Text = Manifest.MainAppName;
-                        this.trayIcon.Text = Manifest.MainAppName;
-                    }
+                if (backgroundWorkerSendAppStatus.IsBusy) { backgroundWorkerSendAppStatus_restart = true; backgroundWorkerSendAppStatus_Timer = 0; backgroundWorkerSendAppStatus.CancelAsync(); }
+                else { backgroundWorkerSendAppStatus_Timer = 0; backgroundWorkerSendAppStatus.RunWorkerAsync(); }
+
+            }
+            else
+            {
+                if (backgroundWorkerSendAppStatus.IsBusy) { backgroundWorkerSendAppStatus.CancelAsync(); }
+                this.Text = Manifest.MainAppName;
+                this.trayIcon.Text = Manifest.MainAppName;
+            }
             #endregion // Send App Status
 
 
@@ -1517,7 +1677,8 @@ namespace Steam_Desktop_Authenticator
         {
             Settings_DelayAutoConfirmAtStartupInterval--;
 
-            if (manifest.AutoConfirmTrades == false && manifest.AutoConfirmMarketTransactions == false) {
+            if (manifest.AutoConfirmTrades == false && manifest.AutoConfirmMarketTransactions == false)
+            {
                 if (AutoConfirm_Trades == 1 || AutoConfirm_Market == 1 || Settings_DisplayPopupConfirmation) { Settings_PopupNewConf.Enabled = manifest.ConfirmationsPeriodicChecking; }
                 timer_DelayAutoConfirmAtStartup.Enabled = false;
                 return;
@@ -1542,10 +1703,11 @@ namespace Steam_Desktop_Authenticator
             }
 
             // Close timer // start loop > Check for new Confirmations
-            if (Settings_DelayAutoConfirmAtStartupInterval == 0) {
+            if (Settings_DelayAutoConfirmAtStartupInterval == 0)
+            {
                 timer_DelayAutoConfirmAtStartup.Enabled = false;
                 Settings_PopupNewConf.Enabled = manifest.ConfirmationsPeriodicChecking;
-            } 
+            }
         }
 
 
@@ -1557,8 +1719,9 @@ namespace Steam_Desktop_Authenticator
         {
             while (!backgroundWorkerSendAppStatus.CancellationPending)
             {
-                
-                if (backgroundWorkerSendAppStatus_Timer == 0) {
+
+                if (backgroundWorkerSendAppStatus_Timer == 0)
+                {
                     backgroundWorkerSendAppStatus_Timer = Settings_SendAppStatusInterval; // Interval
 
                     if (Settings_SendAppStatusToAddress != "" && Settings_SendAppStatusInterval > 0)
@@ -1571,10 +1734,12 @@ namespace Steam_Desktop_Authenticator
 
                         //lblStatus.Invoke(new MethodInvoker(delegate { lblStatus.Text = SendPost_Status; }));
 
-                        if (SendPost_Status == "Sending app status > Done") {
+                        if (SendPost_Status == "Sending app status > Done")
+                        {
                             this.Invoke(new Action(() => { Program.ConsoleForm_Update.SetConsoleText(">>> " + SendPost_Status, "ConsoleStatus_Return"); }));
                         }
-                        if (SendPost_Status == "Sending app status > Failed" || SendPost_Status == "Sending app status > Invalid Response" || SendPost_Status == "Sending app status > Error") {
+                        if (SendPost_Status == "Sending app status > Failed" || SendPost_Status == "Sending app status > Invalid Response" || SendPost_Status == "Sending app status > Error")
+                        {
                             this.Invoke(new Action(() => { Program.ConsoleForm_Update.SetConsoleText(">>> " + SendPost_Status, "ConsoleStatus_ReturnWarning"); }));
                         }
 
@@ -1585,8 +1750,10 @@ namespace Steam_Desktop_Authenticator
                 Thread.Sleep(1000);
             }
         }
-        private void backgroundWorkerSendAppStatus_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
-            if (backgroundWorkerSendAppStatus_restart) {
+        private void backgroundWorkerSendAppStatus_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            if (backgroundWorkerSendAppStatus_restart)
+            {
                 backgroundWorkerSendAppStatus_restart = false;
                 backgroundWorkerSendAppStatus.RunWorkerAsync();
             }
