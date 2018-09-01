@@ -4,6 +4,10 @@
   Steam Desktop Authenticator 47 (Mod 47)
 </h1>
 
+<h3>
+WARNING: Recently there have been fake versions of SDA floating around that will steal your Steam account. Be carefoul from where you download the app! Idealy is to inspect the code & compile it yourself.
+</h3>
+
 ## `v1.0.7.7`
 
 ![6](https://cloud.githubusercontent.com/assets/10192561/26648938/bd1eb746-464c-11e7-874a-6729068c15e3.png)
