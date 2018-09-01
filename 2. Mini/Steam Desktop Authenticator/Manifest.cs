@@ -16,7 +16,7 @@ namespace Steam_Desktop_Authenticator
     {
         // Manually Enable Website Planner at My Own Risk (This Will Owerwrite the Settings Data)
         //+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---
-        public static int ManuallyEnableWebsitePlannerAtMyOwnRisk = 1; // 1 = on // 0 = off
+        public static int ManuallyEnableWebsitePlannerAtMyOwnRisk = 0; // 1 = on // 0 = off
         public static string ManuallySetWebsitePlannerAddress = "http://localhost:8000/index.php";
         // set encryption
         public static int ManuallySetWebsitePlannerShift1 = 3; // 0-9
