@@ -1,5 +1,6 @@
 ﻿namespace Steam_Desktop_Authenticator
 {
+
     partial class ConfirmationForm
     {
         /// <summary>
@@ -285,6 +286,7 @@
             // 
             // labelCounter
             // 
+            this.labelCounter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.labelCounter.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelCounter.Location = new System.Drawing.Point(351, 409);
             this.labelCounter.Name = "labelCounter";

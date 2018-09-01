@@ -40,7 +40,7 @@
             this.xToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BtnPopupConfBack = new System.Windows.Forms.Button();
             this.BtnPopupConfNext = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.label_action = new System.Windows.Forms.Label();
             this.labelConfirmationNo = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -193,18 +193,18 @@
             this.BtnPopupConfNext.UseVisualStyleBackColor = true;
             this.BtnPopupConfNext.Click += new System.EventHandler(this.PopupConfNext_Click);
             // 
-            // label1
+            // label_action
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.label_action.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label1.Location = new System.Drawing.Point(30, 50);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(225, 19);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "trade with:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_action.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_action.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label_action.Location = new System.Drawing.Point(30, 50);
+            this.label_action.Name = "label_action";
+            this.label_action.Size = new System.Drawing.Size(225, 19);
+            this.label_action.TabIndex = 9;
+            this.label_action.Text = "trade with:";
+            this.label_action.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelConfirmationNo
             // 
@@ -236,7 +236,7 @@
             this.Controls.Add(this.lblDesc);
             this.Controls.Add(this.lblAccount);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.label_action);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -266,7 +266,7 @@
         private System.Windows.Forms.ToolStripTextBox newConfirmationToolStripMenuItem;
         private System.Windows.Forms.Button BtnPopupConfBack;
         private System.Windows.Forms.Button BtnPopupConfNext;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label_action;
         private System.Windows.Forms.Label labelConfirmationNo;
     }
 }

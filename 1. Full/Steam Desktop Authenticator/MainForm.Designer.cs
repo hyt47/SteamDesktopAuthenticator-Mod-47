@@ -55,6 +55,7 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.menuQuit = new System.Windows.Forms.ToolStripMenuItem();
+            this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.accountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuLoginAgain = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRefreshSession = new System.Windows.Forms.ToolStripMenuItem();
@@ -237,6 +238,7 @@
             this.menuSteamLogin,
             this.importAccountToolStripMenuItem,
             this.toolStripSeparator1,
+            this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem,
             this.menuSettings,
             this.menuManageEncryption,
             this.menuConsole,
@@ -252,7 +254,7 @@
             // menuSteamLogin
             // 
             this.menuSteamLogin.Name = "menuSteamLogin";
-            this.menuSteamLogin.Size = new System.Drawing.Size(179, 22);
+            this.menuSteamLogin.Size = new System.Drawing.Size(271, 22);
             this.menuSteamLogin.Text = "Setup New Account";
             this.menuSteamLogin.Click += new System.EventHandler(this.menuSteamLogin_Click);
             // 
@@ -262,7 +264,7 @@
             this.menuImportmaFile,
             this.menuImportAndroid});
             this.importAccountToolStripMenuItem.Name = "importAccountToolStripMenuItem";
-            this.importAccountToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.importAccountToolStripMenuItem.Size = new System.Drawing.Size(271, 22);
             this.importAccountToolStripMenuItem.Text = "Import Account";
             // 
             // menuImportmaFile
@@ -282,59 +284,66 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(176, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(268, 6);
             // 
             // menuSettings
             // 
             this.menuSettings.Name = "menuSettings";
-            this.menuSettings.Size = new System.Drawing.Size(179, 22);
+            this.menuSettings.Size = new System.Drawing.Size(271, 22);
             this.menuSettings.Text = "Settings";
             this.menuSettings.Click += new System.EventHandler(this.menuSettings_Click);
             // 
             // menuManageEncryption
             // 
             this.menuManageEncryption.Name = "menuManageEncryption";
-            this.menuManageEncryption.Size = new System.Drawing.Size(179, 22);
+            this.menuManageEncryption.Size = new System.Drawing.Size(271, 22);
             this.menuManageEncryption.Text = "Manage Encryption";
             this.menuManageEncryption.Click += new System.EventHandler(this.menuManageEncryption_Click);
             // 
             // menuConsole
             // 
             this.menuConsole.Name = "menuConsole";
-            this.menuConsole.Size = new System.Drawing.Size(179, 22);
+            this.menuConsole.Size = new System.Drawing.Size(271, 22);
             this.menuConsole.Text = "Console";
             this.menuConsole.Click += new System.EventHandler(this.menuConsole_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(176, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(268, 6);
             // 
             // menuCheckForUpdates
             // 
             this.menuCheckForUpdates.Name = "menuCheckForUpdates";
-            this.menuCheckForUpdates.Size = new System.Drawing.Size(179, 22);
+            this.menuCheckForUpdates.Size = new System.Drawing.Size(271, 22);
             this.menuCheckForUpdates.Text = "Check for updates";
             this.menuCheckForUpdates.Click += new System.EventHandler(this.menuCheckForUpdates_Click);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(271, 22);
             this.helpToolStripMenuItem.Text = "Help";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(176, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(268, 6);
             // 
             // menuQuit
             // 
             this.menuQuit.Name = "menuQuit";
-            this.menuQuit.Size = new System.Drawing.Size(179, 22);
+            this.menuQuit.Size = new System.Drawing.Size(271, 22);
             this.menuQuit.Text = "Quit";
             this.menuQuit.Click += new System.EventHandler(this.menuQuit_Click);
+            // 
+            // btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem
+            // 
+            this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem.Name = "btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem";
+            this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem.Size = new System.Drawing.Size(271, 22);
+            this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem.Text = "Force session refresh for All Accounts";
+            this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem.Click += new System.EventHandler(this.btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem_Click);
             // 
             // accountToolStripMenuItem
             // 
@@ -686,7 +695,7 @@
         private System.Windows.Forms.Label btn_labelAutoConfirmTrades;
         private System.Windows.Forms.Label btn_labelAutoConfirmMarket;
         public System.Windows.Forms.Timer timer_DelayAutoConfirmAtStartup;
+        private System.Windows.Forms.ToolStripMenuItem btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem;
     }
 }
-
 

@@ -14,6 +14,19 @@ namespace Steam_Desktop_Authenticator
 {
     public class Manifest
     {
+        // Manually Enable Website Planner at My Own Risk (This Will Owerwrite the Settings Data)
+        //+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---
+        public static int ManuallyEnableWebsitePlannerAtMyOwnRisk = 1; // 1 = on // 0 = off
+        public static string ManuallySetWebsitePlannerAddress = "http://localhost:8000/index.php";
+        // set encryption
+        public static int ManuallySetWebsitePlannerShift1 = 3; // 0-9
+        public static int ManuallySetWebsitePlannerShift2 = 7; // 0-9
+        public static int ManuallySetWebsitePlannerShift3 = 1; // 0-9
+        public static int ManuallySetWebsitePlannerShift4 = 9; // 0-9
+        public static int ManuallySetWebsitePlannerShift5 = 1; // 0-9
+        //+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---
+
+
         public static string MainAppName = "Steam Desktop Authenticator 47";
         public static string FolderNameSteamFiles = "maFiles";
         public static string SteamFileExtension = ".maFile";
@@ -40,7 +53,7 @@ namespace Steam_Desktop_Authenticator
 
         [JsonProperty("start_minimized_to_system_tray")]
         public bool StartMinimizedToSystemTray { get; set; } = false;
-
+        
         [JsonProperty("confirmations_periodic_checking")]
         public bool ConfirmationsPeriodicChecking { get; set; } = false;
 
@@ -49,6 +62,9 @@ namespace Steam_Desktop_Authenticator
 
         [JsonProperty("confirmation_checkallaccounts")]
         public bool ConfirmationCheckAllAccounts { get; set; } = false;
+
+        [JsonProperty("confirmation_checking_all_acc_refresh_session_dellay")]
+        public int ConfirmationCheckAllAcc_RefreshSessionDellay { get; set; } = 500; // milisec
 
         [JsonProperty("display_popup_confirmation")]
         public bool DisplayPopupConfirmation { get; set; } = true;
@@ -68,6 +84,8 @@ namespace Steam_Desktop_Authenticator
         [JsonProperty("auto_confirm_trades")]
         public bool AutoConfirmTrades { get; set; } = false;
 
+
+        // send app status
         [JsonProperty("send_app_status")]
         public bool SendAppStatus { get; set; } = false;
 
@@ -75,10 +93,24 @@ namespace Steam_Desktop_Authenticator
         public int SendAppStatusInterval { get; set; } = 1;
 
         [JsonProperty("send_app_status_to_address")]
-        public string SendAppStatusToAddress { get; set; } = "http://localhost:4141/";
+        public string SendAppStatusToAddress { get; set; } = "http://localhost:4141/index.php";
 
         [JsonProperty("send_app_no")]
         public int SendAppNo { get; set; } = 1;
+        // send app status End
+
+
+        // planner 
+        [JsonProperty("send_to_website_planner")]
+        public bool SendToWebsitePlanner { get; set; } = false;
+
+        [JsonProperty("website_planner_interval")]
+        public int WebsitePlannerInterval { get; set; } = 1;
+
+        [JsonProperty("website_planner_send_code")]
+        public bool WebsitePlannerSendCode { get; set; } = false;
+        // planner End
+
 
         [JsonProperty("entries")]
         public List<ManifestEntry> Entries { get; set; }
@@ -110,16 +142,12 @@ namespace Steam_Desktop_Authenticator
             // If there's no config dir, create it
             if (!Directory.Exists(maDir))
             {
-                _manifest = _generateNewManifest();
+                _manifest = GenerateNewManifest(false);
                 return _manifest;
             }
 
             // If there's no manifest, create it
-            if (!File.Exists(maFile))
-            {
-                _manifest = _generateNewManifest(true);
-                return _manifest;
-            }
+            if (!File.Exists(maFile)) { _manifest = GenerateNewManifest(true); }
 
             try
             {
@@ -627,7 +655,7 @@ namespace Steam_Desktop_Authenticator
 
 
 
-        private static Manifest _generateNewManifest(bool scanDir = false)
+        private static Manifest GenerateNewManifest(bool scanDir = false)
         {
             // No directory means no manifest file anyways.
             Manifest newManifest = new Manifest();
@@ -635,13 +663,25 @@ namespace Steam_Desktop_Authenticator
             newManifest.Encrypted = false;
             newManifest.ConfirmationCheckingInterval = 30;
             newManifest.ConfirmationsPeriodicChecking = false;
+            newManifest.ConfirmationCheckAllAcc_RefreshSessionDellay = 500; // milisec
+            
             newManifest.AutoConfirmMarketTransactions = false;
             newManifest.AutoConfirmTrades = false;
 
+
+            // send app status
             newManifest.SendAppStatus = false;
             newManifest.SendAppStatusInterval = 1;
             newManifest.SendAppStatusToAddress = "http://localhost:4141/";
             newManifest.SendAppNo = 1;
+            // send app status End
+
+
+            // planner 
+            newManifest.SendToWebsitePlanner = false;
+            newManifest.WebsitePlannerInterval = 1;
+            newManifest.WebsitePlannerSendCode = false;
+            // planner End
 
             newManifest.Entries = new List<ManifestEntry>();
             newManifest.FirstRun = true;
@@ -1280,4 +1320,3 @@ namespace Steam_Desktop_Authenticator
         }
     }
 }
-

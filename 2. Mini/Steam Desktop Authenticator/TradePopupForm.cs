@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace Steam_Desktop_Authenticator
 {
     public partial class TradePopupForm : Form
@@ -100,7 +101,26 @@ namespace Steam_Desktop_Authenticator
                 BtnPopupConfBack.Enabled = false;
                 BtnPopupConfNext.Enabled = false;
 
-                Program.ConsoleForm_Update.SetConsoleText("POPUP Confirmation: Accepting... " + confirms[CurrentConfirmationNo].Description, "ConsoleStatus_Confirmed");
+     
+                string ConfirmationType = "Unknown Type";
+                    if (confirms[CurrentConfirmationNo].ConfType == Confirmation.ConfirmationType.MarketSellTransaction) { ConfirmationType = "Market"; }
+                    else if (confirms[CurrentConfirmationNo].ConfType == Confirmation.ConfirmationType.Trade) { ConfirmationType = "Trade"; }
+
+                // action
+                if (ConfirmationType == "Trade") { label_action.Text = "Trade with:"; }
+                else if (ConfirmationType == "Market") { label_action.Text = "Sell:"; }
+
+                string TradeWith = "";
+                    // OLD CODE > used when I didn't have user name
+                    if (ConfirmationType == "Trade") { TradeWith += "ID: " + confirms[CurrentConfirmationNo].ID; }
+                    else if (ConfirmationType == "Market") { TradeWith += "ID: " + confirms[CurrentConfirmationNo].ID; }
+                    // NEW CODE
+                    TradeWith =  confirms[CurrentConfirmationNo].OtherUserName; 
+
+
+
+                Program.ConsoleForm_Update.SetConsoleText("POPUP Confirmation: Accepting... " + TradeWith, "ConsoleStatus_Confirmed");
+
                 lblStatus.Text = "Accepting...";
                 btnAccept.Enabled = false;
                 btnDeny.Enabled = false;
@@ -141,7 +161,26 @@ namespace Steam_Desktop_Authenticator
                 BtnPopupConfBack.Enabled = false;
                 BtnPopupConfNext.Enabled = false;
 
-                Program.ConsoleForm_Update.SetConsoleText("POPUP Confirmation: Denying... " + confirms[CurrentConfirmationNo].Description, "ConsoleStatus_Confirmed");
+      
+
+                string ConfirmationType = "Unknown Type";
+                if (confirms[CurrentConfirmationNo].ConfType == Confirmation.ConfirmationType.MarketSellTransaction) { ConfirmationType = "Market"; }
+                else if (confirms[CurrentConfirmationNo].ConfType == Confirmation.ConfirmationType.Trade) { ConfirmationType = "Trade"; }
+
+                // action
+                if (ConfirmationType == "Trade") { label_action.Text = "Trade with:"; }
+                else if (ConfirmationType == "Market") { label_action.Text = "Sell:"; }
+
+                string TradeWith = "";
+                    // OLD CODE > used when I didn't have user name
+                    if (ConfirmationType == "Trade") { TradeWith += "ID: " + confirms[CurrentConfirmationNo].ID; }
+                    else if (ConfirmationType == "Market") { TradeWith += "ID: " + confirms[CurrentConfirmationNo].ID; }
+                    // NEW CODE
+                    TradeWith =  confirms[CurrentConfirmationNo].OtherUserName; 
+                
+
+                Program.ConsoleForm_Update.SetConsoleText("POPUP Confirmation: Denying... "+ TradeWith, "ConsoleStatus_Confirmed");
+
                 lblStatus.Text = "Denying...";
                 btnAccept.Enabled = false;
                 btnDeny.Enabled = false;
@@ -201,15 +240,26 @@ namespace Steam_Desktop_Authenticator
             btnDeny.Text = "Deny";
             lblStatus.Text = "";
 
-            if (TotalConfirmations == 0)
-            {
-                this.Hide();
-            }
-            else
-            {
+            if (TotalConfirmations == 0) { this.Hide(); }
+            else {
+                string ConfirmationType = "Unknown Type";
+                if (confirms[CurrentConfirmationNo].ConfType == Confirmation.ConfirmationType.MarketSellTransaction) { ConfirmationType = "Market"; }
+                else if (confirms[CurrentConfirmationNo].ConfType == Confirmation.ConfirmationType.Trade) { ConfirmationType = "Trade"; }
 
-                string Trade_with_user = confirms[CurrentConfirmationNo].Description.Replace("Trade with ", "");
-                lblDesc.Text = Trade_with_user;
+                // action
+                if (ConfirmationType == "Trade") { label_action.Text = "Trade with:"; }
+                else if (ConfirmationType == "Market") { label_action.Text = "Sell:"; }
+
+                string TradeWith = "";
+                    // OLD CODE > used when I didn't have user name
+                    if (ConfirmationType == "Trade") { TradeWith += "ID: " + confirms[CurrentConfirmationNo].ID; }
+                    else if (ConfirmationType == "Market") { TradeWith += "ID: " + confirms[CurrentConfirmationNo].ID; }
+                    // NEW CODE
+                    TradeWith =  confirms[CurrentConfirmationNo].OtherUserName; 
+
+
+
+                lblDesc.Text = TradeWith;
             }
             if (TotalConfirmations == 1)
             {

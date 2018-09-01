@@ -3,11 +3,11 @@ using System.Threading;
 
 namespace Steam_Desktop_Authenticator
 {
-    class WebSendPostData
+    class Post_AppStatus
     {
 
 
-        public static string SendPostData(string SendToUrl, string AppNo)
+        public static string SendPostData_ToWebAppStatus(string SendToUrl, string AppNo)
         {
             // SendParameters = "param1=value1&param2=value2&param3=value3";
             string SendParameters = ""; // Parameters did not work for me so I didn't used it. My server app did not catch them, add added the parameters directly in the URL

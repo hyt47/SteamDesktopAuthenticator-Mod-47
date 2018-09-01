@@ -55,7 +55,7 @@ namespace Steam_Desktop_Authenticator
 
             console.OutputDataReceived += (sender, e) =>
             {
-                if (e.Data.Contains(">@") || !OutputToConsole || e.Data == "") return;
+                if (e?.Data == null || e.Data.Contains(">@") || !OutputToConsole || e.Data == "") return;
                 if (OutputToConsole)
                     Console.WriteLine(e.Data);
                 if (OutputToLog)
@@ -96,12 +96,10 @@ namespace Steam_Desktop_Authenticator
             SteamGuardAccount acc;
             string json;
 
-            if (root)
-            {
+            if (root){
                 OnOutputLog("Using root method");
                 json = PullJson(id);
-            }
-            else {
+            }else {
                 OnOutputLog("Steam has blocked the non-root method of copying data from their app.");
                 OnOutputLog("Your phone must now be rooted to use this.");
                 json = null;
@@ -112,13 +110,8 @@ namespace Steam_Desktop_Authenticator
             acc = JsonConvert.DeserializeObject<SteamGuardAccount>(json, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
             acc.DeviceID = GetDeviceID(root);
 
-            if (acc.DeviceID == null)
-            {
-                try
-                {
-                    OnPhoneBridgeError("failed to read the UUID (device id)");
-                }
-                catch (Exception) { }
+            if (acc.DeviceID == null){
+                try {  OnPhoneBridgeError("failed to read the UUID (device id)"); }catch (Exception) { }
             }
 
             return acc;
@@ -152,13 +145,8 @@ namespace Steam_Desktop_Authenticator
 
             console.OutputDataReceived += f1;
 
-            if (root)
-            {
-                ExecuteCommand($"adb shell su -c 'sed -n 3p /data/data/$STEAMAPP/shared_prefs/steam.uuid.xml' & echo Done");
-            }
-            else {
-                ExecuteCommand("adb shell \"cat /sdcard/steamauth/apps/$STEAMAPP/sp/steam.uuid.xml\" & echo Done");
-            }
+            if (root){ ExecuteCommand($"adb shell su -c 'sed -n 3p /data/data/$STEAMAPP/shared_prefs/steam.uuid.xml' & echo Done"); }
+            else { ExecuteCommand("adb shell \"cat /sdcard/steamauth/apps/$STEAMAPP/sp/steam.uuid.xml\" & echo Done"); }
             mre.Wait();
 
             console.OutputDataReceived -= f1;
@@ -481,4 +469,3 @@ namespace Steam_Desktop_Authenticator
         }
     }
 }
-

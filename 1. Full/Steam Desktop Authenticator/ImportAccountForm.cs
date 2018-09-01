@@ -27,45 +27,52 @@ namespace Steam_Desktop_Authenticator
 
         private void btnImport_Click(object sender, EventArgs e)
         {
+            string ManifestFile = "maFiles/manifest.json";
 
-            // check if data already added is encrypted
-            if (mManifest.Encrypted == true)
+            if (File.Exists(ManifestFile)){
+				// check if data already added is encrypted
+				if (mManifest.Encrypted == true)
+				{
+					MessageBox.Show("You can't import an " + Manifest.SteamFileExtension + " because the existing account in the app is encrypted.\nDecrypt it and try again.");
+				}
+				else {
+					string ImportUsingEncryptionPasskey = txtBox.Text; // read passkey
+
+					// Open file browser > to select the file
+					OpenFileDialog openFileDialog1 = new OpenFileDialog();
+					// Set filter options and filter index.
+					openFileDialog1.Filter = Manifest.FolderNameSteamFiles + " (" + Manifest.SteamFileExtension + ")|*" + Manifest.SteamFileExtension + "|All Files (*.*)|*.*";
+					openFileDialog1.FilterIndex = 1;
+					openFileDialog1.Multiselect = false;
+
+					// Call the ShowDialog method to show the dialog box.
+					DialogResult userClickedOK = openFileDialog1.ShowDialog();
+
+
+
+					// Process input if the user clicked OK.
+					//----------------------------------------
+					if (userClickedOK == DialogResult.OK)
+					{
+						// Open the selected file to read.
+						System.IO.Stream fileStream = openFileDialog1.OpenFile();
+						string fileContents = null;
+
+						using (System.IO.StreamReader reader = new System.IO.StreamReader(fileStream)) { fileContents = reader.ReadToEnd(); }
+						fileStream.Close();
+
+						string fullFilePath = openFileDialog1.FileName;
+
+						ImportVerifyAndDecideNextStep(fileContents, ImportUsingEncryptionPasskey, fullFilePath);
+
+					}
+				}
+				this.Close();
+            }
+            else
             {
-                MessageBox.Show("You can't import an " + Manifest.SteamFileExtension + " because the existing account in the app is encrypted.\nDecrypt it and try again.");
+                MessageBox.Show("An Error occurred, Restart the program!");
             }
-            else {
-                string ImportUsingEncryptionPasskey = txtBox.Text; // read passkey
-
-                // Open file browser > to select the file
-                OpenFileDialog openFileDialog1 = new OpenFileDialog();
-                // Set filter options and filter index.
-                openFileDialog1.Filter = Manifest.FolderNameSteamFiles + " (" + Manifest.SteamFileExtension + ")|*" + Manifest.SteamFileExtension + "|All Files (*.*)|*.*";
-                openFileDialog1.FilterIndex = 1;
-                openFileDialog1.Multiselect = false;
-
-                // Call the ShowDialog method to show the dialog box.
-                DialogResult userClickedOK = openFileDialog1.ShowDialog();
-
-
-
-                // Process input if the user clicked OK.
-                //----------------------------------------
-                if (userClickedOK == DialogResult.OK)
-                {
-                    // Open the selected file to read.
-                    System.IO.Stream fileStream = openFileDialog1.OpenFile();
-                    string fileContents = null;
-
-                    using (System.IO.StreamReader reader = new System.IO.StreamReader(fileStream)) { fileContents = reader.ReadToEnd(); }
-                    fileStream.Close();
-
-                    string fullFilePath = openFileDialog1.FileName;
-
-                    ImportVerifyAndDecideNextStep(fileContents, ImportUsingEncryptionPasskey, fullFilePath);
-
-                }
-            }
-            this.Close();
         }
 
         private void btnImportMultipleAcc_Click(object sender, EventArgs e)
@@ -644,4 +651,3 @@ namespace Steam_Desktop_Authenticator
 
     }
 }
-

@@ -9,33 +9,26 @@ namespace Steam_Desktop_Authenticator
         public SteamGuardAccount androidAccount;
         public LoginType LoginReason;
 
-        public LoginForm(LoginType loginReason = LoginType.Initial, SteamGuardAccount account = null)
-        {
+        public LoginForm(LoginType loginReason = LoginType.Initial, SteamGuardAccount account = null) {
             InitializeComponent();
             this.LoginReason = loginReason;
             this.androidAccount = account;
 
-            if (this.LoginReason != LoginType.Initial)
-            {
-                txtUsername.Text = account.AccountName;
-                txtUsername.Enabled = false;
+            try{
+                if (this.LoginReason != LoginType.Initial) { txtUsername.Text = account.AccountName; txtUsername.Enabled = false; }
+
+                if (this.LoginReason == LoginType.Refresh){
+                    labelLoginExplanation.Text = "Your Steam credentials have expired. For trade and market confirmations to work properly, please login again.";
+                }
+            }catch (Exception){
+                MessageBox.Show("Failed to find your account. Try closing and re-opening SDA.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
             }
-
-            if(this.LoginReason == LoginType.Refresh)
-            {
-                labelLoginExplanation.Text = "Your Steam credentials have expired. For trade and market confirmations to work properly, please login again.";
-            }
         }
 
-        public void SetUsername(string username)
-        {
-            txtUsername.Text = username;
-        }
+        public void SetUsername(string username) { txtUsername.Text = username; }
 
-        public string FilterPhoneNumber(string phoneNumber)
-        {
-            return phoneNumber.Replace("-", "").Replace("(", "").Replace(")", "");
-        }
+        public string FilterPhoneNumber(string phoneNumber) { return phoneNumber.Replace("-", "").Replace("(", "").Replace(")", ""); }
 
         public bool PhoneNumberOkay(string phoneNumber)
         {

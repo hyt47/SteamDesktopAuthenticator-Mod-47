@@ -51,8 +51,10 @@ namespace Steam_Desktop_Authenticator
 
             dataGridView1.Rows.Clear();
             label1.Text = "Account: " + mCurrentAccount.AccountName;
+
             try { Confirmations = await mCurrentAccount.FetchConfirmationsAsync(); }
-            catch (SteamGuardAccount.WGTokenInvalidException e) {
+            catch (SteamGuardAccount.WGTokenInvalidException) {
+                //MessageBox.Show("Error WGTokenInvalidException");
                 if (retry) { this.Close(); return; }
 
                 //TODO: catch only the relevant exceptions
@@ -64,15 +66,29 @@ namespace Steam_Desktop_Authenticator
                     for (int i = 0; i < Confirmations.Length; i++) {
                         CountConfirmations++;
 
-                        string ConfirmationType = "unknown";
-                        if (Confirmations[i].ConfType == Confirmation.ConfirmationType.MarketSellTransaction) { ConfirmationType = "market"; }
-                        else if (Confirmations[i].ConfType == Confirmation.ConfirmationType.Trade) { ConfirmationType = "trade"; }
+                        string ConfirmationType_ = "unknown";
+                        string ConfirmationType = "Unknown Type";
+                        if (Confirmations[i].ConfType == Confirmation.ConfirmationType.MarketSellTransaction) { ConfirmationType_ = "market"; ConfirmationType = "Market"; }
+                        else if (Confirmations[i].ConfType == Confirmation.ConfirmationType.Trade) { ConfirmationType_ = "trade"; ConfirmationType = "Trade"; }
 
                         var indexR = dataGridView1.Rows.Add();
                         dataGridView1.Rows[indexR].Cells["ConfirmNo"].Value = (i + 1).ToString();
-                        dataGridView1.Rows[indexR].Cells["ConfirmInfo"].Value = Confirmations[i].Description;
+
+                        string TradeWith = ConfirmationType;
+                        if (ConfirmationType == "Trade") { TradeWith += " offer ID: " + Confirmations[i].ID;  }
+                        else if (ConfirmationType == "Market") { TradeWith += " ID: " + Confirmations[i].ID; }
+
+                        TradeWith = Confirmations[i].OtherUserName;
+                        if (ConfirmationType == "Trade") { TradeWith = "Trade: " + TradeWith; }
+                        else if(ConfirmationType == "Market"){ TradeWith = "Sell: " + TradeWith; }
+
+                        // for DEBUG
+                        //using (System.IO.TextWriter writer = System.IO.File.CreateText(System.AppDomain.CurrentDomain.BaseDirectory + @"\- debug pg.txt")) { writer.Write(Confirmations[i].AllData);  }
+
+                            dataGridView1.Rows[indexR].Cells["ConfirmInfo"].Value = TradeWith;
+
                         dataGridView1.Rows[indexR].Cells["ConfirmCheckBox"].Value = false;
-                        dataGridView1.Rows[indexR].Cells["ConfirmationType"].Value = ConfirmationType;
+                        dataGridView1.Rows[indexR].Cells["ConfirmationType"].Value = ConfirmationType_;
                     }
                 }
             } catch (Exception) { }
@@ -346,4 +362,3 @@ namespace Steam_Desktop_Authenticator
         }
     }
 }
-

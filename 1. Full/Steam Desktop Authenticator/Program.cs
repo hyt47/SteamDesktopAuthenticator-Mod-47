@@ -43,7 +43,12 @@ namespace Steam_Desktop_Authenticator
 
             // Read Settings
             /////////////////////
-            Manifest manifest_app = Manifest.GetManifest();
+            Manifest manifest_app = Manifest.GetManifest(); 
+               // Corrupted settings don't affect accound account data if encrypted
+               //---------------------
+     
+
+
             bool Settings_SendAppStatus = manifest_app.SendAppStatus;
             bool Settings_AppCanBeStartedMultipleTimes = manifest_app.AppCanBeStartedMultipleTimes;
             int Settings_SendAppNo = manifest_app.SendAppNo;
@@ -56,6 +61,7 @@ namespace Steam_Desktop_Authenticator
 
             bool Settings_ConfirmationsPeriodicChecking = manifest_app.ConfirmationsPeriodicChecking;
             bool Settings_ConfirmationCheckAllAccounts = manifest_app.ConfirmationCheckAllAccounts;
+            int Settings_ConfirmationCheckAllAcc_RefreshSessionDellay = manifest_app.ConfirmationCheckAllAcc_RefreshSessionDellay;
 
             bool Settings_HideTaskbarIcon = manifest_app.HideTaskbarIcon;
             bool Settings_StartMinimizedToSystemTray = manifest_app.StartMinimizedToSystemTray;
@@ -469,4 +475,3 @@ namespace Steam_Desktop_Authenticator
 
     }
 }
-

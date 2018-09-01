@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using CefSharp;
 using System.Diagnostics;
 using System.IO;
 using Newtonsoft.Json;
-
+using System.Security.Cryptography.X509Certificates;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -46,6 +47,13 @@ namespace Steam_Desktop_Authenticator
 
         CefReturnValue IRequestHandler.OnBeforeResourceLoad(IWebBrowser browserControl, IBrowser browser, IFrame frame, IRequest request, IRequestCallback callback)
         {
+            // Check if the session is expired
+            if (request.Url == "steammobile://lostauth")
+            {
+                MessageBox.Show("Failed to load confirmations.\nTry using \"Force session refresh\" under the Selected Account menu.\nIf that doesn't work use the \"Login again\" option.", "Confirmations", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return CefReturnValue.Cancel;
+            }
+
             // For some reason, in order to set cookies manually using a hdeader you need to clear the real cookies every time :/
             Cef.GetGlobalCookieManager().VisitAllCookies(new DeleteAllCookiesVisitor());
 
@@ -80,11 +88,6 @@ namespace Steam_Desktop_Authenticator
             return false;
         }
 
-        void IRequestHandler.OnResourceRedirect(IWebBrowser browserControl, IBrowser browser, IFrame frame, IRequest request, ref string newUrl)
-        {
-
-        }
-
         bool IRequestHandler.OnProtocolExecution(IWebBrowser browserControl, IBrowser browser, string url)
         {
             return false;
@@ -98,6 +101,26 @@ namespace Steam_Desktop_Authenticator
         bool IRequestHandler.OnResourceResponse(IWebBrowser browserControl, IBrowser browser, IFrame frame, IRequest request, IResponse response)
         {
             return false;
+        }
+
+        public void OnResourceLoadComplete(IWebBrowser browserControl, IBrowser browser, IFrame frame, IRequest request, IResponse response, UrlRequestStatus status, long receivedContentLength)
+        {
+
+        }
+
+        public IResponseFilter GetResourceResponseFilter(IWebBrowser browserControl, IBrowser browser, IFrame frame, IRequest request, IResponse response)
+        {
+            return new ResourceResponseFilter();
+        }
+
+        public bool OnSelectClientCertificate(IWebBrowser browserControl, IBrowser browser, bool isProxy, string host, int port, X509Certificate2Collection certificates, ISelectClientCertificateCallback callback)
+        {
+            return true;
+        }
+
+        public void OnResourceRedirect(IWebBrowser browserControl, IBrowser browser, IFrame frame, IRequest request, IResponse response, ref string newUrl)
+        {
+
         }
 
     }

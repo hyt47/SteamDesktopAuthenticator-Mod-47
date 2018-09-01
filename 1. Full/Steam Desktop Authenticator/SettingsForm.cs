@@ -40,9 +40,9 @@ namespace Steam_Desktop_Authenticator
                 #endregion
 
 
-                // set Check all accounts for new Confirmations
-                    chkCheckAll.Checked = manifest.ConfirmationCheckAllAccounts;
-
+            // set Check all accounts for new Confirmations
+            chkCheckAll.Checked = manifest.ConfirmationCheckAllAccounts;
+            num_ChackAllAcc_DelaySessionRefresh.Value = manifest.ConfirmationCheckAllAcc_RefreshSessionDellay;
 
                 // set Auto Confirm
                     chkAutoConfirmTrades.Checked = manifest.AutoConfirmTrades;
@@ -72,6 +72,47 @@ namespace Steam_Desktop_Authenticator
                     textBoxSendAppStatusToAddress.Text =  manifest.SendAppStatusToAddress;
                     numAppNo.Value =  manifest.SendAppNo;
                     numSendAppStatusInterval.Value = manifest.SendAppStatusInterval;
+
+                // set Planner
+                #region set Planner
+                    int Secure_ManuallyEnableWebsitePlannerAtMyOwnRisk = Manifest.ManuallyEnableWebsitePlannerAtMyOwnRisk; // Secure Settings
+                    string Secure_ManuallySetWebsitePlannerAddress = Manifest.ManuallySetWebsitePlannerAddress; // Secure Settings
+                    if(Secure_ManuallyEnableWebsitePlannerAtMyOwnRisk == 1) {
+                        label_DisabledWebPlanner.Visible = false;
+                        label_EnabledWebPlanner.Visible = true;
+
+                        checkBoxWPlanner.Checked = manifest.SendToWebsitePlanner;
+
+                        if (Secure_ManuallySetWebsitePlannerAddress == "" || Secure_ManuallySetWebsitePlannerAddress == null) { textBoxWPlannerAddress.Text = ""; }
+                        else { textBoxWPlannerAddress.Text = Secure_ManuallySetWebsitePlannerAddress; }
+                
+                        numericUpDownWPlannerInterval.Value =  manifest.WebsitePlannerInterval;
+                        checkBoxWPlannerSendCode.Checked = manifest.WebsitePlannerSendCode;
+                        numericUpDownWPlannerShift1.Value = Manifest.ManuallySetWebsitePlannerShift1;
+                        numericUpDownWPlannerShift2.Value = Manifest.ManuallySetWebsitePlannerShift2;
+                        numericUpDownWPlannerShift3.Value = Manifest.ManuallySetWebsitePlannerShift3;
+                        numericUpDownWPlannerShift4.Value = Manifest.ManuallySetWebsitePlannerShift4;
+                        numericUpDownWPlannerShift5.Value = Manifest.ManuallySetWebsitePlannerShift5;
+
+                        if(manifest.SendToWebsitePlanner == true) {
+                            chkConfirmationsPeriodicChecking.Checked = false; 
+                            chkCheckAll.Checked = false;
+                        }
+                    } else { // Disable All
+                        label_DisabledWebPlanner.Visible = true;
+                        label_EnabledWebPlanner.Visible = false;
+
+                        checkBoxWPlanner.Enabled = false;
+                        textBoxWPlannerAddress.Enabled = false;
+                        numericUpDownWPlannerInterval.Enabled = false;
+                        checkBoxWPlannerSendCode.Enabled = false;
+                        numericUpDownWPlannerShift1.Enabled = false;
+                        numericUpDownWPlannerShift2.Enabled = false;
+                        numericUpDownWPlannerShift3.Enabled = false;
+                        numericUpDownWPlannerShift4.Enabled = false;
+                        numericUpDownWPlannerShift5.Enabled = false;
+                    }
+                #endregion // set Planner End
 
                 // set App Can Run Multiple Times
                     if (manifest.SendAppStatus)
@@ -120,50 +161,74 @@ namespace Steam_Desktop_Authenticator
         private void SettingsOk_Click(object sender, EventArgs e)
         {
             // Run at Startup
-                manifest.RunAtStartup = checkBoxRunAtStartup.Checked;
+            manifest.RunAtStartup = checkBoxRunAtStartup.Checked;
 
             // Confirmation Popup
-                manifest.ConfirmationsPeriodicChecking = chkConfirmationsPeriodicChecking.Checked;
-                manifest.ConfirmationCheckingInterval = (int)numPeriodicInterval.Value;
+            manifest.ConfirmationsPeriodicChecking = chkConfirmationsPeriodicChecking.Checked;
+            manifest.SendToWebsitePlanner = checkBoxWPlanner.Checked;
+            if (checkBoxWPlanner.Checked == false) { manifest.SendToWebsitePlanner = false; } // disable Planner
 
-                string PopupConfirmationBorderValue = "1"; // default value
-                if (radioBtnBorderConfPopup1.Checked) { PopupConfirmationBorderValue = "1"; }
-                if (radioBtnBorderConfPopup2.Checked) { PopupConfirmationBorderValue = "2"; }
-                manifest.PopupConfirmationBorder = PopupConfirmationBorderValue;
+            manifest.ConfirmationCheckingInterval = (int)numPeriodicInterval.Value;
+
+            string PopupConfirmationBorderValue = "1"; // default value
+            if (radioBtnBorderConfPopup1.Checked) { PopupConfirmationBorderValue = "1"; }
+            if (radioBtnBorderConfPopup2.Checked) { PopupConfirmationBorderValue = "2"; }
+            manifest.PopupConfirmationBorder = PopupConfirmationBorderValue;
 
             // Check all accounts for new Confirmations
-                manifest.ConfirmationCheckAllAccounts = chkCheckAll.Checked;
+            manifest.ConfirmationCheckAllAccounts = chkCheckAll.Checked;
+            manifest.SendToWebsitePlanner = checkBoxWPlanner.Checked;
+            if (checkBoxWPlanner.Checked == false) { manifest.SendToWebsitePlanner = false; } // disable Planner
+            manifest.ConfirmationCheckAllAcc_RefreshSessionDellay = (int)num_ChackAllAcc_DelaySessionRefresh.Value;
 
             // Auto Confirm
-                manifest.AutoConfirmTrades = chkAutoConfirmTrades.Checked;
-                manifest.AutoConfirmMarketTransactions = chkAutoConfirmMarket.Checked;
-                manifest.DelayAutoConfirmAtStartup = chkDelayAutoConfirmAtStartup.Checked;
-                manifest.DelayAutoConfirmAtStartupInterval = (int)numDelayAutoConfirmAtStartup.Value;
+            manifest.AutoConfirmTrades = chkAutoConfirmTrades.Checked;
+            manifest.AutoConfirmMarketTransactions = chkAutoConfirmMarket.Checked;
+            manifest.DelayAutoConfirmAtStartup = chkDelayAutoConfirmAtStartup.Checked;
+            manifest.DelayAutoConfirmAtStartupInterval = (int)numDelayAutoConfirmAtStartup.Value;
 
             // Popup confirmation
-             manifest.DisplayPopupConfirmation = chkDisplayPopupConfirmation.Checked;
+            manifest.DisplayPopupConfirmation = chkDisplayPopupConfirmation.Checked;
 
             // Confirmation List btn
-                manifest.ShowConfirmationListButton = checkBoxConfirmationListBtn.Checked;
+            manifest.ShowConfirmationListButton = checkBoxConfirmationListBtn.Checked;
 
             // System Tray
-                string SystemTrayValue = "CloseBtnMinimizeToTray"; // default value
-                if (radioButton1_SystemTray.Checked) { SystemTrayValue = "CloseBtnMinimizeToTray"; }
-                if (radioButton2_SystemTray.Checked) { SystemTrayValue = "MinimiseBtnMinimizeToTray"; }
-                if (radioButton3_SystemTray.Checked) { SystemTrayValue = "default"; }
-                manifest.MinimiseToSystemTray = SystemTrayValue;
+            string SystemTrayValue = "CloseBtnMinimizeToTray"; // default value
+            if (radioButton1_SystemTray.Checked) { SystemTrayValue = "CloseBtnMinimizeToTray"; }
+            if (radioButton2_SystemTray.Checked) { SystemTrayValue = "MinimiseBtnMinimizeToTray"; }
+            if (radioButton3_SystemTray.Checked) { SystemTrayValue = "default"; }
+            manifest.MinimiseToSystemTray = SystemTrayValue;
 
 
-                manifest.HideTaskbarIcon = chkHideTaskbarIcon.Checked;
-                manifest.StartMinimizedToSystemTray = chkStartMinimizedToSystemTray.Checked;
+            manifest.HideTaskbarIcon = chkHideTaskbarIcon.Checked;
+            manifest.StartMinimizedToSystemTray = chkStartMinimizedToSystemTray.Checked;
 
             // Send Status
             #region Send Status
-                manifest.SendAppStatus = chkSendAppStatus.Checked;
-                manifest.SendAppStatusToAddress = textBoxSendAppStatusToAddress.Text;
-                manifest.SendAppNo = (int)numAppNo.Value;
-                manifest.SendAppStatusInterval = (int)numSendAppStatusInterval.Value;
+            manifest.SendAppStatus = chkSendAppStatus.Checked;
+            manifest.SendAppStatusToAddress = textBoxSendAppStatusToAddress.Text;
+            manifest.SendAppNo = (int)numAppNo.Value;
+            manifest.SendAppStatusInterval = (int)numSendAppStatusInterval.Value;
             #endregion // Send Status
+
+            // Save Planner
+            #region Save Planner
+            int Secure_ManuallyEnableWebsitePlannerAtMyOwnRisk = Manifest.ManuallyEnableWebsitePlannerAtMyOwnRisk; // Secure Settings
+            string Secure_ManuallySetWebsitePlannerAddress = Manifest.ManuallySetWebsitePlannerAddress; // Secure Settings
+
+            if (Secure_ManuallyEnableWebsitePlannerAtMyOwnRisk == 1)
+            {
+                manifest.SendToWebsitePlanner = checkBoxWPlanner.Checked;
+                if (checkBoxWPlanner.Checked == true)
+                {
+                    manifest.ConfirmationsPeriodicChecking = true;  // Enable Auto Check
+                    manifest.ConfirmationCheckAllAccounts = true; // Enable Auto Check All Accounts
+                }
+                manifest.WebsitePlannerInterval = (int)numericUpDownWPlannerInterval.Value;
+                manifest.WebsitePlannerSendCode = checkBoxWPlannerSendCode.Checked;
+            }
+            #endregion // Save Planner End
 
             //App Can Run Multiple Times
             if (chkSendAppStatus.Checked == true) { manifest.AppCanBeStartedMultipleTimes = true; }
@@ -180,31 +245,22 @@ namespace Steam_Desktop_Authenticator
             this.Close();
         }
 
-        private void SettingsCancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        private void SettingsCancel_Click(object sender, EventArgs e) { this.Close(); }
 
-
-        private void checkBoxConfirmationsPeriodicChecking_CheckedChanged(object sender, EventArgs e)
-        {
+        private void checkBoxConfirmationsPeriodicChecking_CheckedChanged(object sender, EventArgs e) {
             SetControlsEnabledState_IfAutoCheckingForConfirmations(chkConfirmationsPeriodicChecking.Checked);
         }
 
-
-        private void chkBoxAutoConfirmMarket_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkAutoConfirmMarket.Checked)
-                ShowWarning(chkAutoConfirmMarket);
-        }
+        private void chkBoxAutoConfirmMarket_CheckedChanged(object sender, EventArgs e) { if (chkAutoConfirmMarket.Checked) { ShowWarning(chkAutoConfirmMarket); } }
         
-        private void chkBoxAutoConfirmTrades_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkAutoConfirmTrades.Checked)
-                ShowWarning(chkAutoConfirmTrades);
-        }
+        private void chkBoxAutoConfirmTrades_CheckedChanged(object sender, EventArgs e){ if (chkAutoConfirmTrades.Checked) { ShowWarning(chkAutoConfirmTrades);  } }
+
+        // SendAppStatus
+        private void chkSendAppStatus_CheckedChanged(object sender, EventArgs e) {  }
+
+        // Planner
+        private void checkBoxWPlanner_CheckedChanged(object sender, EventArgs e)  { }
 
 
     }
 }
-
