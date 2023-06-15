@@ -8,7 +8,7 @@
 WARNING: Recently there have been fake versions of SDA floating around that will steal your Steam account. Be carefoul from where you download the app! Idealy is to inspect the code & compile it yourself.
 </h3>
 
-## `v1.0.9.1`
+## `v1.1.0.0`
 
 ![6](https://user-images.githubusercontent.com/10192561/44949898-890a5e00-ae43-11e8-8f7a-1df46b8772a3.png)
 
