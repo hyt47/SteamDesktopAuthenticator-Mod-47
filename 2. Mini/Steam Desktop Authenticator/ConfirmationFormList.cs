@@ -78,10 +78,6 @@ namespace Steam_Desktop_Authenticator
                         if (ConfirmationType == "Trade") { TradeWith += " offer ID: " + Confirmations[i].ID;  }
                         else if (ConfirmationType == "Market") { TradeWith += " ID: " + Confirmations[i].ID; }
 
-                        TradeWith = Confirmations[i].OtherUserName;
-                        if (ConfirmationType == "Trade") { TradeWith = "Trade: " + TradeWith; }
-                        else if(ConfirmationType == "Market"){ TradeWith = "Sell: " + TradeWith; }
-
                         // for DEBUG
                         //using (System.IO.TextWriter writer = System.IO.File.CreateText(System.AppDomain.CurrentDomain.BaseDirectory + @"\- debug pg.txt")) { writer.Write(Confirmations[i].AllData);  }
 

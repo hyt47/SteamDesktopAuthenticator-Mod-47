@@ -408,26 +408,6 @@ namespace Steam_Desktop_Authenticator
             else { MessageBox.Show("Steam Guard was not removed. No action was taken."); }
         }
 
-        private async void menuRefreshSession_Click(object sender, EventArgs e)
-        {
-            int RefreshSession_InfoStatus_ = 1;
-
-            bool status = false;
-            try { status = await currentAccount.RefreshSessionAsync(); } catch (Exception) { }
-
-            if (status == true)
-            {
-                MessageBox.Show("Your session has been refreshed.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                manifest.SaveAccount(currentAccount, manifest.Encrypted, passKey);
-            }
-            else
-            {
-                MessageBox.Show("Failed to refresh your session.\nTry again soon.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                RefreshSession_InfoStatus_ = 0;
-            }
-            RefreshSession_InfoStatus = RefreshSession_InfoStatus_;
-        }
-
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string FolderPath = Manifest.GetExecutableDir();
@@ -637,7 +617,7 @@ namespace Steam_Desktop_Authenticator
             Task.Delay(Settings_ConfirmationCheckAllAcc_RefreshSessionDellay).Wait();
 
             int AllAcc_RefreshSession_InfoStatus_ = 1;
-            try { await account.RefreshSessionAsync(); } catch (Exception) { AllAcc_RefreshSession_InfoStatus_ = 0; }
+            try { PromptRefreshLogin(account); } catch (Exception) { AllAcc_RefreshSession_InfoStatus_ = 0; }
 
             AllAcc_RefreshSession_InfoStatus = AllAcc_RefreshSession_InfoStatus_;
         }
@@ -937,9 +917,9 @@ namespace Steam_Desktop_Authenticator
                                         lblStatus.Text = "Failed > Refreshing session";
                                         Program.ConsoleForm_Update.SetConsoleText("Check Confirmations > Failed > Refreshing session", "ConsoleStatus_ReturnFaildFixIt");
 
-                                        await currentAccount.RefreshSessionAsync(); //Don't save it to the HDD, of course. We'd need their encryption passkey again.
-                                        lblStatus.Text = "Refreshing session > Done";
-                                        Program.ConsoleForm_Update.SetConsoleText("Refreshing session > Done", "ConsoleStatus_Return");
+                                        // Prompt to relogin
+                                        PromptRefreshLogin(acc);
+                                        break;
                                     }
                                     catch (SteamGuardAccount.WGTokenExpiredException)
                                     {
@@ -1019,14 +999,9 @@ namespace Steam_Desktop_Authenticator
                                     if (conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction) { ConfirmationType = "Market"; }
                                     else if (conf.ConfType == Confirmation.ConfirmationType.Trade) { ConfirmationType = "Trade"; }
 
-                                    // OLD CODE > used when I didn't have user name
                                     TradeWith = ConfirmationType;
                                     if (ConfirmationType == "Trade") { TradeWith += " offer ID: " + conf.ID; }
                                     else if (ConfirmationType == "Market") { TradeWith += " ID: " + conf.ID; }
-
-                                    // NEW CODE
-                                    if (ConfirmationType == "Trade") { TradeWith = "Trade: " + conf.OtherUserName; }
-                                    else if (ConfirmationType == "Market") { TradeWith = "Sell: " + conf.OtherUserName; }
 
                                     Program.ConsoleForm_Update.SetConsoleText("Confirmation Detected " + acc.AccountName + " > " + TradeWith + " > ID: " + conf.ID.ToString(), "ConsoleStatus_Info");
 
@@ -1127,9 +1102,9 @@ namespace Steam_Desktop_Authenticator
                             lblStatus.Text = "Failed > Refreshing session";
                             Program.ConsoleForm_Update.SetConsoleText("Check Confirmations > Failed > Refreshing session", "ConsoleStatus_ReturnFaildFixIt");
 
-                            await currentAccount.RefreshSessionAsync(); //Don't save it to the HDD, of course. We'd need their encryption passkey again.
-                            lblStatus.Text = "Refreshing session > Done";
-                            Program.ConsoleForm_Update.SetConsoleText("Refreshing session > Done", "ConsoleStatus_Return");
+                            // Prompt to relogin
+                            PromptRefreshLogin(acc);
+                            break;
                         }
                         catch (SteamGuardAccount.WGTokenExpiredException)
                         {
@@ -1161,31 +1136,6 @@ namespace Steam_Desktop_Authenticator
         #endregion //Timer SteamGuard > Check for Confirmations
 
         // Other methods
-
-        /// <summary>
-        /// Refresh this account's session data using their OAuth Token
-        /// </summary>
-        /// <param name="account">The account to refresh</param>
-        /// <param name="attemptRefreshLogin">Whether or not to prompt the user to re-login if their OAuth token is expired.</param>
-        /// <returns></returns>
-        private async Task<bool> RefreshAccountSession(SteamGuardAccount account, bool attemptRefreshLogin = true)
-        {
-            if (account == null) return false;
-
-            try
-            {
-                bool refreshed = await account.RefreshSessionAsync();
-                return refreshed; //No exception thrown means that we either successfully refreshed the session or there was a different issue preventing us from doing so.
-            }
-            catch (SteamGuardAccount.WGTokenExpiredException)
-            {
-                if (!attemptRefreshLogin) return false;
-
-                PromptRefreshLogin(account);
-
-                return await RefreshAccountSession(account, false);
-            }
-        }
 
         /// <summary>
         /// Display a login form to the user to refresh their OAuth Token
@@ -1329,7 +1279,7 @@ namespace Steam_Desktop_Authenticator
                 listAccounts.SelectedIndex = 0;
                 trayAccountList.SelectedIndex = 0;
             }
-            menuDeactivateAuthenticator.Enabled = btnTradeConfirmations.Enabled = btnTradeConfirmationsList.Enabled = menuLoginAgain.Enabled = menuRefreshSession.Enabled = btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem.Enabled = menuRemoveAccountFromManifest.Enabled = menuDeactivateAuthenticator.Enabled = allAccounts.Length > 0;
+            menuDeactivateAuthenticator.Enabled = btnTradeConfirmations.Enabled = btnTradeConfirmationsList.Enabled = menuLoginAgain.Enabled = btn_forceSessionRefreshForAllAccounts_ToolStripMenuItem.Enabled = menuRemoveAccountFromManifest.Enabled = menuDeactivateAuthenticator.Enabled = allAccounts.Length > 0;
 
         }
 
@@ -1350,7 +1300,7 @@ namespace Steam_Desktop_Authenticator
             Program.ConsoleForm_Update.SetConsoleText("Auto check for Confirmations > " + account.AccountName + " > Refreshing session...", "ConsoleStatus_Task");
             try
             {
-                await account.RefreshSessionAsync();
+                PromptRefreshLogin(account);
                 if (updatedSessions.Contains(account.AccountName) == false) { updatedSessions.Add(account.AccountName); }
                 Program.ConsoleForm_Update.SetConsoleText("Auto check for Confirmations > " + account.AccountName + " > Refreshing session > Done", "ConsoleStatus_Return");
             }
@@ -1381,7 +1331,7 @@ namespace Steam_Desktop_Authenticator
 
             try
             {
-                await currentAccount.RefreshSessionAsync();
+                PromptRefreshLogin(currentAccount);
                 if (updatedSessions.Contains(account.AccountName) == false) { updatedSessions.Add(account.AccountName); }
                 lblStatus.Text = "Refreshing session > Done";
                 Program.ConsoleForm_Update.SetConsoleText("Refreshing session > Done", "ConsoleStatus_Return");

@@ -50,7 +50,7 @@ namespace Steam_Desktop_Authenticator
             // Check if the session is expired
             if (request.Url == "steammobile://lostauth")
             {
-                MessageBox.Show("Failed to load confirmations.\nTry using \"Force session refresh\" under the Selected Account menu.\nIf that doesn't work use the \"Login again\" option.", "Confirmations", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Failed to load confirmations.\nUse the \"Login again\" option under the \"Selected Account\" menu.\nIf that doesn't work use the \"Login again\" option.", "Confirmations", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return CefReturnValue.Cancel;
             }
 

@@ -111,11 +111,8 @@ namespace Steam_Desktop_Authenticator
                 else if (ConfirmationType == "Market") { label_action.Text = "Sell:"; }
 
                 string TradeWith = "";
-                    // OLD CODE > used when I didn't have user name
                     if (ConfirmationType == "Trade") { TradeWith += "ID: " + confirms[CurrentConfirmationNo].ID; }
                     else if (ConfirmationType == "Market") { TradeWith += "ID: " + confirms[CurrentConfirmationNo].ID; }
-                    // NEW CODE
-                    TradeWith =  confirms[CurrentConfirmationNo].OtherUserName; 
 
 
 
@@ -172,11 +169,8 @@ namespace Steam_Desktop_Authenticator
                 else if (ConfirmationType == "Market") { label_action.Text = "Sell:"; }
 
                 string TradeWith = "";
-                    // OLD CODE > used when I didn't have user name
                     if (ConfirmationType == "Trade") { TradeWith += "ID: " + confirms[CurrentConfirmationNo].ID; }
                     else if (ConfirmationType == "Market") { TradeWith += "ID: " + confirms[CurrentConfirmationNo].ID; }
-                    // NEW CODE
-                    TradeWith =  confirms[CurrentConfirmationNo].OtherUserName; 
                 
 
                 Program.ConsoleForm_Update.SetConsoleText("POPUP Confirmation: Denying... "+ TradeWith, "ConsoleStatus_Confirmed");
@@ -251,11 +245,8 @@ namespace Steam_Desktop_Authenticator
                 else if (ConfirmationType == "Market") { label_action.Text = "Sell:"; }
 
                 string TradeWith = "";
-                    // OLD CODE > used when I didn't have user name
                     if (ConfirmationType == "Trade") { TradeWith += "ID: " + confirms[CurrentConfirmationNo].ID; }
                     else if (ConfirmationType == "Market") { TradeWith += "ID: " + confirms[CurrentConfirmationNo].ID; }
-                    // NEW CODE
-                    TradeWith =  confirms[CurrentConfirmationNo].OtherUserName; 
 
 
 
